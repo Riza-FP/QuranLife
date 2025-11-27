@@ -1,0 +1,1136 @@
+{
+  "naba": {
+    "nomor": "78",
+    "kode": "naba",
+    "nama": "An Naba",
+    "jumlah_ayat": "40",
+    "verses": [
+      {
+        "number": 1,
+        "arabic": "عَمَّ يَتَسَاۤءَلُوْنَۚ",
+        "translations": {
+          "tr_id": "Tentang apakah mereka saling bertanya-tanya?",
+          "tr_id_my": "Tentang apakah orang-orang musyrik itu saling bertanya-tanya?",
+          "tr_en_jl": "About what are they asking one another?"
+        },
+        "translation": "Tentang apakah mereka saling bertanya-tanya?",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_1.mp3"
+        }
+      },
+      {
+        "number": 2,
+        "arabic": "عَنِ النَّبَاِ الْعَظِيْمِۙ",
+        "translations": {
+          "tr_id": "Tentang berita yang besar (hari kebangkitan),",
+          "tr_id_my": "Tentang berita yang besar, yaitu al-Qur’an yang agung ini yang mengabarkan tentang kebangkitan dan pembalasan.",
+          "tr_en_jl": "About the great news -"
+        },
+        "translation": "Tentang berita yang besar (hari kebangkitan),",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_2.mp3"
+        }
+      },
+      {
+        "number": 3,
+        "arabic": "الَّذِيْ هُمْ فِيْهِ مُخْتَلِفُوْنَۗ",
+        "translations": {
+          "tr_id": "yang dalam hal itu mereka berselisih.",
+          "tr_id_my": "Yang mereka ragukan dan perselisihkan.",
+          "tr_en_jl": "That over which they are in disagreement."
+        },
+        "translation": "yang dalam hal itu mereka berselisih.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_3.mp3"
+        }
+      },
+      {
+        "number": 4,
+        "arabic": "كَلَّا سَيَعْلَمُوْنَۙ",
+        "translations": {
+          "tr_id": "Sekali-kali tidak! Kelak mereka akan mengetahui,",
+          "tr_id_my": "Perkaranya tidak seperti yang mereka sangkakan. Kelak mereka akan mengetahui kebenaran al-Qur’an dan apa yang dikabarkannya.",
+          "tr_en_jl": "No! They are going to know."
+        },
+        "translation": "Sekali-kali tidak! Kelak mereka akan mengetahui,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_4.mp3"
+        }
+      },
+      {
+        "number": 5,
+        "arabic": "ثُمَّ كَلَّا سَيَعْلَمُوْنَ",
+        "translations": {
+          "tr_id": "kemudian sekali-kali tidak! Kelak mereka akan mengetahui.",
+          "tr_id_my": "Kemudian sekali-kali tidak! Kelak mereka akan mengetahui kebenarannya dengan keyakinan yang pasti.",
+          "tr_en_jl": "Then, no! They are going to know."
+        },
+        "translation": "kemudian sekali-kali tidak! Kelak mereka akan mengetahui.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_5.mp3"
+        }
+      },
+      {
+        "number": 6,
+        "arabic": "اَلَمْ نَجْعَلِ الْاَرْضَ مِهٰدًاۙ",
+        "translations": {
+          "tr_id": "Bukankah Kami telah menjadikan bumi sebagai hamparan,",
+          "tr_id_my": "Bukankah Kami telah menjadikan bumi terhampar bagi kalian seperti hamparan agar kalian bisa tinggal di atasnya?",
+          "tr_en_jl": "Have We not made the earth a resting place?"
+        },
+        "translation": "Bukankah Kami telah menjadikan bumi sebagai hamparan,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_6.mp3"
+        }
+      },
+      {
+        "number": 7,
+        "arabic": "وَّالْجِبَالَ اَوْتَادًاۖ",
+        "translations": {
+          "tr_id": "dan gunung-gunung sebagai pasak?",
+          "tr_id_my": "Dan (Kami jadikan) gunung-gunung sebagai pasak agar bumi tidak berguncang bersama kalian?",
+          "tr_en_jl": "And the mountains as stakes?"
+        },
+        "translation": "dan gunung-gunung sebagai pasak?",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_7.mp3"
+        }
+      },
+      {
+        "number": 8,
+        "arabic": "وَّخَلَقْنٰكُمْ اَزْوَاجًاۙ",
+        "translations": {
+          "tr_id": "Dan Kami menciptakan kamu berpasang-pasangan,",
+          "tr_id_my": "Dan Kami menciptakan kalian berpasang-pasangan, laki-laki dan perempuan?",
+          "tr_en_jl": "And We created you in pairs"
+        },
+        "translation": "Dan Kami menciptakan kamu berpasang-pasangan,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_8.mp3"
+        }
+      },
+      {
+        "number": 9,
+        "arabic": "وَّجَعَلْنَا نَوْمَكُمْ سُبَاتًاۙ",
+        "translations": {
+          "tr_id": "dan Kami menjadikan tidurmu untuk istirahat,",
+          "tr_id_my": "Dan Kami menjadikan tidur kalian sebagai pemutus dari pekerjaan agar kalian bisa istirahat?",
+          "tr_en_jl": "And made your sleep [a means for] rest"
+        },
+        "translation": "dan Kami menjadikan tidurmu untuk istirahat,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_9.mp3"
+        }
+      },
+      {
+        "number": 10,
+        "arabic": "وَّجَعَلْنَا الَّيْلَ لِبَاسًاۙ",
+        "translations": {
+          "tr_id": "dan Kami menjadikan malam sebagai pakaian,",
+          "tr_id_my": "Dan Kami menjadikan malam sebagai pakaian yang menutupi kalian dengan kegelapannya sebagaimana pakaian menutupi tubuh?",
+          "tr_en_jl": "And made the night as clothing"
+        },
+        "translation": "dan Kami menjadikan malam sebagai pakaian,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_10.mp3"
+        }
+      },
+      {
+        "number": 11,
+        "arabic": "وَّجَعَلْنَا النَّهَارَ مَعَاشًاۚ",
+        "translations": {
+          "tr_id": "dan Kami menjadikan siang untuk mencari penghidupan,",
+          "tr_id_my": "Dan Kami menjadikan siang sebagai waktu untuk mencari penghidupan dan rezeki?",
+          "tr_en_jl": "And made the day for livelihood"
+        },
+        "translation": "dan Kami menjadikan siang untuk mencari penghidupan,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_11.mp3"
+        }
+      },
+      {
+        "number": 12,
+        "arabic": "وَبَنَيْنَا فَوْقَكُمْ سَبْعًا شِدَادًاۙ",
+        "translations": {
+          "tr_id": "dan Kami membangun di atasmu tujuh (langit) yang kokoh,",
+          "tr_id_my": "Dan Kami membangun di atas kalian tujuh langit yang kokoh, kuat bangunannya, tidak ada keretakan dan tidak ada lubang padanya?",
+          "tr_en_jl": "And constructed above you seven strong [heavens]"
+        },
+        "translation": "dan Kami membangun di atasmu tujuh (langit) yang kokoh,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_12.mp3"
+        }
+      },
+      {
+        "number": 13,
+        "arabic": "وَّجَعَلْنَا سِرَاجًا وَّهَّاجًاۖ",
+        "translations": {
+          "tr_id": "dan Kami menjadikan pelita yang terang benderang (matahari),",
+          "tr_id_my": "Dan Kami menjadikan matahari sebagai pelita yang bersinar terang dan menyala-nyala?",
+          "tr_en_jl": "And made [therein] a burning lamp"
+        },
+        "translation": "dan Kami menjadikan pelita yang terang benderang (matahari),",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_13.mp3"
+        }
+      },
+      {
+        "number": 14,
+        "arabic": "وَّاَنْزَلْنَا مِنَ الْمُعْصِرٰتِ مَاۤءً ثَجَّاجًاۙ",
+        "translations": {
+          "tr_id": "dan Kami turunkan dari awan, air yang banyak tercurah,",
+          "tr_id_my": "Dan Kami menurunkan dari awan yang memeras air, air hujan yang banyak tercurah?",
+          "tr_en_jl": "And sent down, from the rain clouds, pouring water"
+        },
+        "translation": "dan Kami turunkan dari awan, air yang banyak tercurah,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_14.mp3"
+        }
+      },
+      {
+        "number": 15,
+        "arabic": "لِّنُخْرِجَ بِهٖ حَبًّا وَّنَبَاتًاۙ",
+        "translations": {
+          "tr_id": "agar Kami tumbuhkan dengan air itu biji-bijian dan tumbuh-tumbuhan,",
+          "tr_id_my": "Agar Kami keluarkan dengan air itu biji-bijian yang dimakan manusia dan tumbuh-tumbuhan yang dimakan hewan ternak?",
+          "tr_en_jl": "That We may bring forth thereby grain and vegetation"
+        },
+        "translation": "agar Kami tumbuhkan dengan air itu biji-bijian dan tumbuh-tumbuhan,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_15.mp3"
+        }
+      },
+      {
+        "number": 16,
+        "arabic": "وَّجَنّٰتٍ اَلْفَافًاۗ",
+        "translations": {
+          "tr_id": "dan kebun-kebun yang lebat?",
+          "tr_id_my": "Dan kebun-kebun yang lebat pepohonannya?",
+          "tr_en_jl": "And gardens of entwined growth."
+        },
+        "translation": "dan kebun-kebun yang lebat?",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_16.mp3"
+        }
+      },
+      {
+        "number": 17,
+        "arabic": "اِنَّ يَوْمَ الْفَصْلِ كَانَ مِيْقَاتًاۙ",
+        "translations": {
+          "tr_id": "Sungguh, hari keputusan adalah suatu waktu yang telah ditetapkan,",
+          "tr_id_my": "Sesungguhnya Hari Keputusan antara makhluk adalah waktu yang telah ditetapkan bagi umat-umat terdahulu dan yang datang kemudian.",
+          "tr_en_jl": "Indeed, the Day of Judgement is an appointed time -"
+        },
+        "translation": "Sungguh, hari keputusan adalah suatu waktu yang telah ditetapkan,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_17.mp3"
+        }
+      },
+      {
+        "number": 18,
+        "arabic": "يَوْمَ يُنْفَخُ فِى الصُّوْرِ فَتَأْتُوْنَ اَفْوَاجًاۙ",
+        "translations": {
+          "tr_id": "(yaitu) pada hari (ketika) sangkakala ditiup, lalu kamu datang berbondong-bondong,",
+          "tr_id_my": "Yaitu hari ketika Malaikat Israfil meniup sangkakala, lalu kalian datang berbondong-bondong.",
+          "tr_en_jl": "The Day the Horn is blown and you will come forth in multitudes"
+        },
+        "translation": "(yaitu) pada hari (ketika) sangkakala ditiup, lalu kamu datang berbondong-bondong,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_18.mp3"
+        }
+      },
+      {
+        "number": 19,
+        "arabic": "وَّفُتِحَتِ السَّمَاۤءُ فَكَانَتْ اَبْوَابًاۙ",
+        "translations": {
+          "tr_id": "dan langit pun dibukalah, maka terdapatlah beberapa pintu,",
+          "tr_id_my": "Dan langit dibuka, maka jadilah ia mempunyai pintu-pintu yang banyak untuk turunnya para malaikat.",
+          "tr_en_jl": "And the heaven is opened and will become gateways"
+        },
+        "translation": "dan langit pun dibukalah, maka terdapatlah beberapa pintu,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_19.mp3"
+        }
+      },
+      {
+        "number": 20,
+        "arabic": "وَّسُيِّرَتِ الْجِبَالُ فَكَانَتْ سَرَابًاۗ",
+        "translations": {
+          "tr_id": "dan gunung-gunung pun dijalankan, maka menjadilah ia fatamorgana.",
+          "tr_id_my": "Dan gunung-gunung dijalankan dari tempat-tempatnya, maka jadilah ia seperti fatamorgana yang tidak memiliki hakikat.",
+          "tr_en_jl": "And the mountains are removed and will be [but] a mirage."
+        },
+        "translation": "dan gunung-gunung pun dijalankan, maka menjadilah ia fatamorgana.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_20.mp3"
+        }
+      },
+      {
+        "number": 21,
+        "arabic": "اِنَّ جَهَنَّمَ كَانَتْ مِرْصَادًاۙ",
+        "translations": {
+          "tr_id": "Sungguh, (neraka) Jahanam itu (padanya) ada tempat pengintai,",
+          "tr_id_my": "Sesungguhnya Neraka Jahanam adalah tempat yang menanti dan mengintai.",
+          "tr_en_jl": "Indeed, Hell has been lying in wait"
+        },
+        "translation": "Sungguh, (neraka) Jahanam itu (padanya) ada tempat pengintai,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_21.mp3"
+        }
+      },
+      {
+        "number": 22,
+        "arabic": "لِّلطّٰغِيْنَ مَاٰبًاۙ",
+        "translations": {
+          "tr_id": "bagi orang-orang yang melampaui batas (merupakan) tempat kembali.",
+          "tr_id_my": "Bagi orang-orang yang melampaui batas dalam kekafiran dan kemaksiatan sebagai tempat kembali.",
+          "tr_en_jl": "For the transgressors, a place of return,"
+        },
+        "translation": "bagi orang-orang yang melampaui batas (merupakan) tempat kembali.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_22.mp3"
+        }
+      },
+      {
+        "number": 23,
+        "arabic": "لّٰبِثِيْنَ فِيْهَآ اَحْقَابًاۚ",
+        "translations": {
+          "tr_id": "Mereka tinggal di sana dalam masa yang lama,",
+          "tr_id_my": "Mereka tinggal di dalamnya dalam masa yang sangat panjang, tidak ada ujungnya.",
+          "tr_en_jl": "In which they will remain for ages [unending]."
+        },
+        "translation": "Mereka tinggal di sana dalam masa yang lama,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_23.mp3"
+        }
+      },
+      {
+        "number": 24,
+        "arabic": "لَا يَذُوْقُوْنَ فِيْهَا بَرْدًا وَّلَا شَرَابًاۙ",
+        "translations": {
+          "tr_id": "mereka tidak merasakan kesejukan di dalamnya dan tidak (pula mendapat) minuman,",
+          "tr_id_my": "Mereka tidak merasakan kesejukan di dalamnya yang mendinginkan panasnya neraka, dan tidak pula mendapatkan minuman yang menghilangkan dahaga.",
+          "tr_en_jl": "They will not taste therein [any] coolness or drink"
+        },
+        "translation": "mereka tidak merasakan kesejukan di dalamnya dan tidak (pula mendapat) minuman,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_24.mp3"
+        }
+      },
+      {
+        "number": 25,
+        "arabic": "اِلَّا حَمِيْمًا وَّغَسَّاقًاۙ",
+        "translations": {
+          "tr_id": "selain air yang mendidih dan nanah,",
+          "tr_id_my": "Kecuali air yang sangat panas dan nanah penghuni neraka.",
+          "tr_en_jl": "Except scalding water and [foul] purulence -"
+        },
+        "translation": "selain air yang mendidih dan nanah,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_25.mp3"
+        }
+      },
+      {
+        "number": 26,
+        "arabic": "جَزَاۤءً وِّفَاقًاۗ",
+        "translations": {
+          "tr_id": "sebagai pembalasan yang setimpal.",
+          "tr_id_my": "Sebagai balasan yang setimpal dengan amal perbuatan mereka yang buruk.",
+          "tr_en_jl": "An appropriate recompense."
+        },
+        "translation": "sebagai pembalasan yang setimpal.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_26.mp3"
+        }
+      },
+      {
+        "number": 27,
+        "arabic": "اِنَّهُمْ كَانُوْا لَا يَرْجُوْنَ حِسَابًاۙ",
+        "translations": {
+          "tr_id": "Sesungguhnya mereka dahulu tidak mengharapkan perhitungan,",
+          "tr_id_my": "Sesungguhnya mereka dahulu di dunia tidak takut akan adanya hisab (perhitungan amal), sehingga mereka tidak beramal untuk menghadapinya.",
+          "tr_en_jl": "Indeed, they were not expecting an account"
+        },
+        "translation": "Sesungguhnya mereka dahulu tidak mengharapkan perhitungan,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_27.mp3"
+        }
+      },
+      {
+        "number": 28,
+        "arabic": "وَّكَذَّبُوْا بِاٰيٰتِنَا كِذَّابًاۗ",
+        "translations": {
+          "tr_id": "dan mereka benar-benar mendustakan ayat-ayat Kami.",
+          "tr_id_my": "Dan mereka mendustakan ayat-ayat Kami dengan pendustaan yang nyata.",
+          "tr_en_jl": "And denied Our verses with [emphatic] denial."
+        },
+        "translation": "dan mereka benar-benar mendustakan ayat-ayat Kami.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_28.mp3"
+        }
+      },
+      {
+        "number": 29,
+        "arabic": "وَكُلَّ شَيْءٍ اَحْصَيْنٰهُ كِتٰبًاۙ",
+        "translations": {
+          "tr_id": "Dan segala sesuatu telah Kami catat dalam suatu Kitab (buku catatan amalan manusia).",
+          "tr_id_my": "Dan segala sesuatu dari amal perbuatan mereka telah Kami catat dan Kami hitung dalam kitab catatan amal.",
+          "tr_en_jl": "But all things We have enumerated in writing."
+        },
+        "translation": "Dan segala sesuatu telah Kami catat dalam suatu Kitab (buku catatan amalan manusia).",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_29.mp3"
+        }
+      },
+      {
+        "number": 30,
+        "arabic": "فَذُوْقُوْا فَلَنْ نَّزِيْدَكُمْ اِلَّا عَذَابًاࣖ",
+        "translations": {
+          "tr_id": "Maka rasakanlah! Tidak ada yang akan Kami tambahkan kepadamu selain azab.",
+          "tr_id_my": "Maka rasakanlah wahai orang-orang kafir azab ini, Kami tidak akan menambah kepada kalian kecuali azab di atas azab.",
+          "tr_en_jl": "\"So taste [the penalty], and never will We increase you except in torment.\""
+        },
+        "translation": "Maka rasakanlah! Tidak ada yang akan Kami tambahkan kepadamu selain azab.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_30.mp3"
+        }
+      },
+      {
+        "number": 31,
+        "arabic": "اِنَّ لِلْمُتَّقِيْنَ مَفَازًاۙ",
+        "translations": {
+          "tr_id": "Sungguh, orang-orang yang bertakwa mendapat kemenangan,",
+          "tr_id_my": "Sesungguhnya bagi orang-orang yang bertakwa kepada Tuhannya dengan mengerjakan perintah-Nya dan menjauhi larangan-Nya, ada tempat kemenangan, yaitu Surga.",
+          "tr_en_jl": "Indeed, for the righteous is attainment -"
+        },
+        "translation": "Sungguh, orang-orang yang bertakwa mendapat kemenangan,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_31.mp3"
+        }
+      },
+      {
+        "number": 32,
+        "arabic": "حَدَاۤىِٕقَ وَاَعْنَابًاۙ",
+        "translations": {
+          "tr_id": "(yaitu) kebun-kebun dan buah anggur,",
+          "tr_id_my": "Yaitu kebun-kebun dan buah anggur.",
+          "tr_en_jl": "Gardens and grapevines"
+        },
+        "translation": "(yaitu) kebun-kebun dan buah anggur,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_32.mp3"
+        }
+      },
+      {
+        "number": 33,
+        "arabic": "وَّكَوَاعِبَ اَتْرَابًاۙ",
+        "translations": {
+          "tr_id": "dan gadis-gadis remaja yang sebaya,",
+          "tr_id_my": "Dan gadis-gadis remaja yang sebaya umurnya.",
+          "tr_en_jl": "And full-breasted [companions] of equal age"
+        },
+        "translation": "dan gadis-gadis remaja yang sebaya,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_33.mp3"
+        }
+      },
+      {
+        "number": 34,
+        "arabic": "وَّكَأْسًا دِهَاقًاۗ",
+        "translations": {
+          "tr_id": "dan gelas-gelas yang penuh (berisi minuman).",
+          "tr_id_my": "Dan gelas-gelas yang penuh berisi khamar yang tidak memabukkan.",
+          "tr_en_jl": "And a full cup."
+        },
+        "translation": "dan gelas-gelas yang penuh (berisi minuman).",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_34.mp3"
+        }
+      },
+      {
+        "number": 35,
+        "arabic": "لَّا يَسْمَعُوْنَ فِيْهَا لَغْوًا وَّلَا كِذّٰبًا",
+        "translations": {
+          "tr_id": "Di sana mereka tidak mendengar percakapan yang sia-sia maupun (perkataan) dusta.",
+          "tr_id_my": "Di dalam Surga itu mereka tidak mendengar perkataan yang tidak berguna dan tidak pula perkataan dusta.",
+          "tr_en_jl": "No ill speech will they hear therein or any falsehood -"
+        },
+        "translation": "Di sana mereka tidak mendengar percakapan yang sia-sia maupun (perkataan) dusta.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_35.mp3"
+        }
+      },
+      {
+        "number": 36,
+        "arabic": "جَزَاۤءً مِّنْ رَّبِّكَ عَطَاۤءً حِسَابًاۙ",
+        "translations": {
+          "tr_id": "Sebagai balasan dari Tuhanmu dan pemberian yang cukup banyak,",
+          "tr_id_my": "Sebagai balasan dan pemberian yang cukup banyak dari Tuhanmu.",
+          "tr_en_jl": "[As] reward from your Lord, a gift [according to] account,"
+        },
+        "translation": "Sebagai balasan dari Tuhanmu dan pemberian yang cukup banyak,",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_36.mp3"
+        }
+      },
+      {
+        "number": 37,
+        "arabic": "رَّبِّ السَّمٰوٰتِ وَالْاَرْضِ وَمَا بَيْنَهُمَا الرَّحْمٰنِ لَا يَمْلِكُوْنَ مِنْهُ خِطَابًاۚ",
+        "translations": {
+          "tr_id": "Tuhan (yang memelihara) langit dan bumi dan apa yang ada di antara keduanya; Yang Maha Pengasih, mereka tidak mampu berbicara dengan Dia.",
+          "tr_id_my": "Tuhan yang memelihara langit dan bumi dan apa yang ada di antara keduanya, Yang Maha Pengasih. Mereka tidak memiliki kemampuan untuk berbicara di hadapan-Nya kecuali dengan izin-Nya.",
+          "tr_en_jl": "[From] the Lord of the heavens and the earth and whatever is between them, the Most Merciful. They possess not from Him [authority for] speech."
+        },
+        "translation": "Tuhan (yang memelihara) langit dan bumi dan apa yang ada di antara keduanya; Yang Maha Pengasih, mereka tidak mampu berbicara dengan Dia.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_37.mp3"
+        }
+      },
+      {
+        "number": 38,
+        "arabic": "يَوْمَ يَقُوْمُ الرُّوْحُ وَالْمَلٰۤىِٕكَةُ صَفًّاۙ لَّا يَتَكَلَّمُوْنَ اِلَّا مَنْ اَذِنَ لَهُ الرَّحْمٰنُ وَقَالَ صَوَابًا",
+        "translations": {
+          "tr_id": "Pada hari, ketika Ruh dan para malaikat berdiri bersaf-saf, mereka tidak berkata-kata, kecuali siapa yang telah diberi izin kepadanya oleh Tuhan Yang Maha Pengasih dan dia berkata benar.",
+          "tr_id_my": "Pada hari ketika Jibril dan para malaikat berdiri bersaf-saf. Mereka tidak berkata-kata karena takut kepada Allah, kecuali siapa yang telah diberi izin oleh Tuhan Yang Maha Pengasih dan dia mengucapkan perkataan yang benar.",
+          "tr_en_jl": "The Day that the Spirit and the angels will stand in rows, they will not speak except for one whom the Most Merciful permits, and he will say what is correct."
+        },
+        "translation": "Pada hari, ketika Ruh dan para malaikat berdiri bersaf-saf, mereka tidak berkata-kata, kecuali siapa yang telah diberi izin kepadanya oleh Tuhan Yang Maha Pengasih dan dia berkata benar.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_38.mp3"
+        }
+      },
+      {
+        "number": 39,
+        "arabic": "ذٰلِكَ الْيَوْمُ الْحَقُّۚ فَمَنْ شَاۤءَ اتَّخَذَ اِلٰى رَبِّهٖ مَاٰبًا",
+        "translations": {
+          "tr_id": "Itulah hari yang pasti terjadi. Maka barangsiapa menghendaki, niscaya dia menempuh jalan kembali kepada Tuhannya.",
+          "tr_id_my": "Itulah Hari yang pasti terjadi, tidak ada keraguan padanya. Maka barangsiapa yang ingin selamat dari azabnya, hendaklah ia menempuh jalan kembali kepada Tuhannya dengan beriman dan beramal saleh.",
+          "tr_en_jl": "That is the True Day; so he who wills may take to his Lord a [way of] return."
+        },
+        "translation": "Itulah hari yang pasti terjadi. Maka barangsiapa menghendaki, niscaya dia menempuh jalan kembali kepada Tuhannya.",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_39.mp3"
+        }
+      },
+      {
+        "number": 40,
+        "arabic": "اِنَّآ اَنْذَرْنٰكُمْ عَذَابًا قَرِيْبًا ەۙ يَّوْمَ يَنْظُرُ الْمَرْءُ مَا قَدَّمَتْ يَدَاهُ وَيَقُوْلُ الْكٰفِرُ يٰلَيْتَنِيْ كُنْتُ تُرٰبًاࣖ",
+        "translations": {
+          "tr_id": "Sesungguhnya Kami telah memperingatkan kepadamu (orang kafir) azab yang dekat, pada hari manusia melihat apa yang telah diperbuat oleh kedua tangannya; dan orang kafir berkata, \"Alangkah baiknya seandainya dahulu aku jadi tanah.\"",
+          "tr_id_my": "Sesungguhnya Kami telah memperingatkan kalian wahai manusia akan azab yang dekat, yaitu pada hari Kiamat, hari ketika manusia melihat apa yang telah diperbuat oleh kedua tangannya dari kebaikan dan keburukan. Dan orang kafir berkata karena dahsyatnya penyesalan, \"Alangkah baiknya sekiranya aku dahulu hanyalah tanah, sehingga aku tidak dibangkitkan dan tidak dihisab.\"",
+          "tr_en_jl": "Indeed, We have warned you of a near punishment on the Day when a man will observe what his hands have put forth and the disbeliever will say, \"Oh, I wish that I were dust!\""
+        },
+        "translation": "Sesungguhnya Kami telah memperingatkan kepadamu (orang kafir) azab yang dekat, pada hari manusia melihat apa yang telah diperbuat oleh kedua tangannya; dan orang kafir berkata, \"Alangkah baiknya seandainya dahulu aku jadi tanah.\"",
+        "audio": {
+          "ar": "konten/naba/aud_ar/naba_40.mp3"
+        }
+      }
+    ]
+  },
+  "naziat": {
+    "nomor": "79",
+    "kode": "naziat",
+    "nama": "An Naziat",
+    "jumlah_ayat": "46",
+    "verses": [
+      {
+        "number": 1,
+        "arabic": "وَالنّٰزِعٰتِ غَرْقًاۙ",
+        "translations": {
+          "tr_id": "Demi (malaikat-malaikat) yang mencabut (nyawa) dengan keras,",
+          "tr_id_my": "Demi malaikat-malaikat yang mencabut nyawa orang-orang kafir dengan keras.",
+          "tr_en_jl": "By those [angels] who extract with violence,"
+        },
+        "translation": "Demi (malaikat-malaikat) yang mencabut (nyawa) dengan keras,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_1.mp3"
+        }
+      },
+      {
+        "number": 2,
+        "arabic": "وَّالنّٰشِطٰتِ نَشْطًاۙ",
+        "translations": {
+          "tr_id": "demi (malaikat-malaikat) yang mencabut (nyawa) dengan lemah lembut,",
+          "tr_id_my": "Demi malaikat-malaikat yang mencabut nyawa orang-orang mukmin dengan lembut.",
+          "tr_en_jl": "And [by] those who remove with ease,"
+        },
+        "translation": "demi (malaikat-malaikat) yang mencabut (nyawa) dengan lemah lembut,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_2.mp3"
+        }
+      },
+      {
+        "number": 3,
+        "arabic": "وَّالسّٰبِحٰتِ سَبْحًاۙ",
+        "translations": {
+          "tr_id": "demi (malaikat-malaikat) yang turun dari langit dengan cepat,",
+          "tr_id_my": "Demi malaikat-malaikat yang turun dari langit dengan cepat melaksanakan perintah Allah.",
+          "tr_en_jl": "And [by] those who glide [as if] swimming,"
+        },
+        "translation": "demi (malaikat-malaikat) yang turun dari langit dengan cepat,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_3.mp3"
+        }
+      },
+      {
+        "number": 4,
+        "arabic": "فَالسّٰبِقٰتِ سَبْقًاۙ",
+        "translations": {
+          "tr_id": "dan (malaikat-malaikat) yang mendahului dengan kencang,",
+          "tr_id_my": "Demi malaikat-malaikat yang berlomba-lomba melaksanakan perintah Allah.",
+          "tr_en_jl": "And those who race each other in a race,"
+        },
+        "translation": "dan (malaikat-malaikat) yang mendahului dengan kencang,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_4.mp3"
+        }
+      },
+      {
+        "number": 5,
+        "arabic": "فَالْمُدَبِّرٰتِ اَمْرًاۘ",
+        "translations": {
+          "tr_id": "dan (malaikat-malaikat) yang mengatur urusan (dunia).",
+          "tr_id_my": "Demi malaikat-malaikat yang mengatur urusan dunia sesuai perintah Allah.",
+          "tr_en_jl": "And those who arrange [each] matter."
+        },
+        "translation": "dan (malaikat-malaikat) yang mengatur urusan (dunia).",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_5.mp3"
+        }
+      },
+      {
+        "number": 6,
+        "arabic": "يَوْمَ تَرْجُفُ الرَّاجِفَةُۙ",
+        "translations": {
+          "tr_id": "Pada hari (ketika) tiupan pertama (sangkakala) mengguncang (alam semesta),",
+          "tr_id_my": "Pada hari ketika tiupan pertama mengguncang alam semesta.",
+          "tr_en_jl": "On the Day the blast [of the Horn] will convulse [creation],"
+        },
+        "translation": "Pada hari (ketika) tiupan pertama (sangkakala) mengguncang (alam semesta),",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_6.mp3"
+        }
+      },
+      {
+        "number": 7,
+        "arabic": "تَتْبَعُهَا الرَّادِفَةُۗ",
+        "translations": {
+          "tr_id": "(tiupan pertama) itu diiringi oleh tiupan kedua.",
+          "tr_id_my": "Diiringi dengan tiupan kedua.",
+          "tr_en_jl": "There will follow it the subsequent [one]."
+        },
+        "translation": "(tiupan pertama) itu diiringi oleh tiupan kedua.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_7.mp3"
+        }
+      },
+      {
+        "number": 8,
+        "arabic": "قُلُوْبٌ يَّوْمَىِٕذٍ وَّاجِفَةٌۙ",
+        "translations": {
+          "tr_id": "Hati manusia pada waktu itu sangat takut,",
+          "tr_id_my": "Hati manusia pada hari itu sangat takut dan gelisah.",
+          "tr_en_jl": "Hearts, that Day, will tremble,"
+        },
+        "translation": "Hati manusia pada waktu itu sangat takut,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_8.mp3"
+        }
+      },
+      {
+        "number": 9,
+        "arabic": "اَبْصَارُهَا خَاشِعَةٌۘ",
+        "translations": {
+          "tr_id": "pandangannya tunduk.",
+          "tr_id_my": "Pandangannya tunduk dan hina.",
+          "tr_en_jl": "Their eyes humbled."
+        },
+        "translation": "pandangannya tunduk.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_9.mp3"
+        }
+      },
+      {
+        "number": 10,
+        "arabic": "يَقُوْلُوْنَ ءَاِنَّا لَمَرْدُوْدُوْنَ فِى الْحَافِرَةِۗ",
+        "translations": {
+          "tr_id": "Mereka berkata, \"Apakah kita benar-benar akan dikembalikan kepada kehidupan yang semula?",
+          "tr_id_my": "Orang-orang kafir berkata di dunia dengan nada mengingkari, \"Apakah kita benar-benar akan dikembalikan kepada kehidupan yang semula setelah kita mati?\"",
+          "tr_en_jl": "They are [presently] saying, \"Will we indeed be returned to [our] former state [of life]?"
+        },
+        "translation": "Mereka berkata, \"Apakah kita benar-benar akan dikembalikan kepada kehidupan yang semula?",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_10.mp3"
+        }
+      },
+      {
+        "number": 11,
+        "arabic": "ءَاِذَا كُنَّا عِظَامًا نَّخِرَةًۗ",
+        "translations": {
+          "tr_id": "Apakah (akan dibangkitkan juga) apabila kita telah menjadi tulang belulang yang hancur?\"",
+          "tr_id_my": "\"Apakah bila kita telah menjadi tulang belulang yang hancur (kita akan dibangkitkan)?\"",
+          "tr_en_jl": "Even if we should be decayed bones?\""
+        },
+        "translation": "Apakah (akan dibangkitkan juga) apabila kita telah menjadi tulang belulang yang hancur?\"",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_11.mp3"
+        }
+      },
+      {
+        "number": 12,
+        "arabic": "قَالُوْا تِلْكَ اِذًا كَرَّةٌ خَاسِرَةٌۘ",
+        "translations": {
+          "tr_id": "Mereka berkata, \"Kalau begitu, itu adalah pengembalian yang merugikan.\"",
+          "tr_id_my": "Mereka berkata, \"Kalau begitu, pengembalian itu adalah pengembalian yang merugikan.\"",
+          "tr_en_jl": "They say, \"That, then, would be a losing return.\""
+        },
+        "translation": "Mereka berkata, \"Kalau begitu, itu adalah pengembalian yang merugikan.\"",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_12.mp3"
+        }
+      },
+      {
+        "number": 13,
+        "arabic": "فَاِنَّمَا هِيَ زَجْرَةٌ وَّاحِدَةٌۙ",
+        "translations": {
+          "tr_id": "Maka sesungguhnya (pengembalian itu) hanyalah dengan satu kali tiupan saja,",
+          "tr_id_my": "Maka sesungguhnya kebangkitan itu hanyalah dengan satu kali tiupan saja.",
+          "tr_en_jl": "Indeed, it will be but one shout,"
+        },
+        "translation": "Maka sesungguhnya (pengembalian itu) hanyalah dengan satu kali tiupan saja,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_13.mp3"
+        }
+      },
+      {
+        "number": 14,
+        "arabic": "فَاِذَا هُمْ بِالسَّاهِرَةِۗ",
+        "translations": {
+          "tr_id": "maka seketika itu mereka hidup kembali di bumi (yang baru).",
+          "tr_id_my": "Maka tiba-tiba mereka hidup kembali di permukaan bumi.",
+          "tr_en_jl": "And suddenly they will be [alert] upon the earth's surface."
+        },
+        "translation": "maka seketika itu mereka hidup kembali di bumi (yang baru).",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_14.mp3"
+        }
+      },
+      {
+        "number": 15,
+        "arabic": "هَلْ اَتٰىكَ حَدِيْثُ مُوْسٰىۘ",
+        "translations": {
+          "tr_id": "Sudahkah sampai kepadamu (Muhammad) kisah Musa?",
+          "tr_id_my": "Sudahkah sampai kepadamu (wahai Muhammad) kisah Musa?",
+          "tr_en_jl": "Has there reached you the story of Moses?"
+        },
+        "translation": "Sudahkah sampai kepadamu (Muhammad) kisah Musa?",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_15.mp3"
+        }
+      },
+      {
+        "number": 16,
+        "arabic": "اِذْ نَادٰىهُ رَبُّهٗ بِالْوَادِ الْمُقَدَّسِ طُوًىۚ",
+        "translations": {
+          "tr_id": "Ketika Tuhannya menyerunya di lembah suci, yaitu Lembah Tuwa;",
+          "tr_id_my": "Ketika Tuhannya memanggilnya di lembah suci Tuwa.",
+          "tr_en_jl": "When his Lord called to him in the sacred valley of Tuwa,"
+        },
+        "translation": "Ketika Tuhannya menyerunya di lembah suci, yaitu Lembah Tuwa;",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_16.mp3"
+        }
+      },
+      {
+        "number": 17,
+        "arabic": "اِذْهَبْ اِلٰى فِرْعَوْنَ اِنَّهٗ طَغٰىۙ",
+        "translations": {
+          "tr_id": "\"Pergilah kepada Fir‘aun, sesungguhnya dia telah melampaui batas,",
+          "tr_id_my": "\"Pergilah kepada Fir'aun, sesungguhnya dia telah melampaui batas dalam kekafiran dan kezaliman.",
+          "tr_en_jl": "\"Go to Pharaoh. Indeed, he has transgressed."
+        },
+        "translation": "\"Pergilah kepada Fir‘aun, sesungguhnya dia telah melampaui batas,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_17.mp3"
+        }
+      },
+      {
+        "number": 18,
+        "arabic": "فَقُلْ هَلْ لَّكَ اِلٰٓى اَنْ تَزَكّٰىۙ",
+        "translations": {
+          "tr_id": "maka katakanlah (kepada Fir‘aun), ‘Adakah keinginanmu untuk membersihkan diri (dari kesesatan),",
+          "tr_id_my": "Maka katakanlah kepadanya dengan lemah lembut, 'Adakah keinginanmu untuk membersihkan diri dari kekafiran dan dosa-dosa?",
+          "tr_en_jl": "And say to him, 'Would you [be willing to] purify yourself,"
+        },
+        "translation": "maka katakanlah (kepada Fir‘aun), ‘Adakah keinginanmu untuk membersihkan diri (dari kesesatan),",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_18.mp3"
+        }
+      },
+      {
+        "number": 19,
+        "arabic": "وَاَهْدِيَكَ اِلٰى رَبِّكَ فَتَخْشٰىۚ",
+        "translations": {
+          "tr_id": "dan engkau akan kupimpin ke jalan Tuhanmu agar engkau takut kepada-Nya?\"\"",
+          "tr_id_my": "Dan aku akan membimbingmu ke jalan Tuhanmu agar engkau takut kepada-Nya?'\"",
+          "tr_en_jl": "And let me guide you to your Lord so you would fear [Him]?'\""
+        },
+        "translation": "dan engkau akan kupimpin ke jalan Tuhanmu agar engkau takut kepada-Nya?\"\"",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_19.mp3"
+        }
+      },
+      {
+        "number": 20,
+        "arabic": "فَاَرٰىهُ الْاٰيَةَ الْكُبْرٰىۖ",
+        "translations": {
+          "tr_id": "Lalu (Musa) memperlihatkan kepadanya mukjizat yang besar.",
+          "tr_id_my": "Lalu Musa memperlihatkan kepadanya mukjizat yang besar (tongkat dan tangan).",
+          "tr_en_jl": "And he showed him the greatest sign,"
+        },
+        "translation": "Lalu (Musa) memperlihatkan kepadanya mukjizat yang besar.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_20.mp3"
+        }
+      },
+      {
+        "number": 21,
+        "arabic": "فَكَذَّبَ وَعَصٰىۖ",
+        "translations": {
+          "tr_id": "Tetapi dia (Fir‘aun) mendustakan dan mendurhakai.",
+          "tr_id_my": "Tetapi Fir'aun mendustakan Musa dan mendurhakai perintah Allah.",
+          "tr_en_jl": "But Pharaoh denied and disobeyed."
+        },
+        "translation": "Tetapi dia (Fir‘aun) mendustakan dan mendurhakai.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_21.mp3"
+        }
+      },
+      {
+        "number": 22,
+        "arabic": "ثُمَّ اَدْبَرَ يَسْعٰىۖ",
+        "translations": {
+          "tr_id": "Kemudian dia berpaling seraya berusaha menantang (Musa).",
+          "tr_id_my": "Kemudian dia berpaling dari kebenaran seraya berusaha menantang.",
+          "tr_en_jl": "Then he turned his back, striving."
+        },
+        "translation": "Kemudian dia berpaling seraya berusaha menantang (Musa).",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_22.mp3"
+        }
+      },
+      {
+        "number": 23,
+        "arabic": "فَحَشَرَ فَنَادٰىۖ",
+        "translations": {
+          "tr_id": "Kemudian dia mengumpulkan (orang-orangnya) lalu berseru memanggil,",
+          "tr_id_my": "Lalu dia mengumpulkan kaumnya dan berseru memanggil mereka.",
+          "tr_en_jl": "And gathered [his people] and made a proclamation,"
+        },
+        "translation": "Kemudian dia mengumpulkan (orang-orangnya) lalu berseru memanggil,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_23.mp3"
+        }
+      },
+      {
+        "number": 24,
+        "arabic": "فَقَالَ اَنَا۠ رَبُّكُمُ الْاَعْلٰىۖ",
+        "translations": {
+          "tr_id": "maka dia berkata, \"Akulah tuhanmu yang paling tinggi.\"",
+          "tr_id_my": "Maka dia berkata dengan sombong, \"Akulah tuhanmu yang paling tinggi.\"",
+          "tr_en_jl": "Saying, \"I am your most exalted lord.\""
+        },
+        "translation": "maka dia berkata, \"Akulah tuhanmu yang paling tinggi.\"",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_24.mp3"
+        }
+      },
+      {
+        "number": 25,
+        "arabic": "فَاَخَذَهُ اللّٰهُ نَكَالَ الْاٰخِرَةِ وَالْاُوْلٰىۗ",
+        "translations": {
+          "tr_id": "Maka Allah menghukumnya dengan azab di akhirat dan siksaan di dunia.",
+          "tr_id_my": "Maka Allah membinasakannya dan menjadikannya pelajaran bagi umat manusia di akhirat dan di dunia.",
+          "tr_en_jl": "So Allah seized him in exemplary punishment for the last and the first [transgression]."
+        },
+        "translation": "Maka Allah menghukumnya dengan azab di akhirat dan siksaan di dunia.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_25.mp3"
+        }
+      },
+      {
+        "number": 26,
+        "arabic": "اِنَّ فِيْ ذٰلِكَ لَعِبْرَةً لِّمَنْ يَّخْشٰىۗ",
+        "translations": {
+          "tr_id": "Sungguh, pada yang demikian itu terdapat pelajaran bagi orang yang takut (kepada Allah).",
+          "tr_id_my": "Sesungguhnya pada yang demikian itu terdapat pelajaran bagi orang yang takut kepada Allah.",
+          "tr_en_jl": "Indeed in that is a warning for whoever would fear [Allah]."
+        },
+        "translation": "Sungguh, pada yang demikian itu terdapat pelajaran bagi orang yang takut (kepada Allah).",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_26.mp3"
+        }
+      },
+      {
+        "number": 27,
+        "arabic": "ءَاَنْتُمْ اَشَدُّ خَلْقًا اَمِ السَّمَاۤءُ ۚ بَنٰهَاۗ",
+        "translations": {
+          "tr_id": "Apakah penciptaan kamu yang lebih hebat ataukah langit yang telah dibangun-Nya?",
+          "tr_id_my": "Apakah penciptaan kalian (wahai manusia) yang lebih sulit ataukah langit yang telah dibangun-Nya?",
+          "tr_en_jl": "Are you a more difficult creation or is the heaven?"
+        },
+        "translation": "Apakah penciptaan kamu yang lebih hebat ataukah langit yang telah dibangun-Nya?",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_27.mp3"
+        }
+      },
+      {
+        "number": 28,
+        "arabic": "رَفَعَ سَمْكَهَا فَسَوّٰهَاۙ",
+        "translations": {
+          "tr_id": "Dia telah meninggikan bangunannya lalu menyempurnakannya,",
+          "tr_id_my": "Dia telah meninggikan bangunannya lalu menyempurnakannya tanpa cacat.",
+          "tr_en_jl": "He constructed it."
+        },
+        "translation": "Dia telah meninggikan bangunannya lalu menyempurnakannya,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_28.mp3"
+        }
+      },
+      {
+        "number": 29,
+        "arabic": "وَاَغْطَشَ لَيْلَهَا وَاَخْرَجَ ضُحٰهَاۖ",
+        "translations": {
+          "tr_id": "dan Dia menjadikan malamnya (gelap gulita), dan menjadikan siangnya (terang benderang).",
+          "tr_id_my": "Dan Dia menjadikan malamnya gelap gulita dan menjadikan siangnya terang benderang.",
+          "tr_en_jl": "He raised its ceiling and proportioned it."
+        },
+        "translation": "dan Dia menjadikan malamnya (gelap gulita), dan menjadikan siangnya (terang benderang).",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_29.mp3"
+        }
+      },
+      {
+        "number": 30,
+        "arabic": "وَالْاَرْضَ بَعْدَ ذٰلِكَ دَحٰهَاۗ",
+        "translations": {
+          "tr_id": "Dan setelah itu bumi Dia hamparkan.",
+          "tr_id_my": "Dan bumi sesudah itu dihamparkan-Nya agar layak dihuni.",
+          "tr_en_jl": "And He darkened its night and extracted its brightness."
+        },
+        "translation": "Dan setelah itu bumi Dia hamparkan.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_30.mp3"
+        }
+      },
+      {
+        "number": 31,
+        "arabic": "اَخْرَجَ مِنْهَا مَاۤءَهَا وَمَرْعٰهَاۖ",
+        "translations": {
+          "tr_id": "Darinya Dia pancarkan mata air, dan (ditumbuhkan) tumbuh-tumbuhannya.",
+          "tr_id_my": "Dia memancarkan daripadanya mata air, dan menumbuhkan tumbuh-tumbuhannya.",
+          "tr_en_jl": "And after that He spread the earth."
+        },
+        "translation": "Darinya Dia pancarkan mata air, dan (ditumbuhkan) tumbuh-tumbuhannya.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_31.mp3"
+        }
+      },
+      {
+        "number": 32,
+        "arabic": "وَالْجِبَالَ اَرْسٰهَاۙ",
+        "translations": {
+          "tr_id": "Dan gunung-gunung Dia pancangkan dengan teguh,",
+          "tr_id_my": "Dan gunung-gunung dipancangkan-Nya dengan kokoh.",
+          "tr_en_jl": "He extracted from it its water and its pasture."
+        },
+        "translation": "Dan gunung-gunung Dia pancangkan dengan teguh,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_32.mp3"
+        }
+      },
+      {
+        "number": 33,
+        "arabic": "مَتَاعًا لَّكُمْ وَلِاَنْعَامِكُمْۗ",
+        "translations": {
+          "tr_id": "(semua itu) untuk kesenanganmu dan untuk hewan-hewan ternakmu.",
+          "tr_id_my": "Semua itu untuk kesenangan kalian dan hewan-hewan ternak kalian.",
+          "tr_en_jl": "And the mountains He set firmly [on the earth] –"
+        },
+        "translation": "(semua itu) untuk kesenanganmu dan untuk hewan-hewan ternakmu.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_33.mp3"
+        }
+      },
+      {
+        "number": 34,
+        "arabic": "فَاِذَا جَاۤءَتِ الطَّامَّةُ الْكُبْرٰىۖ",
+        "translations": {
+          "tr_id": "Maka apabila malapetaka besar (hari Kiamat) telah datang,",
+          "tr_id_my": "Maka apabila malapetaka yang sangat besar (hari Kiamat) telah datang.",
+          "tr_en_jl": "As provision for you and your grazing livestock."
+        },
+        "translation": "Maka apabila malapetaka besar (hari Kiamat) telah datang,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_34.mp3"
+        }
+      },
+      {
+        "number": 35,
+        "arabic": "يَوْمَ يَتَذَكَّرُ الْاِنْسَانُ مَا سَعٰىۙ",
+        "translations": {
+          "tr_id": "yaitu pada hari (ketika) manusia teringat akan apa yang telah dikerjakannya,",
+          "tr_id_my": "Pada hari ketika manusia teringat akan apa yang telah dikerjakannya di dunia.",
+          "tr_en_jl": "But when the greatest calamity comes –"
+        },
+        "translation": "yaitu pada hari (ketika) manusia teringat akan apa yang telah dikerjakannya,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_35.mp3"
+        }
+      },
+      {
+        "number": 36,
+        "arabic": "وَبُرِّزَتِ الْجَحِيْمُ لِمَنْ يَّرٰى",
+        "translations": {
+          "tr_id": "dan neraka diperlihatkan dengan jelas kepada setiap orang yang melihat,",
+          "tr_id_my": "Dan neraka diperlihatkan dengan jelas kepada setiap orang yang melihat.",
+          "tr_en_jl": "The Day when man will remember that for which he strove,"
+        },
+        "translation": "dan neraka diperlihatkan dengan jelas kepada setiap orang yang melihat,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_36.mp3"
+        }
+      },
+      {
+        "number": 37,
+        "arabic": "فَاَمَّا مَنْ طَغٰىۙ",
+        "translations": {
+          "tr_id": "maka adapun orang yang melampaui batas,",
+          "tr_id_my": "Adapun orang yang melampaui batas dalam kekafiran.",
+          "tr_en_jl": "And Hellfire will be displayed for [all] to see –"
+        },
+        "translation": "maka adapun orang yang melampaui batas,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_37.mp3"
+        }
+      },
+      {
+        "number": 38,
+        "arabic": "وَاٰثَرَ الْحَيٰوةَ الدُّنْيَاۙ",
+        "translations": {
+          "tr_id": "dan lebih mengutamakan kehidupan dunia,",
+          "tr_id_my": "Dan lebih mengutamakan kehidupan dunia daripada akhirat.",
+          "tr_en_jl": "Then as for he who transgressed,"
+        },
+        "translation": "dan lebih mengutamakan kehidupan dunia,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_38.mp3"
+        }
+      },
+      {
+        "number": 39,
+        "arabic": "فَاِنَّ الْجَحِيْمَ هِيَ الْمَأْوٰىۗ",
+        "translations": {
+          "tr_id": "maka sungguh, nerakalah tempat tinggalnya.",
+          "tr_id_my": "Maka sesungguhnya nerakalah tempat tinggalnya.",
+          "tr_en_jl": "And preferred the life of this world,"
+        },
+        "translation": "maka sungguh, nerakalah tempat tinggalnya.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_39.mp3"
+        }
+      },
+      {
+        "number": 40,
+        "arabic": "وَاَمَّا مَنْ خَافَ مَقَامَ رَبِّهٖ وَنَهَى النَّفْسَ عَنِ الْهَوٰىۙ",
+        "translations": {
+          "tr_id": "Dan adapun orang-orang yang takut kepada kebesaran Tuhannya dan menahan diri dari (keinginan) hawa nafsunya,",
+          "tr_id_my": "Dan adapun orang-orang yang takut kepada kebesaran Tuhannya dan menahan diri dari keinginan hawa nafsunya yang buruk.",
+          "tr_en_jl": "Then indeed, Hellfire will be [his] refuge."
+        },
+        "translation": "Dan adapun orang-orang yang takut kepada kebesaran Tuhannya dan menahan diri dari (keinginan) hawa nafsunya,",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_40.mp3"
+        }
+      },
+      {
+        "number": 41,
+        "arabic": "فَاِنَّ الْجَنَّةَ هِيَ الْمَأْوٰىۗ",
+        "translations": {
+          "tr_id": "maka sungguh, surgalah tempat tinggal(nya).",
+          "tr_id_my": "Maka sesungguhnya surgalah tempat tinggalnya.",
+          "tr_en_jl": "But as for he who feared the position of his Lord and prevented the soul from [unlawful] inclination,"
+        },
+        "translation": "maka sungguh, surgalah tempat tinggal(nya).",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_41.mp3"
+        }
+      },
+      {
+        "number": 42,
+        "arabic": "يَسْـَٔلُوْنَكَ عَنِ السَّاعَةِ اَيَّانَ مُرْسٰهَاۗ",
+        "translations": {
+          "tr_id": "Mereka bertanya kepadamu (Muhammad) tentang hari Kiamat, \"Kapankah terjadinya?\"",
+          "tr_id_my": "Mereka (orang-orang kafir) bertanya kepadamu (wahai Muhammad) tentang hari Kiamat, \"Kapankah terjadinya?\"",
+          "tr_en_jl": "Then indeed, Paradise will be [his] refuge."
+        },
+        "translation": "Mereka bertanya kepadamu (Muhammad) tentang hari Kiamat, \"Kapankah terjadinya?\"",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_42.mp3"
+        }
+      },
+      {
+        "number": 43,
+        "arabic": "فِيْمَ اَنْتَ مِنْ ذِكْرٰهَاۗ",
+        "translations": {
+          "tr_id": "Untuk apa engkau perlu menyebutkannya (waktunya)?",
+          "tr_id_my": "Untuk apa engkau menyebutkan waktunya? Engkau tidak mengetahuinya.",
+          "tr_en_jl": "They ask you, [O Muhammad], about the Hour: when is its arrival?"
+        },
+        "translation": "Untuk apa engkau perlu menyebutkannya (waktunya)?",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_43.mp3"
+        }
+      },
+      {
+        "number": 44,
+        "arabic": "اِلٰى رَبِّكَ مُنْتَهٰهَاۗ",
+        "translations": {
+          "tr_id": "Kepada Tuhanmulah (dikembalikan) kesudahannya (ketentuan waktunya).",
+          "tr_id_my": "Hanya kepada Tuhanmulah kesudahan ilmu tentang waktu terjadinya kiamat.",
+          "tr_en_jl": "In what [position] are you that you should mention it?"
+        },
+        "translation": "Kepada Tuhanmulah (dikembalikan) kesudahannya (ketentuan waktunya).",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_44.mp3"
+        }
+      },
+      {
+        "number": 45,
+        "arabic": "اِنَّمَآ اَنْتَ مُنْذِرُ مَنْ يَّخْشٰهَاۗ",
+        "translations": {
+          "tr_id": "Engkau (Muhammad) hanyalah pemberi peringatan bagi siapa yang takut kepadanya (hari Kiamat).",
+          "tr_id_my": "Engkau hanyalah pemberi peringatan bagi siapa yang takut kepadanya.",
+          "tr_en_jl": "To your Lord is its finality."
+        },
+        "translation": "Engkau (Muhammad) hanyalah pemberi peringatan bagi siapa yang takut kepadanya (hari Kiamat).",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_45.mp3"
+        }
+      },
+      {
+        "number": 46,
+        "arabic": "كَاَنَّهُمْ يَوْمَ يَرَوْنَهَا لَمْ يَلْبَثُوْٓا اِلَّا عَشِيَّةً اَوْ ضُحٰهَاࣖ",
+        "translations": {
+          "tr_id": "Pada hari mereka melihat hari Kiamat itu, mereka merasa seakan-akan hanya (sebentar saja) tinggal (di dunia) pada waktu sore atau pagi hari.",
+          "tr_id_my": "Pada hari mereka melihat hari Kiamat itu, mereka merasa seakan-akan mereka tidak tinggal (di dunia) melainkan hanya sesaat saja pada waktu sore atau pagi hari.\"",
+          "tr_en_jl": "You are only a warner for those who fear it."
+        },
+        "translation": "Pada hari mereka melihat hari Kiamat itu, mereka merasa seakan-akan hanya (sebentar saja) tinggal (di dunia) pada waktu sore atau pagi hari.",
+        "audio": {
+          "ar": "konten/naziat/aud_ar/naziat_46.mp3"
+        }
+      }
+    ]
+  }
+}
