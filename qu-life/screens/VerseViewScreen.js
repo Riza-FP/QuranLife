@@ -57,6 +57,9 @@ export default function VerseViewScreen({ route, navigation }) {
     }, [delaySeconds]);
 
     useEffect(() => {
+        // Reset translation to OFF when opening a new Surah
+        setShowTranslation(false);
+
         if (surah) {
             const loadedVerses = getVersesForSurah(surah.kode);
             setVerses(loadedVerses);
@@ -271,6 +274,9 @@ export default function VerseViewScreen({ route, navigation }) {
                 onPageSelected={(e) => {
                     const newIndex = e.nativeEvent.position;
                     setCurrentVerseIndex(newIndex);
+                    // Reset translation to OFF when changing verses
+                    setShowTranslation(false);
+
                     // If user manually swipes, we should probably reset repeat counter
                     repeatCounter.current = 0;
                     // If playing, maybe stop? Or continue?
