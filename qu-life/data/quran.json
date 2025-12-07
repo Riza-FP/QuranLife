@@ -1132,5 +1132,559 @@
         }
       }
     ]
+  },
+  "abasa": {
+    "nomor": "80",
+    "kode": "abasa",
+    "nama": "'Abasa",
+    "jumlah_ayat": "42",
+    "verses": [
+      {
+        "number": 1,
+        "arabic": "عَبَسَ وَتَوَلّٰىٓۙ",
+        "translations": {
+          "tr_id": "Dia (Nabi Muhammad) berwajah masam dan berpaling",
+          "tr_id_my": "",
+          "tr_en_jl": "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ عَبَسَ وَتَوَلَّىٰ"
+        },
+        "translation": "Dia (Nabi Muhammad) berwajah masam dan berpaling",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_1.mp3"
+        }
+      },
+      {
+        "number": 2,
+        "arabic": "اَنْ جَاۤءَهُ الْاَعْمٰىۗ",
+        "translations": {
+          "tr_id": "karena seorang tunanetra (Abdullah bin Ummi Maktum) telah datang kepadanya.",
+          "tr_id_my": "",
+          "tr_en_jl": "أَنْ جَاءَهُ الْأَعْمَىٰ"
+        },
+        "translation": "karena seorang tunanetra (Abdullah bin Ummi Maktum) telah datang kepadanya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_2.mp3"
+        }
+      },
+      {
+        "number": 3,
+        "arabic": "وَمَا يُدْرِيْكَ لَعَلَّهٗ يَزَّكّٰىٓۙ",
+        "translations": {
+          "tr_id": "Tahukah engkau (Nabi Muhammad) boleh jadi dia ingin menyucikan dirinya (dari dosa)",
+          "tr_id_my": "",
+          "tr_en_jl": "وَمَا يُدْرِيكَ لَعَلَّهُ يَزَّكَّىٰ"
+        },
+        "translation": "Tahukah engkau (Nabi Muhammad) boleh jadi dia ingin menyucikan dirinya (dari dosa)",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_3.mp3"
+        }
+      },
+      {
+        "number": 4,
+        "arabic": "اَوْ يَذَّكَّرُ فَتَنْفَعَهُ الذِّكْرٰىۗ",
+        "translations": {
+          "tr_id": "atau dia (ingin) mendapatkan pengajaran sehingga pengajaran itu bermanfaat baginya?",
+          "tr_id_my": "",
+          "tr_en_jl": "أَوْ يَذَّكَّرُ فَتَنْفَعَهُ الذِّكْرَىٰ"
+        },
+        "translation": "atau dia (ingin) mendapatkan pengajaran sehingga pengajaran itu bermanfaat baginya?",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_4.mp3"
+        }
+      },
+      {
+        "number": 5,
+        "arabic": "اَمَّا مَنِ اسْتَغْنٰىۙ",
+        "translations": {
+          "tr_id": "Adapun orang yang merasa dirinya serba cukup (para pembesar Quraisy),",
+          "tr_id_my": "",
+          "tr_en_jl": "أَمَّا مَنِ اسْتَغْنَىٰ"
+        },
+        "translation": "Adapun orang yang merasa dirinya serba cukup (para pembesar Quraisy),",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_5.mp3"
+        }
+      },
+      {
+        "number": 6,
+        "arabic": "فَاَنْتَ لَهٗ تَصَدّٰىۗ",
+        "translations": {
+          "tr_id": "engkau (Nabi Muhammad) memberi perhatian kepadanya.",
+          "tr_id_my": "",
+          "tr_en_jl": "فَأَنْتَ لَهُ تَصَدَّىٰ"
+        },
+        "translation": "engkau (Nabi Muhammad) memberi perhatian kepadanya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_6.mp3"
+        }
+      },
+      {
+        "number": 7,
+        "arabic": "وَمَا عَلَيْكَ اَلَّا يَزَّكّٰىۗ",
+        "translations": {
+          "tr_id": "Padahal, tidak ada (cela) atasmu kalau dia tidak menyucikan diri (beriman).",
+          "tr_id_my": "",
+          "tr_en_jl": "وَمَا عَلَيْكَ أَلَّا يَزَّكَّىٰ"
+        },
+        "translation": "Padahal, tidak ada (cela) atasmu kalau dia tidak menyucikan diri (beriman).",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_7.mp3"
+        }
+      },
+      {
+        "number": 8,
+        "arabic": "وَاَمَّا مَنْ جَاۤءَكَ يَسْعٰىۙ",
+        "translations": {
+          "tr_id": "Adapun orang yang datang kepadamu dengan bersegera (untuk mendapatkan pengajaran),",
+          "tr_id_my": "",
+          "tr_en_jl": "وَأَمَّا مَنْ جَاءَكَ يَسْعَىٰ"
+        },
+        "translation": "Adapun orang yang datang kepadamu dengan bersegera (untuk mendapatkan pengajaran),",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_8.mp3"
+        }
+      },
+      {
+        "number": 9,
+        "arabic": "وَهُوَ يَخْشٰىۙ",
+        "translations": {
+          "tr_id": "sedangkan dia takut (kepada Allah),",
+          "tr_id_my": "",
+          "tr_en_jl": "وَهُوَ يَخْشَىٰ"
+        },
+        "translation": "sedangkan dia takut (kepada Allah),",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_9.mp3"
+        }
+      },
+      {
+        "number": 10,
+        "arabic": "فَاَنْتَ عَنْهُ تَلَهّٰىۚ",
+        "translations": {
+          "tr_id": "malah engkau (Nabi Muhammad) abaikan.",
+          "tr_id_my": "",
+          "tr_en_jl": "فَأَنْتَ عَنْهُ تَلَهَّىٰ"
+        },
+        "translation": "malah engkau (Nabi Muhammad) abaikan.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_10.mp3"
+        }
+      },
+      {
+        "number": 11,
+        "arabic": "كَلَّآ اِنَّهَا تَذْكِرَةٌ ۚ",
+        "translations": {
+          "tr_id": "Sekali-kali jangan (begitu)! Sesungguhnya (ajaran Allah) itu merupakan peringatan.",
+          "tr_id_my": "",
+          "tr_en_jl": "كَلَّا إِنَّهَا تَذْكِرَةٌ"
+        },
+        "translation": "Sekali-kali jangan (begitu)! Sesungguhnya (ajaran Allah) itu merupakan peringatan.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_11.mp3"
+        }
+      },
+      {
+        "number": 12,
+        "arabic": "فَمَنْ شَاۤءَ ذَكَرَهٗ ۘ",
+        "translations": {
+          "tr_id": "Siapa yang menghendaki tentulah akan memperhatikannya",
+          "tr_id_my": "",
+          "tr_en_jl": "فَمَنْ شَاءَ ذَكَرَهُ"
+        },
+        "translation": "Siapa yang menghendaki tentulah akan memperhatikannya",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_12.mp3"
+        }
+      },
+      {
+        "number": 13,
+        "arabic": "فِيْ صُحُفٍ مُّكَرَّمَةٍۙ",
+        "translations": {
+          "tr_id": "di dalam suhuf yang dimuliakan (di sisi Allah),",
+          "tr_id_my": "",
+          "tr_en_jl": "فِي صُحُفٍ مُكَرَّمَةٍ"
+        },
+        "translation": "di dalam suhuf yang dimuliakan (di sisi Allah),",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_13.mp3"
+        }
+      },
+      {
+        "number": 14,
+        "arabic": "مَّرْفُوْعَةٍ مُّطَهَّرَةٍ ۢ ۙ",
+        "translations": {
+          "tr_id": "yang ditinggikan (kedudukannya) lagi disucikan",
+          "tr_id_my": "",
+          "tr_en_jl": "مَرْفُوعَةٍ مُطَهَّرَةٍ"
+        },
+        "translation": "yang ditinggikan (kedudukannya) lagi disucikan",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_14.mp3"
+        }
+      },
+      {
+        "number": 15,
+        "arabic": "بِاَيْدِيْ سَفَرَةٍۙ",
+        "translations": {
+          "tr_id": "di tangan para utusan (malaikat)",
+          "tr_id_my": "",
+          "tr_en_jl": "بِأَيْدِي سَفَرَةٍ"
+        },
+        "translation": "di tangan para utusan (malaikat)",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_15.mp3"
+        }
+      },
+      {
+        "number": 16,
+        "arabic": "كِرَامٍۢ بَرَرَةٍۗ",
+        "translations": {
+          "tr_id": "yang mulia lagi berbudi.",
+          "tr_id_my": "",
+          "tr_en_jl": "كِرَامٍ بَرَرَةٍ"
+        },
+        "translation": "yang mulia lagi berbudi.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_16.mp3"
+        }
+      },
+      {
+        "number": 17,
+        "arabic": "قُتِلَ الْاِنْسَانُ مَآ اَكْفَرَهٗۗ",
+        "translations": {
+          "tr_id": "Celakalah manusia! Alangkah kufur dia!",
+          "tr_id_my": "",
+          "tr_en_jl": "قُتِلَ الْإِنْسَانُ مَا أَكْفَرَهُ"
+        },
+        "translation": "Celakalah manusia! Alangkah kufur dia!",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_17.mp3"
+        }
+      },
+      {
+        "number": 18,
+        "arabic": "مِنْ اَيِّ شَيْءٍ خَلَقَهٗۗ",
+        "translations": {
+          "tr_id": "Dari apakah Dia menciptakannya?",
+          "tr_id_my": "",
+          "tr_en_jl": "مِنْ أَيِّ شَيْءٍ خَلَقَهُ"
+        },
+        "translation": "Dari apakah Dia menciptakannya?",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_18.mp3"
+        }
+      },
+      {
+        "number": 19,
+        "arabic": "مِنْ نُّطْفَةٍۗ خَلَقَهٗ فَقَدَّرَهٗۗ",
+        "translations": {
+          "tr_id": "Dia menciptakannya dari setetes mani, lalu menentukan (takdir)-nya.",
+          "tr_id_my": "",
+          "tr_en_jl": "مِنْ نُطْفَةٍ خَلَقَهُ فَقَدَّرَهُ"
+        },
+        "translation": "Dia menciptakannya dari setetes mani, lalu menentukan (takdir)-nya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_19.mp3"
+        }
+      },
+      {
+        "number": 20,
+        "arabic": "ثُمَّ السَّبِيْلَ يَسَّرَهٗۙ",
+        "translations": {
+          "tr_id": "Kemudian, jalannya Dia mudahkan.",
+          "tr_id_my": "",
+          "tr_en_jl": "ثُمَّ السَّبِيلَ يَسَّرَهُ"
+        },
+        "translation": "Kemudian, jalannya Dia mudahkan.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_20.mp3"
+        }
+      },
+      {
+        "number": 21,
+        "arabic": "ثُمَّ اَمَاتَهٗ فَاَقْبَرَهٗۙ",
+        "translations": {
+          "tr_id": "Kemudian, Dia mematikannya lalu menguburkannya.",
+          "tr_id_my": "",
+          "tr_en_jl": "ثُمَّ أَمَاتَهُ فَأَقْبَرَهُ"
+        },
+        "translation": "Kemudian, Dia mematikannya lalu menguburkannya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_21.mp3"
+        }
+      },
+      {
+        "number": 22,
+        "arabic": "ثُمَّ اِذَا شَاۤءَ اَنْشَرَهٗۗ",
+        "translations": {
+          "tr_id": "Kemudian, jika menghendaki, Dia membangkitkannya kembali.",
+          "tr_id_my": "",
+          "tr_en_jl": "ثُمَّ إِذَا شَاءَ أَنْشَرَهُ"
+        },
+        "translation": "Kemudian, jika menghendaki, Dia membangkitkannya kembali.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_22.mp3"
+        }
+      },
+      {
+        "number": 23,
+        "arabic": "كَلَّا لَمَّا يَقْضِ مَآ اَمَرَهٗۗ",
+        "translations": {
+          "tr_id": "Sekali-kali jangan (begitu)! Dia (manusia) itu belum melaksanakan apa yang Dia (Allah) perintahkan kepadanya.",
+          "tr_id_my": "",
+          "tr_en_jl": "كَلَّا لَمَّا يَقْضِ مَا أَمَرَهُ"
+        },
+        "translation": "Sekali-kali jangan (begitu)! Dia (manusia) itu belum melaksanakan apa yang Dia (Allah) perintahkan kepadanya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_23.mp3"
+        }
+      },
+      {
+        "number": 24,
+        "arabic": "فَلْيَنْظُرِ الْاِنْسَانُ اِلٰى طَعَامِهٖٓ ۙ ",
+        "translations": {
+          "tr_id": "Maka, hendaklah manusia itu memperhatikan makanannya.",
+          "tr_id_my": "",
+          "tr_en_jl": "فَلْيَنْظُرِ الْإِنْسَانُ إِلَىٰ طَعَامِهِ"
+        },
+        "translation": "Maka, hendaklah manusia itu memperhatikan makanannya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_24.mp3"
+        }
+      },
+      {
+        "number": 25,
+        "arabic": "اَنَّا صَبَبْنَا الْمَاۤءَ صَبًّاۙ",
+        "translations": {
+          "tr_id": "Sesungguhnya Kami telah mencurahkan air (dari langit) dengan berlimpah.",
+          "tr_id_my": "",
+          "tr_en_jl": "أَنَّا صَبَبْنَا الْمَاءَ صَبًّا"
+        },
+        "translation": "Sesungguhnya Kami telah mencurahkan air (dari langit) dengan berlimpah.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_25.mp3"
+        }
+      },
+      {
+        "number": 26,
+        "arabic": "ثُمَّ شَقَقْنَا الْاَرْضَ شَقًّاۙ",
+        "translations": {
+          "tr_id": "Kemudian, Kami belah bumi dengan sebaik-baiknya.",
+          "tr_id_my": "",
+          "tr_en_jl": "ثُمَّ شَقَقْنَا الْأَرْضَ شَقًّا"
+        },
+        "translation": "Kemudian, Kami belah bumi dengan sebaik-baiknya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_26.mp3"
+        }
+      },
+      {
+        "number": 27,
+        "arabic": "فَاَنْۢبَتْنَا فِيْهَا حَبًّاۙ",
+        "translations": {
+          "tr_id": "Lalu, Kami tumbuhkan padanya biji-bijian,",
+          "tr_id_my": "",
+          "tr_en_jl": "فَأَنْبَتْنَا فِيهَا حَبًّا"
+        },
+        "translation": "Lalu, Kami tumbuhkan padanya biji-bijian,",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_27.mp3"
+        }
+      },
+      {
+        "number": 28,
+        "arabic": "وَّعِنَبًا وَّقَضْبًاۙ",
+        "translations": {
+          "tr_id": "anggur, sayur-sayuran,",
+          "tr_id_my": "",
+          "tr_en_jl": "وَعِنَبًا وَقَضْبًا"
+        },
+        "translation": "anggur, sayur-sayuran,",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_28.mp3"
+        }
+      },
+      {
+        "number": 29,
+        "arabic": "وَّزَيْتُوْنًا وَّنَخْلًاۙ",
+        "translations": {
+          "tr_id": "zaitun, pohon kurma,",
+          "tr_id_my": "",
+          "tr_en_jl": "وَزَيْتُونًا وَنَخْلًا"
+        },
+        "translation": "zaitun, pohon kurma,",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_29.mp3"
+        }
+      },
+      {
+        "number": 30,
+        "arabic": "وَّحَدَاۤىِٕقَ غُلْبًا",
+        "translations": {
+          "tr_id": "kebun-kebun (yang) rindang,",
+          "tr_id_my": "",
+          "tr_en_jl": "وَحَدَائِقَ غُلْبًا"
+        },
+        "translation": "kebun-kebun (yang) rindang,",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_30.mp3"
+        }
+      },
+      {
+        "number": 31,
+        "arabic": "وَفَاكِهَةً وَّاَبًّا",
+        "translations": {
+          "tr_id": "buah-buahan, dan rerumputan.",
+          "tr_id_my": "",
+          "tr_en_jl": "وَفَاكِهَةً وَأَبًّا"
+        },
+        "translation": "buah-buahan, dan rerumputan.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_31.mp3"
+        }
+      },
+      {
+        "number": 32,
+        "arabic": "مَتَاعًا لَّكُمْ وَلِاَنْعَامِكُمْۗ",
+        "translations": {
+          "tr_id": "(Semua itu disediakan) untuk kesenanganmu dan hewan-hewan ternakmu.",
+          "tr_id_my": "",
+          "tr_en_jl": "مَتَاعًا لَكُمْ وَلِأَنْعَامِكُمْ"
+        },
+        "translation": "(Semua itu disediakan) untuk kesenanganmu dan hewan-hewan ternakmu.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_32.mp3"
+        }
+      },
+      {
+        "number": 33,
+        "arabic": "فَاِذَا جَاۤءَتِ الصَّاۤخَّةُ ۖ",
+        "translations": {
+          "tr_id": "Maka, apabila datang suara yang memekakkan (dari tiupan sangkakala),",
+          "tr_id_my": "",
+          "tr_en_jl": "فَإِذَا جَاءَتِ الصَّاخَّةُ"
+        },
+        "translation": "Maka, apabila datang suara yang memekakkan (dari tiupan sangkakala),",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_33.mp3"
+        }
+      },
+      {
+        "number": 34,
+        "arabic": "يَوْمَ يَفِرُّ الْمَرْءُ مِنْ اَخِيْهِۙ",
+        "translations": {
+          "tr_id": "pada hari itu manusia lari dari saudaranya,",
+          "tr_id_my": "",
+          "tr_en_jl": "يَوْمَ يَفِرُّ الْمَرْءُ مِنْ أَخِيهِ"
+        },
+        "translation": "pada hari itu manusia lari dari saudaranya,",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_34.mp3"
+        }
+      },
+      {
+        "number": 35,
+        "arabic": "وَاُمِّهٖ وَاَبِيْهِۙ",
+        "translations": {
+          "tr_id": "(dari) ibu dan bapaknya,",
+          "tr_id_my": "",
+          "tr_en_jl": "وَأُمِّهِ وَأَبِيهِ"
+        },
+        "translation": "(dari) ibu dan bapaknya,",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_35.mp3"
+        }
+      },
+      {
+        "number": 36,
+        "arabic": "وَصَاحِبَتِهٖ وَبَنِيْهِۗ",
+        "translations": {
+          "tr_id": "serta (dari) istri dan anak-anaknya.",
+          "tr_id_my": "",
+          "tr_en_jl": "وَصَاحِبَتِهِ وَبَنِيهِ"
+        },
+        "translation": "serta (dari) istri dan anak-anaknya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_36.mp3"
+        }
+      },
+      {
+        "number": 37,
+        "arabic": "لِكُلِّ امْرِئٍ مِّنْهُمْ يَوْمَىِٕذٍ شَأْنٌ يُّغْنِيْهِۗ",
+        "translations": {
+          "tr_id": "Setiap orang dari mereka pada hari itu mempunyai urusan yang menyibukkannya.",
+          "tr_id_my": "",
+          "tr_en_jl": "لِكُلِّ امْرِئٍ مِنْهُمْ يَوْمَئِذٍ شَأْنٌ يُغْنِيهِ"
+        },
+        "translation": "Setiap orang dari mereka pada hari itu mempunyai urusan yang menyibukkannya.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_37.mp3"
+        }
+      },
+      {
+        "number": 38,
+        "arabic": "وُجُوْهٌ يَّوْمَىِٕذٍ مُّسْفِرَةٌۙ",
+        "translations": {
+          "tr_id": "Pada hari itu ada wajah-wajah yang berseri-seri,",
+          "tr_id_my": "",
+          "tr_en_jl": "وُجُوهٌ يَوْمَئِذٍ مُسْفِرَةٌ"
+        },
+        "translation": "Pada hari itu ada wajah-wajah yang berseri-seri,",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_38.mp3"
+        }
+      },
+      {
+        "number": 39,
+        "arabic": "ضَاحِكَةٌ مُّسْتَبْشِرَةٌ ۚ",
+        "translations": {
+          "tr_id": "tertawa lagi gembira ria.",
+          "tr_id_my": "",
+          "tr_en_jl": "ضَاحِكَةٌ مُسْتَبْشِرَةٌ"
+        },
+        "translation": "tertawa lagi gembira ria.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_39.mp3"
+        }
+      },
+      {
+        "number": 40,
+        "arabic": "وَوُجُوْهٌ يَّوْمَىِٕذٍ عَلَيْهَا غَبَرَةٌۙ",
+        "translations": {
+          "tr_id": "Pada hari itu ada (pula) wajah-wajah yang tertutup debu (suram)",
+          "tr_id_my": "",
+          "tr_en_jl": "وَوُجُوهٌ يَوْمَئِذٍ عَلَيْهَا غَبَرَةٌ"
+        },
+        "translation": "Pada hari itu ada (pula) wajah-wajah yang tertutup debu (suram)",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_40.mp3"
+        }
+      },
+      {
+        "number": 41,
+        "arabic": "تَرْهَقُهَا قَتَرَةٌ ۗ",
+        "translations": {
+          "tr_id": "dan tertutup oleh kegelapan (ditimpa kehinaan dan kesusahan).",
+          "tr_id_my": "",
+          "tr_en_jl": "تَرْهَقُهَا قَتَرَةٌ"
+        },
+        "translation": "dan tertutup oleh kegelapan (ditimpa kehinaan dan kesusahan).",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_41.mp3"
+        }
+      },
+      {
+        "number": 42,
+        "arabic": "اُولٰۤىِٕكَ هُمُ الْكَفَرَةُ الْفَجَرَةُ ࣖ",
+        "translations": {
+          "tr_id": "Mereka itulah orang-orang kafir lagi para pendurhaka.",
+          "tr_id_my": "",
+          "tr_en_jl": "أُولَٰئِكَ هُمُ الْكَفَرَةُ الْفَجَرَةُ"
+        },
+        "translation": "Mereka itulah orang-orang kafir lagi para pendurhaka.",
+        "audio": {
+          "ar": "konten/abasa/aud_ar/abasa_42.mp3"
+        }
+      }
+    ]
   }
 }
