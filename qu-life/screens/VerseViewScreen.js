@@ -274,8 +274,13 @@ export default function VerseViewScreen({ route, navigation }) {
                 onPageSelected={(e) => {
                     const newIndex = e.nativeEvent.position;
                     setCurrentVerseIndex(newIndex);
-                    // Reset translation to OFF when changing verses
-                    setShowTranslation(false);
+
+                    // Requirement 1 & 2: 
+                    // If Auto Play is OFF => Reset translation to OFF (manual browsing default).
+                    // If Auto Play is ON => Keep previous state (persist user choice).
+                    if (!autoPlayRef.current) {
+                        setShowTranslation(false);
+                    }
 
                     // If user manually swipes, we should probably reset repeat counter
                     repeatCounter.current = 0;

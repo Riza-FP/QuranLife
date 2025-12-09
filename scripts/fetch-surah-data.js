@@ -1,19 +1,31 @@
 const fs = require('fs');
+const path = require('path');
 
-const SURAH_NUMBER = process.argv[2];
+const args = process.argv.slice(2);
+const QURAN_JSON_PATH = path.join(__dirname, '../qu-life/data/quran.json');
 
-if (!SURAH_NUMBER) {
-    console.log("Usage: node scripts/fetch-surah-data.js <surah_number>");
+if (args.length === 0) {
+    console.log("Usage:");
+    console.log("  Single Surah: node scripts/fetch-surah-data.js <surah_number>");
+    console.log("  Range:        node scripts/fetch-surah-data.js <start_surah> <end_surah>");
+    process.exit(1);
+}
+
+const startSurah = parseInt(args[0]);
+const endSurah = args[1] ? parseInt(args[1]) : startSurah;
+
+if (isNaN(startSurah) || (args[1] && isNaN(endSurah))) {
+    console.error("Error: Please provide valid Surah numbers.");
     process.exit(1);
 }
 
 async function fetchSurah(number) {
-    console.log(`Fetching Surah ${number} from equran.id (ID) and alquran.cloud (EN)...`);
+    console.log(`Fetching Surah ${number}...`);
     try {
         // Parallel fetch for efficiency
         const [equranRes, quranCloudRes] = await Promise.all([
             fetch(`https://equran.id/api/v2/surat/${number}`),
-            fetch(`https://api.alquran.cloud/v1/surah/${number}/en.jalalayn`)
+            fetch(`https://api.alquran.cloud/v1/surah/${number}/en.sahih`)
         ]);
 
         const equranJson = await equranRes.json();
@@ -28,7 +40,7 @@ async function fetchSurah(number) {
         // Format to match qu-life quran.json structure
         const surahKey = data.namaLatin.toLowerCase().replace(/[^a-z]/g, '');
 
-        const formattedData = {
+        return {
             [surahKey]: {
                 nomor: String(data.nomor),
                 kode: surahKey,
@@ -39,9 +51,8 @@ async function fetchSurah(number) {
                     number: ayat.nomorAyat,
                     arabic: ayat.teksArab,
                     translations: {
-                        tr_id: ayat.teksIndonesia, // Kemenag translation
-                        tr_id_my: "", // Muyassar source not found in public APIs yet
-                        tr_en_jl: enVerses[index] ? enVerses[index].text : "" // Jalalayn English
+                        tr_id: ayat.teksIndonesia,
+                        tr_en: enVerses[index] ? enVerses[index].text : ""
                     },
                     translation: ayat.teksIndonesia,
                     audio: {
@@ -51,17 +62,50 @@ async function fetchSurah(number) {
             }
         };
 
-        console.log("---------------------------------------------------");
-        console.log(`SUCCESS! Fetched Kemenag (ID) and Jalalayn (EN) for ${data.namaLatin}.`);
-        console.log("---------------------------------------------------");
-
-        const outputFile = `surah_${number}_data.json`;
-        fs.writeFileSync(outputFile, JSON.stringify(formattedData, null, 2));
-        console.log(`(Saved to ${outputFile})`);
-
     } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error(`Error fetching Surah ${number}:`, error.message);
+        return null;
     }
 }
 
-fetchSurah(SURAH_NUMBER);
+async function run() {
+    let existingData = {};
+    if (fs.existsSync(QURAN_JSON_PATH)) {
+        try {
+            existingData = JSON.parse(fs.readFileSync(QURAN_JSON_PATH, 'utf8'));
+        } catch (e) {
+            console.warn("Warning: Could not parse existing quran.json, starting fresh.");
+        }
+    }
+
+    let updates = {};
+    console.log(`Starting fetch for Surah ${startSurah} to ${endSurah}...`);
+
+    for (let i = startSurah; i <= endSurah; i++) {
+        const surahData = await fetchSurah(i);
+        if (surahData) {
+            Object.assign(updates, surahData);
+            // Small delay if fetching multiple to be polite to API
+            if (startSurah !== endSurah) await new Promise(r => setTimeout(r, 300));
+        }
+    }
+
+    // Merge updates into existing data
+    const finalData = { ...existingData, ...updates };
+
+    // Sort keys by Surah number for valid order in JSON
+    const sortedData = {};
+    Object.keys(finalData)
+        .sort((a, b) => parseInt(finalData[a].nomor) - parseInt(finalData[b].nomor))
+        .forEach(key => {
+            sortedData[key] = finalData[key];
+        });
+
+    fs.writeFileSync(QURAN_JSON_PATH, JSON.stringify(sortedData, null, 2));
+
+    console.log("---------------------------------------------------");
+    console.log(`SUCCESS! Data saved to data/quran.json`);
+    console.log("---------------------------------------------------");
+}
+
+run();

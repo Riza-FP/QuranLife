@@ -73,7 +73,7 @@ export default function PlaybackControlPanel({
                         <Ionicons
                             name={isPlaying ? "pause-circle" : "play-circle"}
                             size={80}
-                            color="#007AFF"
+                            color={autoPlay ? "#5856D6" : "#007AFF"} // Purple for Auto, Blue for Manual
                         />
                     )}
                 </TouchableOpacity>

@@ -25,33 +25,22 @@ export default function SettingsScreen() {
                         <Text style={[
                             styles.langButtonText,
                             translationCode === 'tr_id' && styles.langButtonTextActive
-                        ]}>Default (ID)</Text>
+                        ]}>INDONESIAN</Text>
                     </TouchableOpacity>
+
+
 
                     <TouchableOpacity
                         style={[
                             styles.langButton,
-                            translationCode === 'tr_id_my' && styles.langButtonActive
+                            translationCode === 'tr_en' && styles.langButtonActive
                         ]}
-                        onPress={() => setTranslationCode('tr_id_my')}
+                        onPress={() => setTranslationCode('tr_en')}
                     >
                         <Text style={[
                             styles.langButtonText,
-                            translationCode === 'tr_id_my' && styles.langButtonTextActive
-                        ]}>Muyassar (ID)</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity
-                        style={[
-                            styles.langButton,
-                            translationCode === 'tr_en_jl' && styles.langButtonActive
-                        ]}
-                        onPress={() => setTranslationCode('tr_en_jl')}
-                    >
-                        <Text style={[
-                            styles.langButtonText,
-                            translationCode === 'tr_en_jl' && styles.langButtonTextActive
-                        ]}>Jalalayn (EN)</Text>
+                            translationCode === 'tr_en' && styles.langButtonTextActive
+                        ]}>ENGLISH</Text>
                     </TouchableOpacity>
                 </View>
             </View>
