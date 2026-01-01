@@ -1,5 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
+import HomeScreen from './screens/HomeScreen';
+import SpecialListScreen from './screens/SpecialListScreen';
 import SurahListScreen from './screens/SurahListScreen';
 import VerseViewScreen from './screens/VerseViewScreen';
 import SettingsScreen from './screens/SettingsScreen';
@@ -8,10 +10,40 @@ const Stack = createStackNavigator();
 
 export default function QuLifeNavigator() {
     return (
-        <Stack.Navigator initialRouteName="SurahList">
-            <Stack.Screen name="SurahList" component={SurahListScreen} options={{ title: 'QuLife' }} />
-            <Stack.Screen name="VerseView" component={VerseViewScreen} options={{ title: 'Verse View' }} />
-            <Stack.Screen name="Settings" component={SettingsScreen} options={{ title: 'Settings' }} />
+        <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+                headerStyle: { backgroundColor: '#fff' },
+                headerTintColor: '#007AFF',
+                headerTitleStyle: { fontWeight: 'bold' },
+                cardStyle: { backgroundColor: '#fff' }, // Fix black flash on navigation
+            }}
+        >
+            <Stack.Screen
+                name="Home"
+                component={HomeScreen}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen
+                name="SurahList"
+                component={SurahListScreen}
+                options={{ title: 'Daftar Surah' }}
+            />
+            <Stack.Screen
+                name="SpecialList"
+                component={SpecialListScreen}
+                options={{ title: 'Daftar Khusus' }}
+            />
+            <Stack.Screen
+                name="VerseView"
+                component={VerseViewScreen}
+                options={{ title: 'Ayat' }}
+            />
+            <Stack.Screen
+                name="Settings"
+                component={SettingsScreen}
+                options={{ title: 'Pengaturan' }}
+            />
         </Stack.Navigator>
     );
 }

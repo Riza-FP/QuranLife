@@ -87,9 +87,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderTopWidth: 1,
         borderTopColor: '#eee',
-        paddingVertical: 15,
+        paddingVertical: 20,
         paddingHorizontal: 20,
-        paddingBottom: 30, // Extra padding for safe area usually
+        paddingBottom: 30, // Adjusted to be somewhat higher but not too high
         shadowColor: "#000",
         shadowOffset: {
             width: 0,

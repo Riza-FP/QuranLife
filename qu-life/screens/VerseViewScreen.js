@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Modal, FlatList, ScrollView, ImageBackground } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import VersePager from '../components/VersePager';
 import PlaybackControlPanel from '../components/PlaybackControlPanel';
@@ -10,15 +10,21 @@ import { Ionicons } from '@expo/vector-icons';
 
 const { width } = Dimensions.get('window');
 
+import { useKeepAwake } from 'expo-keep-awake';
+import { useLastPosition } from '../utils/LastPositionContext';
+
 export default function VerseViewScreen({ route, navigation }) {
-    const { surah } = route.params;
+    useKeepAwake(); // Prevent screen sleep while on this screen
+    const { surah, initialVerseIndex, startVerse, endVerse } = route.params;
+    const { saveLastPosition } = useLastPosition();
     const [verses, setVerses] = useState([]);
+    const [showJumpModal, setShowJumpModal] = useState(false);
     const { fontSize, showTranslation, setShowTranslation, translationCode } = useSettings();
 
     // Playback State
     const [sound, setSound] = useState();
     const [isPlaying, setIsPlaying] = useState(false);
-    const [currentVerseIndex, setCurrentVerseIndex] = useState(0);
+    const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex || 0);
     const [loadingAudio, setLoadingAudio] = useState(false);
 
     // Advanced Settings
@@ -57,15 +63,25 @@ export default function VerseViewScreen({ route, navigation }) {
     }, [delaySeconds]);
 
     useEffect(() => {
-        // Reset translation to OFF when opening a new Surah
-        setShowTranslation(false);
+        // Reset translation to OFF when opening a new Surah, UNLESS it's a special list logic (optional).
+        // Current requirement: Persistent state. So we might NOT want to force reset here if we want global persistence.
+        // But per Cycle 3 logic: "Translation Logic: Remove auto-reset. State dictates visibility."
+        // So we can actually REMOVE this reset or keep it only for fresh entry. 
+        // For now, let's keep it off on fresh entry to avoid surprise.
+        // setShowTranslation(false); 
 
         if (surah) {
-            const loadedVerses = getVersesForSurah(surah.kode);
+            let loadedVerses = getVersesForSurah(surah.kode);
+
+            // Filter if start/end parameters exist
+            if (startVerse && endVerse) {
+                loadedVerses = loadedVerses.filter(v => v.number >= startVerse && v.number <= endVerse);
+            }
+
             setVerses(loadedVerses);
         }
         return () => { isMounted.current = false; };
-    }, [surah]);
+    }, [surah, startVerse, endVerse]);
 
     // Cleanup sound on unmount
     useEffect(() => {
@@ -266,75 +282,187 @@ export default function VerseViewScreen({ route, navigation }) {
     }
 
     return (
-        <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
-            <VersePager
-                ref={pagerRef}
-                style={styles.pagerView}
-                initialPage={0}
-                onPageSelected={(e) => {
-                    const newIndex = e.nativeEvent.position;
-                    setCurrentVerseIndex(newIndex);
+        <ImageBackground
+            source={require('../../qulife_bg.png')}
+            style={styles.backgroundImage}
+            resizeMode="cover"
+        >
+            <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+                <VersePager
+                    ref={pagerRef}
+                    style={styles.pagerView}
+                    initialPage={initialVerseIndex || 0}
+                    onPageSelected={(e) => {
+                        const newIndex = e.nativeEvent.position;
+                        // Adjust index if we have startVerse (for Special List)
+                        // But wait, the pager index is 0-based relative to the *displayed* verses.
+                        // The 'verses' array is already filtered (planned step).
+                        // So 'newIndex' maps directly to 'verses[newIndex]'.
 
-                    // Requirement 1 & 2: 
-                    // If Auto Play is OFF => Reset translation to OFF (manual browsing default).
-                    // If Auto Play is ON => Keep previous state (persist user choice).
-                    if (!autoPlayRef.current) {
-                        setShowTranslation(false);
-                    }
+                        setCurrentVerseIndex(newIndex);
+                        const currentVerse = verses[newIndex];
 
-                    // If user manually swipes, we should probably reset repeat counter
-                    repeatCounter.current = 0;
-                    // If playing, maybe stop? Or continue?
-                    // Standard behavior: Stop if manual swipe.
-                    if (isPlaying && !autoPlay) {
-                        // sound?.stopAsync(); // Optional
-                    }
-                }}
-            >
-                {verses.map((verse) => (
-                    <View key={String(verse.number)} style={styles.page}>
-                        <View style={styles.contentContainer}>
-                            <View style={styles.verseHeader}>
-                                <Text style={styles.verseNumber}>Ayat {verse.number}</Text>
-                            </View>
+                        // Save Last Position (only if it's a full surah view, ideally. 
+                        // But for now, saving is fine, it just might restore to a specific verse in full view).
+                        saveLastPosition(surah.kode, currentVerse.number - 1, surah.nama);
 
-                            <View style={styles.arabicContainer}>
-                                <Text style={[styles.arabicText, { fontSize }]}>{verse.arabic}</Text>
-                            </View>
+                        // REMOVED: Auto-reset of translation. 
+                        // Logic now: State persists across swipes.
 
-                            {showTranslation && (
-                                <View style={styles.translationContainer}>
-                                    <Text style={styles.translationText}>
-                                        {verse.translations?.[translationCode] || verse.translation}
-                                    </Text>
+                        // If user manually swipes, we should probably reset repeat counter
+                        repeatCounter.current = 0;
+                        if (isPlaying && !autoPlay) {
+                            // sound?.stopAsync(); // Optional
+                        }
+                    }}
+                >
+                    {verses.map((verse) => (
+                        <View key={String(verse.number)} style={styles.page}>
+                            <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+                                <View style={styles.contentContainer}>
+                                    <View style={{ flex: 1 }} />
+                                    <TouchableOpacity style={styles.verseHeader} onPress={() => setShowJumpModal(true)}>
+                                        <Text style={styles.verseNumber}>Ayat {verse.number} ▼</Text>
+                                    </TouchableOpacity>
+
+                                    <View style={styles.arabicContainer}>
+                                        <Text style={[styles.arabicText, { fontSize }]}>{verse.arabic}</Text>
+                                    </View>
+
+                                    {showTranslation ? (
+                                        <View style={[styles.translationContainer, { flex: 1 }]}>
+                                            <Text style={styles.translationText}>
+                                                {verse.translations?.[translationCode] || verse.translation}
+                                            </Text>
+                                        </View>
+                                    ) : (
+                                        <TouchableOpacity
+                                            style={styles.translatePlaceholder}
+                                            onPress={() => setShowTranslation(true)}
+                                        >
+                                            <Text style={styles.tapToTranslate}>Tap untuk terjemahan</Text>
+                                        </TouchableOpacity>
+                                    )}
                                 </View>
-                            )}
+                            </ScrollView>
                         </View>
-                    </View>
-                ))}
-            </VersePager>
+                    ))}
+                </VersePager>
 
-            <PlaybackControlPanel
-                isPlaying={isPlaying}
-                onPlayPause={togglePlayPause}
-                autoPlay={autoPlay}
-                onToggleAutoPlay={toggleAutoPlay}
-                repeatMode={repeatMode}
-                onCycleRepeat={cycleRepeat}
-                delaySeconds={delaySeconds}
-                onCycleDelay={cycleDelay}
-                showTranslation={showTranslation}
-                onToggleTranslation={() => setShowTranslation(!showTranslation)}
-                loading={loadingAudio}
-            />
-        </SafeAreaView>
+                <PlaybackControlPanel
+                    isPlaying={isPlaying}
+                    onPlayPause={togglePlayPause}
+                    autoPlay={autoPlay}
+                    onToggleAutoPlay={toggleAutoPlay}
+                    repeatMode={repeatMode}
+                    onCycleRepeat={cycleRepeat}
+                    delaySeconds={delaySeconds}
+                    onCycleDelay={cycleDelay}
+                    showTranslation={showTranslation}
+                    onToggleTranslation={() => setShowTranslation(!showTranslation)}
+                    loading={loadingAudio}
+                />
+
+                {/* Verse Jump Modal */}
+                <Modal
+                    animationType="fade"
+                    transparent={true}
+                    visible={showJumpModal}
+                    onRequestClose={() => setShowJumpModal(false)}
+                >
+                    <TouchableOpacity
+                        style={styles.modalOverlay}
+                        activeOpacity={1}
+                        onPress={() => setShowJumpModal(false)}
+                    >
+                        <View style={styles.modalContent}>
+                            <Text style={styles.modalTitle}>Jump to Verse</Text>
+                            <FlatList
+                                data={verses}
+                                keyExtractor={(item) => String(item.number)}
+                                numColumns={4}
+                                renderItem={({ item, index }) => (
+                                    <TouchableOpacity
+                                        style={[
+                                            styles.gridItem,
+                                            currentVerseIndex === index && styles.gridItemActive
+                                        ]}
+                                        onPress={() => {
+                                            goToVerse(index);
+                                            setShowJumpModal(false);
+                                        }}
+                                    >
+                                        <Text style={[
+                                            styles.gridText,
+                                            currentVerseIndex === index && styles.gridTextActive
+                                        ]}>
+                                            {item.number}
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                            />
+                        </View>
+                    </TouchableOpacity>
+                </Modal>
+            </SafeAreaView>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+    },
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: 'rgba(255,255,255,0.5)', // Transparent for bg
+    },
+    // ... existing styles ...
+    modalOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        width: '80%',
+        maxHeight: '60%',
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 20,
+        elevation: 5,
+    },
+    modalTitle: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        marginBottom: 15,
+        textAlign: 'center',
+        color: '#333',
+    },
+    gridItem: {
+        flex: 1,
+        margin: 5,
+        height: 50,
+        backgroundColor: '#f8f9fa',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: '#dee2e6',
+    },
+    gridItemActive: {
+        backgroundColor: '#007AFF',
+        borderColor: '#007AFF',
+    },
+    gridText: {
+        fontSize: 16,
+        color: '#495057',
+    },
+    gridTextActive: {
+        color: 'white',
+        fontWeight: 'bold',
     },
     center: {
         flex: 1,
@@ -351,7 +479,7 @@ const styles = StyleSheet.create({
     },
     contentContainer: {
         flex: 1,
-        justifyContent: 'center',
+        // justifyContent: 'center', // Removed to allow flax spacers to center content
         alignItems: 'center',
     },
     verseHeader: {
@@ -384,5 +512,23 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         color: '#495057',
         lineHeight: 28,
+    },
+    scrollContent: {
+        flexGrow: 1,
+        justifyContent: 'center',
+    },
+    translatePlaceholder: {
+        width: '100%',
+        flex: 1, // Consume all remaining space below Arabic text
+        alignSelf: 'stretch',
+        backgroundColor: 'transparent',
+        alignItems: 'center',
+        paddingTop: 20, // Keep text somewhat near the Arabic
+    },
+    tapToTranslate: {
+        textAlign: 'center',
+        color: '#adb5bd',
+        fontSize: 14,
+        fontStyle: 'italic',
     },
 });

@@ -6,9 +6,10 @@ export const getSurahList = () => {
         kode: surah.kode,
         nama: surah.nama,
         jumlah_ayat: surah.jumlah_ayat
-    })).sort((a, b) => parseInt(a.nomor) - parseInt(b.nomor));
+    })).filter(surah => !['2', '3', '18'].includes(surah.nomor))
+        .sort((a, b) => parseInt(a.nomor) - parseInt(b.nomor));
 };
 
 export const getSurahByCode = (code) => {
-    return quranData[code];
+    return quranData[code] || Object.values(quranData).find(s => s.nomor === String(code));
 };

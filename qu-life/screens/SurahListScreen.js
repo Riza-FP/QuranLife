@@ -1,9 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
-import { getSurahList } from '../utils/DataLoader';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
+import { getSurahList, getSurahByCode } from '../utils/DataLoader';
 
 export default function SurahListScreen({ navigation }) {
     const [surahs, setSurahs] = useState([]);
+    const hasAutoRestored = useRef(false);
+
+    useEffect(() => {
+        setSurahs(getSurahList());
+    }, []);
 
     useEffect(() => {
         setSurahs(getSurahList());
@@ -25,21 +30,32 @@ export default function SurahListScreen({ navigation }) {
     );
 
     return (
-        <View style={styles.container}>
-            <FlatList
-                data={surahs}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.kode}
-                contentContainerStyle={styles.listContent}
-            />
-        </View>
+        <ImageBackground
+            source={require('../../qulife_bg.png')}
+            style={styles.backgroundImage}
+            resizeMode="cover"
+        >
+            <View style={styles.container}>
+                <FlatList
+                    data={surahs}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.kode}
+                    contentContainerStyle={styles.listContent}
+                />
+            </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
+    backgroundImage: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+    },
     container: {
         flex: 1,
-        backgroundColor: '#f8f9fa',
+        backgroundColor: 'rgba(255,255,255,0.5)', // Adjusted transparency
     },
     listContent: {
         padding: 16,
