@@ -273,6 +273,10 @@ export default function VerseViewScreen({ route, navigation }) {
         setDelaySeconds(delays[(idx + 1) % delays.length]);
     };
 
+    const [tempTranslationVisible, setTempTranslationVisible] = useState(false);
+
+    // ... existing refs ...
+
     if (verses.length === 0) {
         return (
             <View style={styles.center}>
@@ -280,6 +284,9 @@ export default function VerseViewScreen({ route, navigation }) {
             </View>
         );
     }
+
+    // Determine effective visibility
+    const isTranslationVisible = showTranslation || tempTranslationVisible;
 
     return (
         <ImageBackground
@@ -294,20 +301,14 @@ export default function VerseViewScreen({ route, navigation }) {
                     initialPage={initialVerseIndex || 0}
                     onPageSelected={(e) => {
                         const newIndex = e.nativeEvent.position;
-                        // Adjust index if we have startVerse (for Special List)
-                        // But wait, the pager index is 0-based relative to the *displayed* verses.
-                        // The 'verses' array is already filtered (planned step).
-                        // So 'newIndex' maps directly to 'verses[newIndex]'.
-
                         setCurrentVerseIndex(newIndex);
                         const currentVerse = verses[newIndex];
 
-                        // Save Last Position (only if it's a full surah view, ideally. 
-                        // But for now, saving is fine, it just might restore to a specific verse in full view).
-                        saveLastPosition(surah.kode, currentVerse.number - 1, surah.nama);
+                        // Reset temporary translation on page turn
+                        setTempTranslationVisible(false);
 
-                        // REMOVED: Auto-reset of translation. 
-                        // Logic now: State persists across swipes.
+                        // Save Last Position
+                        saveLastPosition(surah.kode, currentVerse.number - 1, surah.nama);
 
                         // If user manually swipes, we should probably reset repeat counter
                         repeatCounter.current = 0;
@@ -329,7 +330,7 @@ export default function VerseViewScreen({ route, navigation }) {
                                         <Text style={[styles.arabicText, { fontSize }]}>{verse.arabic}</Text>
                                     </View>
 
-                                    {showTranslation ? (
+                                    {isTranslationVisible ? (
                                         <View style={[styles.translationContainer, { flex: 1 }]}>
                                             <Text style={styles.translationText}>
                                                 {verse.translations?.[translationCode] || verse.translation}
@@ -338,7 +339,7 @@ export default function VerseViewScreen({ route, navigation }) {
                                     ) : (
                                         <TouchableOpacity
                                             style={styles.translatePlaceholder}
-                                            onPress={() => setShowTranslation(true)}
+                                            onPress={() => setTempTranslationVisible(true)}
                                         >
                                             <Text style={styles.tapToTranslate}>Tap untuk terjemahan</Text>
                                         </TouchableOpacity>
@@ -376,7 +377,7 @@ export default function VerseViewScreen({ route, navigation }) {
                         onPress={() => setShowJumpModal(false)}
                     >
                         <View style={styles.modalContent}>
-                            <Text style={styles.modalTitle}>Jump to Verse</Text>
+                            <Text style={styles.modalTitle}>Lompat ke Ayat</Text>
                             <FlatList
                                 data={verses}
                                 keyExtractor={(item) => String(item.number)}

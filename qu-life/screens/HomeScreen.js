@@ -77,6 +77,13 @@ export default function HomeScreen({ navigation }) {
                     >
                         <Text style={styles.cardTitle}>Daftar Khusus</Text>
                     </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate('Other')}
+                    >
+                        <Text style={styles.cardTitle}>Lain-lain</Text>
+                    </TouchableOpacity>
                 </View>
 
 
