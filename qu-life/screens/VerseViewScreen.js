@@ -7,6 +7,7 @@ import { getVersesForSurah } from '../utils/VerseData';
 import { useSettings } from '../utils/SettingsContext';
 import { Audio } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
+import * as Speech from 'expo-speech';
 
 const { width } = Dimensions.get('window');
 
@@ -226,6 +227,12 @@ export default function VerseViewScreen({ route, navigation }) {
         }
     }
 
+    const handleTextToSpeech = (text) => {
+        const thingToSay = text || 'Tidak ada terjemahan';
+        Speech.stop();
+        Speech.speak(thingToSay, { language: 'id' });
+    };
+
     const togglePlayPause = async () => {
         const current = currentVerseIndex;
         const loaded = loadedVerseIndexRef.current;
@@ -335,6 +342,13 @@ export default function VerseViewScreen({ route, navigation }) {
                                             <Text style={styles.translationText}>
                                                 {verse.translations?.[translationCode] || verse.translation}
                                             </Text>
+                                            <TouchableOpacity
+                                                style={styles.ttsButton}
+                                                onPress={() => handleTextToSpeech(verse.translations?.[translationCode] || verse.translation)}
+                                            >
+                                                <Ionicons name="volume-high-outline" size={24} color="#007AFF" />
+                                                <Text style={styles.ttsText}>Dengar Terjemahan</Text>
+                                            </TouchableOpacity>
                                         </View>
                                     ) : (
                                         <TouchableOpacity
@@ -531,5 +545,21 @@ const styles = StyleSheet.create({
         color: '#adb5bd',
         fontSize: 14,
         fontStyle: 'italic',
+    },
+    ttsButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 15,
+        padding: 8,
+        backgroundColor: '#e7f5ff',
+        borderRadius: 20,
+        alignSelf: 'center',
+    },
+    ttsText: {
+        marginLeft: 8,
+        color: '#007AFF',
+        fontSize: 14,
+        fontWeight: '600',
     },
 });

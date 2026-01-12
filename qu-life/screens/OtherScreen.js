@@ -22,10 +22,7 @@ export default function OtherScreen({ navigation }) {
     };
 
     const handleAboutPress = () => {
-        Alert.alert(
-            "Tentang QuLife",
-            "QuLife v1.0.0\n\nAplikasi Al-Quran digital yang dirancang untuk memudahkan membaca dan memahami Al-Quran dengan fitur audio dan terjemahan yang lengkap.\n\n© 2026 Roni Emhade Learning Center"
-        );
+        navigation.navigate('About');
     };
 
     return (

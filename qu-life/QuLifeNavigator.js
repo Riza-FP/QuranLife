@@ -6,6 +6,7 @@ import SurahListScreen from './screens/SurahListScreen';
 import VerseViewScreen from './screens/VerseViewScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import OtherScreen from './screens/OtherScreen';
+import AboutScreen from './screens/AboutScreen';
 
 const Stack = createStackNavigator();
 
@@ -49,6 +50,11 @@ export default function QuLifeNavigator() {
                 name="Other"
                 component={OtherScreen}
                 options={{ title: 'Lain-lain' }}
+            />
+            <Stack.Screen
+                name="About"
+                component={AboutScreen}
+                options={{ title: 'Tentang Aplikasi' }}
             />
         </Stack.Navigator>
     );
