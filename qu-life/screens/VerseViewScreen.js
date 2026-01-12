@@ -20,7 +20,7 @@ export default function VerseViewScreen({ route, navigation }) {
     const { saveLastPosition } = useLastPosition();
     const [verses, setVerses] = useState([]);
     const [showJumpModal, setShowJumpModal] = useState(false);
-    const { fontSize, showTranslation, setShowTranslation, translationCode } = useSettings();
+    const { fontSize, showTranslation, setShowTranslation, translationCode, voiceIdentifier } = useSettings();
 
     // Playback State
     const [sound, setSound] = useState();
@@ -230,7 +230,11 @@ export default function VerseViewScreen({ route, navigation }) {
     const handleTextToSpeech = (text) => {
         const thingToSay = text || 'Tidak ada terjemahan';
         Speech.stop();
-        Speech.speak(thingToSay, { language: 'id' });
+        const options = { language: 'id' };
+        if (voiceIdentifier) {
+            options.voice = voiceIdentifier;
+        }
+        Speech.speak(thingToSay, options);
     };
 
     const togglePlayPause = async () => {

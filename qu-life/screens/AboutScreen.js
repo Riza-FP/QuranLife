@@ -13,7 +13,7 @@ export default function AboutScreen() {
                 <View style={styles.contentContainer}>
                     <View style={styles.logoContainer}>
                         <Image
-                            source={require('../../assets/icon.png')}
+                            source={require('../../qulife_logo.jpg')}
                             style={styles.logo}
                             resizeMode="contain"
                         />
@@ -28,7 +28,7 @@ export default function AboutScreen() {
                     </View>
 
                     <View style={styles.footer}>
-                        <Text style={styles.copyright}>© 2026 Roni Emhade Learning Center</Text>
+                        <Text style={styles.copyright}>© 2026 Roni Mhd Learning Center</Text>
                     </View>
                 </View>
             </SafeAreaView>
