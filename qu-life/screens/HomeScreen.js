@@ -43,7 +43,7 @@ export default function HomeScreen({ navigation }) {
             <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
                     <Image
-                        source={require('../../qulife_logo.jpg')}
+                        source={require('../../qulife_logo_new.png')}
                         style={styles.logo}
                         resizeMode="contain"
                     />

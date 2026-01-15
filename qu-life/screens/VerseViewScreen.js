@@ -63,6 +63,13 @@ export default function VerseViewScreen({ route, navigation }) {
         delaySecondsRef.current = delaySeconds;
     }, [delaySeconds]);
 
+    // Track Translation Visibility for Auto-Play (kept for future use or state sync)
+    // Note: User paused auto-play feature, but maintaining state consistency logic is fine.
+    const [tempTranslationVisible, setTempTranslationVisible] = useState(false);
+
+    // Determine effective visibility (moved up for Ref access)
+    const isTranslationVisible = showTranslation || tempTranslationVisible;
+
     useEffect(() => {
         // Reset translation to OFF when opening a new Surah, UNLESS it's a special list logic (optional).
         // Current requirement: Persistent state. So we might NOT want to force reset here if we want global persistence.
@@ -121,15 +128,61 @@ export default function VerseViewScreen({ route, navigation }) {
         });
     }, [navigation, surah]);
 
+    // State for Basmalah Pre-roll
+    const [isPreRolling, setIsPreRolling] = useState(false);
+    // State for Local Translation Audio (Tri-state: hidden -> visible -> playing -> hidden)
+    // We track which verse number is currently "active" for translation interaction. Null if none.
+    const [activeTranslationVerse, setActiveTranslationVerse] = useState(null);
+    const [isTranslationPlaying, setIsTranslationPlaying] = useState(false);
+
+    async function playBasmalah(onFinish) {
+        try {
+            setLoadingAudio(true);
+            setIsPreRolling(true);
+            if (sound) await sound.unloadAsync();
+
+            const { sound: newSound } = await Audio.Sound.createAsync(
+                { uri: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3' },
+                { shouldPlay: true }
+            );
+            setSound(newSound);
+
+            newSound.setOnPlaybackStatusUpdate((status) => {
+                if (status.didJustFinish) {
+                    setIsPreRolling(false);
+                    if (onFinish) onFinish();
+                }
+            });
+        } catch (error) {
+            console.error("Basmalah error", error);
+            setIsPreRolling(false);
+            if (onFinish) onFinish(); // Fallback to start
+        }
+    }
+
     // Handle Playback Completion Logic
     const handlePlaybackFinish = async () => {
         setIsPlaying(false);
-        repeatCounter.current += 1;
-
         const mode = repeatModeRef.current;
         const index = currentVerseIndexRef.current;
         const auto = autoPlayRef.current;
         const delay = delaySecondsRef.current;
+
+        // Helper for delay
+        const waitDelay = () => new Promise(r => setTimeout(r, delay * 1000));
+
+        if (isPreRolling) {
+            // Should be handled by callback, but if we land here
+            return;
+        }
+
+        repeatCounter.current += 1;
+
+        // Logic: Audio Finished -> Wait Delay -> Check Repeat OR Check Translation -> Check Next
+
+        if (auto) {
+            if (delay > 0) await waitDelay();
+        }
 
         // Check Repeat
         if (mode === 'loop' || repeatCounter.current < mode) {
@@ -137,23 +190,46 @@ export default function VerseViewScreen({ route, navigation }) {
         } else {
             // Finished repeats for this verse
             if (auto) {
+                // Sequence: Verse Audio -> (Delay done) -> Translation Audio (if enabled) -> (Delay) -> Next
+
+                // Minimalist Phase 1: Always play translation if Auto is ON?
+                // Or only if global 'showTranslation' is ON?
+                // Supervisor: "mode mulai ... bacaan ayat/terjemahan ayat".
+                // Let's use `showTranslation` toggle as the switch for now.
+                const shouldSpeak = showTranslation;
+
+                if (shouldSpeak) {
+                    await speakWait(index);
+                    if (delay > 0) await waitDelay();
+                }
+
                 // Check if last verse
                 if (index >= verses.length - 1) {
                     // End of Surah
                 } else {
-                    // Move to next
-                    if (delay > 0) {
-                        delayTimeout.current = setTimeout(() => {
-                            if (isMounted.current) {
-                                goToVerse(index + 1);
-                            }
-                        }, delay * 1000);
-                    } else {
-                        goToVerse(index + 1);
-                    }
+                    goToVerse(index + 1);
                 }
             }
         }
+    };
+
+    const speakWait = (index) => {
+        return new Promise((resolve) => {
+            const verse = verses[index];
+            const text = verse.translations?.[translationCode] || verse.translation || 'Tidak ada terjemahan';
+
+            const options = {
+                language: 'id',
+                onDone: () => resolve(true),
+                onStopped: () => resolve(true),
+                onError: () => resolve(true)
+            };
+            if (voiceIdentifier) {
+                options.voice = voiceIdentifier;
+            }
+
+            Speech.speak(text, options);
+        });
     };
 
     const goToVerse = (index) => {
@@ -168,41 +244,26 @@ export default function VerseViewScreen({ route, navigation }) {
     };
 
     async function playVerse(index) {
-        // Stop any currently playing sound
-        if (sound) {
-            try {
-                await sound.unloadAsync();
-            } catch (e) {
-                // Ignore unload errors
-            }
-            setSound(null);
-            loadedVerseIndexRef.current = -1;
-        }
+        if (sound) await sound.unloadAsync();
+        setSound(null);
+        loadedVerseIndexRef.current = -1;
 
-        // Reset repeat counter if it's a new verse
         if (index !== currentVerseIndexRef.current) {
             repeatCounter.current = 0;
         }
-
-        // Ensure state is synced
         setCurrentVerseIndex(index);
 
         try {
             setLoadingAudio(true);
             setIsPlaying(true);
-
             const verse = verses[index];
-
-            // Use HTTPS
             const response = await fetch(`https://api.alquran.cloud/v1/ayah/${surah.nomor}:${verse.number}/ar.alafasy`);
             const data = await response.json();
 
             if (data.code === 200 && isMounted.current) {
-                const audioUrl = data.data.audio;
-
                 const { sound: newSound } = await Audio.Sound.createAsync(
-                    { uri: audioUrl },
-                    { shouldPlay: false } // Load first, then play
+                    { uri: data.data.audio },
+                    { shouldPlay: false }
                 );
 
                 setSound(newSound);
@@ -214,7 +275,6 @@ export default function VerseViewScreen({ route, navigation }) {
                         handlePlaybackFinish();
                     }
                 });
-
                 await newSound.playAsync();
             } else {
                 setLoadingAudio(false);
@@ -227,15 +287,7 @@ export default function VerseViewScreen({ route, navigation }) {
         }
     }
 
-    const handleTextToSpeech = (text) => {
-        const thingToSay = text || 'Tidak ada terjemahan';
-        Speech.stop();
-        const options = { language: 'id' };
-        if (voiceIdentifier) {
-            options.voice = voiceIdentifier;
-        }
-        Speech.speak(thingToSay, options);
-    };
+
 
     const togglePlayPause = async () => {
         const current = currentVerseIndex;
@@ -268,8 +320,16 @@ export default function VerseViewScreen({ route, navigation }) {
     };
 
     // Settings Toggles
+    // Settings Toggles
     const toggleAutoPlay = () => {
-        setAutoPlay(!autoPlay);
+        const newState = !autoPlay;
+        setAutoPlay(newState);
+        if (newState) {
+            // Trigger Basmalah first, then start current verse
+            playBasmalah(() => {
+                playVerse(currentVerseIndex);
+            });
+        }
     };
 
     const cycleRepeat = () => {
@@ -284,7 +344,7 @@ export default function VerseViewScreen({ route, navigation }) {
         setDelaySeconds(delays[(idx + 1) % delays.length]);
     };
 
-    const [tempTranslationVisible, setTempTranslationVisible] = useState(false);
+
 
     // ... existing refs ...
 
@@ -296,8 +356,7 @@ export default function VerseViewScreen({ route, navigation }) {
         );
     }
 
-    // Determine effective visibility
-    const isTranslationVisible = showTranslation || tempTranslationVisible;
+    // Determine effective visibility handled via State/Ref above
 
     return (
         <ImageBackground
@@ -341,27 +400,53 @@ export default function VerseViewScreen({ route, navigation }) {
                                         <Text style={[styles.arabicText, { fontSize }]}>{verse.arabic}</Text>
                                     </View>
 
-                                    {isTranslationVisible ? (
-                                        <View style={[styles.translationContainer, { flex: 1 }]}>
-                                            <Text style={styles.translationText}>
-                                                {verse.translations?.[translationCode] || verse.translation}
-                                            </Text>
+                                    {/* Interaction Logic: Local Tri-State OR Global Show */
+                                        (showTranslation || activeTranslationVerse === verse.number) ? (
+                                            <View style={[styles.translationContainer, { flex: 1 }]}>
+                                                <TouchableOpacity
+                                                    onPress={() => {
+                                                        // State 2 -> State 3 (Play) OR State 3 -> State 0 (Hide)
+                                                        if (activeTranslationVerse === verse.number && isTranslationPlaying) {
+                                                            Speech.stop();
+                                                            setIsTranslationPlaying(false);
+                                                            setActiveTranslationVerse(null); // Hide
+                                                        } else {
+                                                            setActiveTranslationVerse(verse.number);
+                                                            setIsTranslationPlaying(true);
+                                                            const text = verse.translations?.[translationCode] || verse.translation || 'Tidak ada terjemahan';
+                                                            const options = { language: 'id', onDone: () => setIsTranslationPlaying(false) };
+                                                            if (voiceIdentifier) options.voice = voiceIdentifier;
+                                                            Speech.speak(text, options);
+                                                        }
+                                                    }}
+                                                    style={{ padding: 10 }}
+                                                >
+                                                    <Text style={styles.translationText}>
+                                                        {verse.translations?.[translationCode] || verse.translation}
+                                                    </Text>
+                                                    <View style={styles.ttsButton}>
+                                                        <Ionicons
+                                                            name={(activeTranslationVerse === verse.number && isTranslationPlaying) ? "stop-circle-outline" : "volume-high-outline"}
+                                                            size={24} color="#007AFF"
+                                                        />
+                                                        <Text style={styles.ttsText}>
+                                                            {(activeTranslationVerse === verse.number && isTranslationPlaying) ? "Stop & Tutup" : "Dengar Terjemahan"}
+                                                        </Text>
+                                                    </View>
+                                                </TouchableOpacity>
+                                            </View>
+                                        ) : (
                                             <TouchableOpacity
-                                                style={styles.ttsButton}
-                                                onPress={() => handleTextToSpeech(verse.translations?.[translationCode] || verse.translation)}
+                                                style={styles.translatePlaceholder}
+                                                onPress={() => {
+                                                    // State 0 -> State 1 (Show)
+                                                    setActiveTranslationVerse(verse.number);
+                                                    setIsTranslationPlaying(false);
+                                                }}
                                             >
-                                                <Ionicons name="volume-high-outline" size={24} color="#007AFF" />
-                                                <Text style={styles.ttsText}>Dengar Terjemahan</Text>
+                                                <Text style={styles.tapToTranslate}>Tap untuk terjemahan</Text>
                                             </TouchableOpacity>
-                                        </View>
-                                    ) : (
-                                        <TouchableOpacity
-                                            style={styles.translatePlaceholder}
-                                            onPress={() => setTempTranslationVisible(true)}
-                                        >
-                                            <Text style={styles.tapToTranslate}>Tap untuk terjemahan</Text>
-                                        </TouchableOpacity>
-                                    )}
+                                        )}
                                 </View>
                             </ScrollView>
                         </View>

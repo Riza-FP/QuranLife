@@ -15,6 +15,8 @@ export default function PlaybackControlPanel({
     onToggleTranslation,
     loading
 }) {
+    const [showSettings, setShowSettings] = React.useState(false);
+
     const getRepeatIcon = () => {
         if (repeatMode === 'loop') return 'infinite';
         return 'repeat';
@@ -22,62 +24,73 @@ export default function PlaybackControlPanel({
 
     return (
         <View style={styles.container}>
-            {/* Top Row: Settings */}
-            <View style={styles.settingsRow}>
-                <TouchableOpacity style={styles.settingButton} onPress={onToggleAutoPlay}>
+            {/* Main Control Row: Auto | Audio | Terjemahan | Setting */}
+            <View style={styles.controlsRow}>
+                {/* 1. Auto */}
+                <TouchableOpacity style={styles.controlButton} onPress={onToggleAutoPlay}>
                     <Ionicons
                         name={autoPlay ? "play-skip-forward-circle" : "play-skip-forward-circle-outline"}
-                        size={24}
+                        size={28}
                         color={autoPlay ? "#007AFF" : "#666"}
                     />
-                    <Text style={[styles.settingText, autoPlay && styles.activeText]}>Auto</Text>
+                    <Text style={[styles.controlText, autoPlay && styles.activeText]}>Auto</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.settingButton} onPress={onCycleRepeat}>
-                    <View style={styles.iconBadgeContainer}>
-                        <Ionicons name={getRepeatIcon()} size={24} color={repeatMode !== 1 ? "#007AFF" : "#666"} />
-                        {repeatMode !== 'loop' && repeatMode !== 1 && (
-                            <View style={styles.badge}>
-                                <Text style={styles.badgeText}>{repeatMode}</Text>
-                            </View>
-                        )}
-                    </View>
-                    <Text style={[styles.settingText, repeatMode !== 1 && styles.activeText]}>
-                        {repeatMode === 'loop' ? 'Loop' : 'Repeat'}
-                    </Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.settingButton} onPress={onToggleTranslation}>
-                    <Ionicons
-                        name={showTranslation ? "language" : "language-outline"}
-                        size={24}
-                        color={showTranslation ? "#007AFF" : "#666"}
-                    />
-                    <Text style={[styles.settingText, showTranslation && styles.activeText]}>Trans</Text>
-                </TouchableOpacity>
-
-                <TouchableOpacity style={styles.settingButton} onPress={onCycleDelay}>
-                    <Ionicons name="timer-outline" size={24} color={delaySeconds > 0 ? "#007AFF" : "#666"} />
-                    <Text style={[styles.settingText, delaySeconds > 0 && styles.activeText]}>
-                        {delaySeconds}s Delay
-                    </Text>
-                </TouchableOpacity>
-            </View>
-
-            {/* Bottom Row: Main Controls */}
-            <View style={styles.controlsRow}>
-                <TouchableOpacity onPress={onPlayPause} style={styles.playButton} disabled={loading}>
+                {/* 2. Audio (Play/Pause) */}
+                <TouchableOpacity style={styles.controlButton} onPress={onPlayPause} disabled={loading}>
                     {loading ? (
-                        <Text style={styles.loadingText}>...</Text>
+                        <Text style={{ color: '#007AFF', fontWeight: 'bold' }}>...</Text>
                     ) : (
                         <Ionicons
                             name={isPlaying ? "pause-circle" : "play-circle"}
-                            size={80}
-                            color={autoPlay ? "#5856D6" : "#007AFF"} // Purple for Auto, Blue for Manual
+                            size={28}
+                            color={isPlaying ? "#007AFF" : "#666"}
                         />
                     )}
+                    <Text style={[styles.controlText, isPlaying && styles.activeText]}>Audio</Text>
+                </TouchableOpacity>
+
+                {/* 3. Terjemahan */}
+                <TouchableOpacity style={styles.controlButton} onPress={onToggleTranslation}>
+                    <Ionicons
+                        name={showTranslation ? "language" : "language-outline"}
+                        size={28}
+                        color={showTranslation ? "#007AFF" : "#666"}
+                    />
+                    <Text style={[styles.controlText, showTranslation && styles.activeText]}>Terjemahan</Text>
+                </TouchableOpacity>
+
+                {/* 4. Setting (Toggles Details) */}
+                <TouchableOpacity style={styles.controlButton} onPress={() => setShowSettings(!showSettings)}>
+                    <Ionicons
+                        name={showSettings ? "options" : "options-outline"}
+                        size={28}
+                        color={showSettings ? "#007AFF" : "#666"}
+                    />
+                    <Text style={[styles.controlText, showSettings && styles.activeText]}>Setting</Text>
                 </TouchableOpacity>
             </View>
+
+            {/* Detailed Settings Row (Expanded) */}
+            {showSettings && (
+                <View style={styles.settingsDetailRow}>
+                    <TouchableOpacity style={styles.detailButton} onPress={onCycleRepeat}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Ionicons name={getRepeatIcon()} size={20} color="#007AFF" />
+                            <Text style={styles.detailText}>
+                                {repeatMode === 'loop' ? ' Loop' : ` ${repeatMode}x`}
+                            </Text>
+                        </View>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.detailButton} onPress={onCycleDelay}>
+                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                            <Ionicons name="timer-outline" size={20} color="#007AFF" />
+                            <Text style={styles.detailText}> {delaySeconds}s Delay</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+            )}
         </View>
     );
 }
@@ -99,54 +112,48 @@ const styles = StyleSheet.create({
         shadowRadius: 4,
         elevation: 10,
     },
-    settingsRow: {
+    controlsRow: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginBottom: 20,
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: 10,
     },
-    settingButton: {
+    controlButton: {
         alignItems: 'center',
         justifyContent: 'center',
+        width: 70,
     },
-    settingText: {
+    controlText: {
         fontSize: 12,
         color: '#666',
         marginTop: 4,
+        fontWeight: '500',
     },
     activeText: {
         color: '#007AFF',
         fontWeight: 'bold',
     },
-    controlsRow: {
+    settingsDetailRow: {
         flexDirection: 'row',
         justifyContent: 'center',
+        marginTop: 20,
+        paddingTop: 15,
+        borderTopWidth: 1,
+        borderTopColor: '#f0f0f0',
+    },
+    detailButton: {
+        flexDirection: 'row',
         alignItems: 'center',
+        backgroundColor: '#e7f5ff',
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        borderRadius: 20,
+        marginHorizontal: 10,
     },
-    playButton: {
-        // No extra styling needed for the icon itself
-    },
-    iconBadgeContainer: {
-        position: 'relative',
-    },
-    badge: {
-        position: 'absolute',
-        top: -5,
-        right: -8,
-        backgroundColor: '#007AFF',
-        borderRadius: 10,
-        width: 16,
-        height: 16,
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    badgeText: {
-        color: '#fff',
-        fontSize: 10,
-        fontWeight: 'bold',
-    },
-    loadingText: {
-        fontSize: 20,
-        fontWeight: 'bold',
+    detailText: {
         color: '#007AFF',
-    }
+        marginLeft: 5,
+        fontWeight: '600',
+        fontSize: 13,
+    },
 });

@@ -13,7 +13,7 @@ export default function AboutScreen() {
                 <View style={styles.contentContainer}>
                     <View style={styles.logoContainer}>
                         <Image
-                            source={require('../../qulife_logo.jpg')}
+                            source={require('../../qulife_logo_new.png')}
                             style={styles.logo}
                             resizeMode="contain"
                         />

@@ -22,6 +22,20 @@ export default function SettingsScreen() {
         loadVoices();
     }, []);
 
+    const formatVoiceName = (voice) => {
+        // Example raw: "id-id-x-dfz-network", "r-id-x-fis-local"
+        // Return a cleaner name
+        let name = voice.name;
+        if (voice.identifier.includes('network')) {
+            name += " (Online High Quality)";
+        } else if (voice.identifier.includes('local')) {
+            name += " (Offline)";
+        }
+
+        // Clean up common garbage strings if needed
+        return name.replace('id-id-x-', '').replace('r-id-x-', '');
+    };
+
     const increaseFont = () => setFontSize(prev => Math.min(prev + 2, 60));
     const decreaseFont = () => setFontSize(prev => Math.max(prev - 2, 16));
 
@@ -109,7 +123,7 @@ export default function SettingsScreen() {
                                 styles.voiceButtonText,
                                 voiceIdentifier === voice.identifier && styles.voiceButtonTextActive
                             ]}>
-                                {voice.name}
+                                {formatVoiceName(voice)}
                             </Text>
                         </TouchableOpacity>
                     ))}

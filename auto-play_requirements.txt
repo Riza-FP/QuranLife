@@ -1,0 +1,57 @@
+Parameter auto play:
+- mulai ayat
+	- (default-nya ayat yang sedang dibuka)
+	- misal ayat ke 3
+- akhir ayat
+	- (default-nya ayat terakhir di surah tersebut
+	- misal ayat ke 50
+- pengulangan
+	- (default 1 x)
+	- misalnya 3 x, maka auto play akan mengulang 3 x dari ayat 3 sampai 50 tsb
+- jeda antar pengulangan 
+	- dalam detik
+- pengulangan per ayat
+	- misal 2 x. maka per ayat akan diulang 2 x. Ini sama dengan yg sekarang
+- mode mulai
+	- "bacaan ayat"/"terjemahan ayat"
+	- default="terjemahan ayat"
+	- jika "bacaan ayat", maka terjemahan di-play dahulu, kalau "terjemahan ayat" maka play bacaan ayat dulu (seperti sekarang)
+- jeda sebelum bacaan ayat	
+	- dalam detik
+- jeda setelah bacaan ayat	
+	- dalam detik	
+- dibacakan terjemahan
+	- ya/tidak
+- jeda sebelum bacaan terjemahan
+	- dihitung/diperhatikan, jika memang dibacakan
+	- dalam detik	
+- jeda setelah bacaan terjemahan
+	- dihitung/diperhatikan, jika memang dibacakan
+	- dalam detik
+	
+parameter ini bisa disetting di
+- pusat (menu setting di dalam menu lain-lain)
+- di level surah
+	- setting di pusat menjadi default
+	- tetapi jika setting di level surah sudah di save, maka data setting tersimplan untuk surah tersebut
+		- sehingga ketika dibuka lagi, maka angka angka nya akan sesuai setting level surah
+- di setiap akan auto play
+	- setting di surah akan menjadi default, tetapi jika belum ada, akan buka setting level pusat
+	- setting di saat akan auto play ini tidak disimpan di db, hanya di memory, jadi setiap buka menu sebuah surah, akan load lagi dari database untuk level surah
+	- tampilan menu ketika auto play di tap hanya 
+		- mulai ayat
+		- akhir ayat
+		- pengulangan
+		- pengulangan per ayat
+		- detail -> ketika di tap, maka muncul setting untuk angka-angka jeda
+
+	
+note: 	
+- ketika auto play, selalu play bacaan ayat ta'awudz dan basmalah, normal tanpa jeda (tidak ditentukan setting)
+
+menu tap di bawah"
+- auto
+- audio (on/off)
+- terjemahan (on/off)
+- setting (untuk auto play)
+	- sama dengan menu "detail" ketika auto play di-tap
