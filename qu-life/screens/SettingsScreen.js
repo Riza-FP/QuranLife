@@ -1,145 +1,158 @@
 import React, { useState, useEffect } from 'react';
 import * as Speech from 'expo-speech';
-import { View, Text, StyleSheet, Switch, Button, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Switch, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { useSettings } from '../utils/SettingsContext';
 
 export default function SettingsScreen() {
-    const { fontSize, setFontSize, showTranslation, setShowTranslation, translationCode, setTranslationCode, voiceIdentifier, setVoiceIdentifier } = useSettings();
-    const [voices, setVoices] = useState([]);
-
-    useEffect(() => {
-        async function loadVoices() {
-            try {
-                const availableVoices = await Speech.getAvailableVoicesAsync();
-                // Filter for Indonesian voices or general high quality ones if needed
-                // For now, let's show all available Indonesian voices
-                const idVoices = availableVoices.filter(v => v.language.includes('id') || v.language.includes('ID'));
-                setVoices(idVoices);
-            } catch (e) {
-                console.log("Error loading voices", e);
-            }
-        }
-        loadVoices();
-    }, []);
-
-    const formatVoiceName = (voice) => {
-        // Example raw: "id-id-x-dfz-network", "r-id-x-fis-local"
-        // Return a cleaner name
-        let name = voice.name;
-        if (voice.identifier.includes('network')) {
-            name += " (Online High Quality)";
-        } else if (voice.identifier.includes('local')) {
-            name += " (Offline)";
-        }
-
-        // Clean up common garbage strings if needed
-        return name.replace('id-id-x-', '').replace('r-id-x-', '');
-    };
+    const {
+        fontSize, setFontSize,
+        showTranslation, setShowTranslation,
+        translationCode, setTranslationCode,
+        defaultDelay, setDefaultDelay,
+        defaultRepeat, setDefaultRepeat,
+        // New Advanced Settings
+        theme, setTheme,
+        autoPlayOrder, setAutoPlayOrder,
+        autoPlayEnabledTranslation, setAutoPlayEnabledTranslation,
+        translationLanguage, setTranslationLanguage,
+        delayPreArabic, setDelayPreArabic,
+        delayPostArabic, setDelayPostArabic,
+        delayPreTranslation, setDelayPreTranslation,
+        delayPostTranslation, setDelayPostTranslation,
+        delaySequenceLoop, setDelaySequenceLoop
+    } = useSettings();
 
     const increaseFont = () => setFontSize(prev => Math.min(prev + 2, 60));
     const decreaseFont = () => setFontSize(prev => Math.max(prev - 2, 16));
 
-    return (
-        <View style={styles.container}>
-
-
-            <View style={styles.settingItem}>
-                <Text style={styles.label}>Translation Language</Text>
-                <View style={styles.languageContainer}>
-                    <TouchableOpacity
-                        style={[
-                            styles.langButton,
-                            translationCode === 'tr_id' && styles.langButtonActive
-                        ]}
-                        onPress={() => setTranslationCode('tr_id')}
-                    >
-                        <Text style={[
-                            styles.langButtonText,
-                            translationCode === 'tr_id' && styles.langButtonTextActive
-                        ]}>INDONESIAN</Text>
-                    </TouchableOpacity>
-
-
-
-                    <TouchableOpacity
-                        style={[
-                            styles.langButton,
-                            translationCode === 'tr_en' && styles.langButtonActive
-                        ]}
-                        onPress={() => setTranslationCode('tr_en')}
-                    >
-                        <Text style={[
-                            styles.langButtonText,
-                            translationCode === 'tr_en' && styles.langButtonTextActive
-                        ]}>ENGLISH</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
-
-            <View style={styles.settingItem}>
-                <Text style={styles.label}>Arabic Font Size: {fontSize}</Text>
-                <View style={styles.buttonContainer}>
-                    <Button title="-" onPress={decreaseFont} />
-                    <View style={{ width: 20 }} />
-                    <Button title="+" onPress={increaseFont} />
-                </View>
-            </View>
-
-            <View style={styles.settingItem}>
-                <Text style={styles.label}>Suara Terjemahan (Indonesian)</Text>
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                    <TouchableOpacity
-                        style={[
-                            styles.voiceButton,
-                            !voiceIdentifier && styles.voiceButtonActive
-                        ]}
-                        onPress={() => {
-                            setVoiceIdentifier(null);
-                            Speech.speak("Ini suara bawaan sistem", { language: 'id' });
-                        }}
-                    >
-                        <Text style={[
-                            styles.voiceButtonText,
-                            !voiceIdentifier && styles.voiceButtonTextActive
-                        ]}>Default</Text>
-                    </TouchableOpacity>
-
-                    {voices.map((voice) => (
-                        <TouchableOpacity
-                            key={voice.identifier}
-                            style={[
-                                styles.voiceButton,
-                                voiceIdentifier === voice.identifier && styles.voiceButtonActive
-                            ]}
-                            onPress={() => {
-                                setVoiceIdentifier(voice.identifier);
-                                Speech.speak("Ini contoh suara yang dipilih", {
-                                    voice: voice.identifier,
-                                    language: 'id'
-                                });
-                            }}
-                        >
-                            <Text style={[
-                                styles.voiceButtonText,
-                                voiceIdentifier === voice.identifier && styles.voiceButtonTextActive
-                            ]}>
-                                {formatVoiceName(voice)}
-                            </Text>
-                        </TouchableOpacity>
-                    ))}
-
-                    {voices.length === 0 && (
-                        <Text style={styles.hintText}>
-                            Tidak ada suara tambahan ditemukan. Coba install data suara di Pengaturan HP Anda.
-                        </Text>
-                    )}
-                </View>
-            </View>
-
-            <View style={styles.previewContainer}>
-                <Text style={[styles.previewText, { fontSize }]}>بِسْمِ اللَّهِ</Text>
+    const RenderCounter = ({ label, value, setValue, min = 0, max = 20, suffix = 's' }) => (
+        <View style={styles.counterRow}>
+            <Text style={styles.counterLabel}>{label}</Text>
+            <View style={styles.counterControl}>
+                <Button title="-" onPress={() => setValue(p => Math.max(min, p - 1))} />
+                <Text style={styles.counterValue}>{value}{suffix}</Text>
+                <Button title="+" onPress={() => setValue(p => Math.min(max, p + 1))} />
             </View>
         </View>
+    );
+
+    return (
+        <ScrollView style={[styles.container, theme === 'dark' && { backgroundColor: '#121212' }]}>
+
+            {/* SECTION: TAMPILAN */}
+            <View style={styles.section}>
+                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>Tampilan (Visual)</Text>
+
+                <View style={styles.settingItem}>
+                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>Ukuran Font Arab: {fontSize}</Text>
+                    <View style={styles.buttonContainer}>
+                        <Button title="A-" onPress={decreaseFont} />
+                        <View style={{ width: 20 }} />
+                        <Button title="A+" onPress={increaseFont} />
+                    </View>
+                </View>
+
+                {/* Font Preview Moved Here */}
+                <View style={[styles.previewContainer, theme === 'dark' && { backgroundColor: '#333', marginTop: 10 }]}>
+                    <Text style={[styles.previewText, { fontSize }, theme === 'dark' && { color: '#fff' }]}>بِسْمِ اللَّهِ</Text>
+                </View>
+            </View>
+
+            {/* SECTION: AUDIO & TERJEMAHAN */}
+            <View style={styles.section}>
+                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>Audio & Terjemahan</Text>
+
+                <View style={styles.settingItem}>
+                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>Bahasa Terjemahan</Text>
+                    <View style={styles.languageContainer}>
+                        <TouchableOpacity
+                            style={[styles.langButton, translationCode === 'tr_id' && styles.langButtonActive]}
+                            onPress={() => setTranslationCode('tr_id')}
+                        >
+                            <Text style={[styles.langButtonText, translationCode === 'tr_id' && styles.langButtonTextActive]}>Indonesia</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.langButton, translationCode === 'tr_en' && styles.langButtonActive]}
+                            onPress={() => setTranslationCode('tr_en')}
+                        >
+                            <Text style={[styles.langButtonText, translationCode === 'tr_en' && styles.langButtonTextActive]}>English</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View style={styles.settingItem}>
+                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>Bahasa Suara Terjemahan</Text>
+                    <View style={styles.languageContainer}>
+                        <TouchableOpacity
+                            style={[styles.langButton, translationLanguage === 'id' && styles.langButtonActive]}
+                            onPress={() => {
+                                setTranslationLanguage('id');
+                                Speech.speak("Bahasa Indonesia dipilih", { language: 'id' });
+                            }}
+                        >
+                            <Text style={[styles.langButtonText, translationLanguage === 'id' && styles.langButtonTextActive]}>Indonesia</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.langButton, translationLanguage === 'en' && styles.langButtonActive]}
+                            onPress={() => {
+                                setTranslationLanguage('en');
+                                Speech.speak("English language selected", { language: 'en' });
+                            }}
+                        >
+                            <Text style={[styles.langButtonText, translationLanguage === 'en' && styles.langButtonTextActive]}>English</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+
+            {/* SECTION: AUTO-PLAY ADVANCED */}
+            <View style={styles.section}>
+                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>Pengaturan Auto-Play</Text>
+
+                <Text style={[styles.subLabel, theme === 'dark' && { color: '#aaa' }]}>Urutan & Mode Playback</Text>
+                <View style={styles.settingItem}>
+                    <View style={styles.languageContainer}>
+                        <TouchableOpacity
+                            style={[styles.langButton, autoPlayOrder === 'translation_first' && styles.langButtonActive]}
+                            onPress={() => setAutoPlayOrder('translation_first')}
+                        >
+                            <Text style={[styles.langButtonText, autoPlayOrder === 'translation_first' && styles.langButtonTextActive]}>Terjemahan Dulu</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.langButton, autoPlayOrder === 'arabic_first' && styles.langButtonActive]}
+                            onPress={() => setAutoPlayOrder('arabic_first')}
+                        >
+                            <Text style={[styles.langButtonText, autoPlayOrder === 'arabic_first' && styles.langButtonTextActive]}>Ayat (Arab) Dulu</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+
+                <View style={[styles.settingItem, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
+                    <Text style={[styles.label, { marginBottom: 0 }, theme === 'dark' && { color: '#ddd' }]}>Bacakan Terjemahan?</Text>
+                    <Switch
+                        value={autoPlayEnabledTranslation}
+                        onValueChange={setAutoPlayEnabledTranslation}
+                    />
+                </View>
+
+                <Text style={[styles.subLabel, { marginTop: 10 }, theme === 'dark' && { color: '#aaa' }]}>Konfigurasi Jeda (Detik)</Text>
+
+                <RenderCounter label="Jeda Sebelum Ayat" value={delayPreArabic} setValue={setDelayPreArabic} />
+                <RenderCounter label="Jeda Setelah Ayat" value={delayPostArabic} setValue={setDelayPostArabic} />
+
+                {autoPlayEnabledTranslation && (
+                    <>
+                        <RenderCounter label="Jeda Sebelum Terjemahan" value={delayPreTranslation} setValue={setDelayPreTranslation} />
+                        <RenderCounter label="Jeda Setelah Terjemahan" value={delayPostTranslation} setValue={setDelayPostTranslation} />
+                    </>
+                )}
+
+                <RenderCounter label="Jeda Antar Pengulangan" value={delaySequenceLoop} setValue={setDelaySequenceLoop} />
+            </View>
+
+
+            <View style={{ height: 50 }} />
+        </ScrollView>
     );
 }
 
@@ -224,5 +237,52 @@ const styles = StyleSheet.create({
         fontSize: 12,
         color: '#868e96',
         fontStyle: 'italic',
+    },
+    // New Styles for Advanced Settings
+    section: {
+        marginBottom: 30,
+        backgroundColor: 'transparent',
+    },
+    sectionHeader: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 15,
+        color: '#007AFF',
+        borderBottomWidth: 1,
+        borderBottomColor: '#eee',
+        paddingBottom: 5,
+    },
+    subLabel: {
+        fontSize: 14,
+        fontWeight: '600',
+        color: '#666',
+        marginTop: 10,
+        marginBottom: 5,
+        textTransform: 'uppercase',
+    },
+    counterRow: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginVertical: 5,
+        paddingVertical: 5,
+    },
+    counterLabel: {
+        fontSize: 16,
+        color: '#495057',
+    },
+    counterControl: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#f8f9fa',
+        borderRadius: 8,
+        padding: 4,
+    },
+    counterValue: {
+        marginHorizontal: 15,
+        fontSize: 16,
+        fontWeight: 'bold',
+        minWidth: 30,
+        textAlign: 'center',
     },
 });

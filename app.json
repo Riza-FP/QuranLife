@@ -4,7 +4,7 @@
     "slug": "QuLife",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./qulife_logo.jpg",
+    "icon": "./qulife_logo_new.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {

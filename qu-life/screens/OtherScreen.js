@@ -33,6 +33,17 @@ export default function OtherScreen({ navigation }) {
         >
             <View style={styles.container}>
                 <View style={styles.menuContainer}>
+                    <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Settings')}>
+                        <View style={[styles.iconContainer, { backgroundColor: '#e2e6ea' }]}>
+                            <Ionicons name="settings-outline" size={24} color="#6c757d" />
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.menuTitle}>Pengaturan</Text>
+                            <Text style={styles.menuSubtitle}>Konfigurasi global aplikasi</Text>
+                        </View>
+                        <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                    </TouchableOpacity>
+
                     <TouchableOpacity style={styles.menuItem} onPress={handleAboutPress}>
                         <View style={styles.iconContainer}>
                             <Ionicons name="information-circle-outline" size={24} color="#007AFF" />

@@ -13,9 +13,10 @@ export default function PlaybackControlPanel({
     onCycleDelay,
     showTranslation,
     onToggleTranslation,
-    loading
+    loading,
+    translationIcon, // Added prop
+    onOpenSettings // New prop
 }) {
-    const [showSettings, setShowSettings] = React.useState(false);
 
     const getRepeatIcon = () => {
         if (repeatMode === 'loop') return 'infinite';
@@ -53,44 +54,23 @@ export default function PlaybackControlPanel({
                 {/* 3. Terjemahan */}
                 <TouchableOpacity style={styles.controlButton} onPress={onToggleTranslation}>
                     <Ionicons
-                        name={showTranslation ? "language" : "language-outline"}
+                        name={translationIcon || (showTranslation ? "language" : "language-outline")}
                         size={28}
                         color={showTranslation ? "#007AFF" : "#666"}
                     />
                     <Text style={[styles.controlText, showTranslation && styles.activeText]}>Terjemahan</Text>
                 </TouchableOpacity>
 
-                {/* 4. Setting (Toggles Details) */}
-                <TouchableOpacity style={styles.controlButton} onPress={() => setShowSettings(!showSettings)}>
+                {/* 4. Setting (Opens Surah Settings Modal) */}
+                <TouchableOpacity style={styles.controlButton} onPress={onOpenSettings}>
                     <Ionicons
-                        name={showSettings ? "options" : "options-outline"}
+                        name="options-outline"
                         size={28}
-                        color={showSettings ? "#007AFF" : "#666"}
+                        color="#666"
                     />
-                    <Text style={[styles.controlText, showSettings && styles.activeText]}>Setting</Text>
+                    <Text style={styles.controlText}>Setting</Text>
                 </TouchableOpacity>
             </View>
-
-            {/* Detailed Settings Row (Expanded) */}
-            {showSettings && (
-                <View style={styles.settingsDetailRow}>
-                    <TouchableOpacity style={styles.detailButton} onPress={onCycleRepeat}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Ionicons name={getRepeatIcon()} size={20} color="#007AFF" />
-                            <Text style={styles.detailText}>
-                                {repeatMode === 'loop' ? ' Loop' : ` ${repeatMode}x`}
-                            </Text>
-                        </View>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.detailButton} onPress={onCycleDelay}>
-                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                            <Ionicons name="timer-outline" size={20} color="#007AFF" />
-                            <Text style={styles.detailText}> {delaySeconds}s Delay</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            )}
         </View>
     );
 }
