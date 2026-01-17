@@ -294,7 +294,7 @@ export default function VerseViewScreen({ route, navigation }) {
             if (soundRef.current) await soundRef.current.unloadAsync();
 
             const { sound: newSound } = await Audio.Sound.createAsync(
-                { uri: 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3' },
+                require('../../audio/taawudz_basmalah.mp3'),
                 { shouldPlay: true }
             );
             soundRef.current = newSound;
@@ -555,7 +555,9 @@ export default function VerseViewScreen({ route, navigation }) {
             // Fallback defaults for others if needed (though state has them)
             delayPreArabic: localDelayPreArabic,
             delayPreTranslation: localDelayPreTranslation,
-            delayPostTranslation: localDelayPostTranslation
+
+            delayPostTranslation: localDelayPostTranslation,
+            order: localAutoPlayOrder // Fix: Pass order to config so playVerseSequence knows it
         });
         setShowAutoDetail(false);
         setShowAutoModal(true);
