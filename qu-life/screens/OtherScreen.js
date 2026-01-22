@@ -65,6 +65,17 @@ export default function OtherScreen({ navigation }) {
                         </View>
                         <Ionicons name="open-outline" size={20} color="#ccc" />
                     </TouchableOpacity>
+
+                    <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('LogViewer')}>
+                        <View style={[styles.iconContainer, { backgroundColor: '#ffe8e8' }]}>
+                            <Ionicons name="bug-outline" size={24} color="#dc3545" />
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={styles.menuTitle}>Debug Logs</Text>
+                            <Text style={styles.menuSubtitle}>Lihat log error sistem</Text>
+                        </View>
+                        <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                    </TouchableOpacity>
                 </View>
             </View>
         </ImageBackground>

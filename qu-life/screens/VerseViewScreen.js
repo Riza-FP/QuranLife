@@ -13,6 +13,7 @@ const { width } = Dimensions.get('window');
 
 import { useKeepAwake } from 'expo-keep-awake';
 import { useLastPosition } from '../utils/LastPositionContext';
+import Logger from '../utils/Logger'; // Import Logger
 
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Add Import
 
@@ -225,6 +226,7 @@ export default function VerseViewScreen({ route, navigation }) {
                 });
             } catch (e) {
                 console.error("Error configuring audio:", e);
+                Logger.logError("Audio Configuration Failed", e);
             }
         }
         configureAudio();
@@ -308,6 +310,7 @@ export default function VerseViewScreen({ route, navigation }) {
             });
         } catch (error) {
             console.error("Basmalah error", error);
+            Logger.logError("Basmalah Playback Failed", error);
             setIsPreRolling(false);
             if (onFinish) onFinish(); // Fallback to start
         }
@@ -321,55 +324,63 @@ export default function VerseViewScreen({ route, navigation }) {
 
     // Main Sequence Runner (Entry Point for Auto-Play)
     const playVerseSequence = async (index, sessionConfig = null) => {
-        if (!isMounted.current || !autoPlayRef.current) return;
+        try {
+            if (!isMounted.current || !autoPlayRef.current) return;
 
-        // Resolve Config: Use session-specific config if passed, else fallback to Persistent Refs
-        // This ensures recursive calls carry the one-off session config
-        const config = sessionConfig || {
-            startVerse: autoStartVerseRef.current,
-            endVerse: autoEndVerseRef.current,
-            playTranslation: autoPlayEnabledTranslationRef.current || showTranslationRef.current, // Legacy mixed logic fallback
-            delayPreArabic: delayPreArabicRef.current,
-            delayPostArabic: delayPostArabicRef.current,
-            delayPreTranslation: delayPreTranslationRef.current,
-            delayPostTranslation: delayPostTranslationRef.current,
-            delaySequenceLoop: delaySequenceLoopRef.current,
-            // Fallback for order is tricky to pass recursively without object
-            order: autoPlayOrderRef.current
-        };
+            // Resolve Config: Use session-specific config if passed, else fallback to Persistent Refs
+            // This ensures recursive calls carry the one-off session config
+            const config = sessionConfig || {
+                startVerse: autoStartVerseRef.current,
+                endVerse: autoEndVerseRef.current,
+                playTranslation: autoPlayEnabledTranslationRef.current || showTranslationRef.current, // Legacy mixed logic fallback
+                delayPreArabic: delayPreArabicRef.current,
+                delayPostArabic: delayPostArabicRef.current,
+                delayPreTranslation: delayPreTranslationRef.current,
+                delayPostTranslation: delayPostTranslationRef.current,
+                delaySequenceLoop: delaySequenceLoopRef.current,
+                // Fallback for order is tricky to pass recursively without object
+                order: autoPlayOrderRef.current
+            };
 
-        // Update Index & Pager
-        if (index !== currentVerseIndexRef.current) {
-            setCurrentVerseIndex(index);
-            pagerRef.current?.setPage(index);
+            // Update Index & Pager
+            if (index !== currentVerseIndexRef.current) {
+                setCurrentVerseIndex(index);
+                pagerRef.current?.setPage(index);
+            }
+
+            const isTransFirst = config.order === 'translation_first';
+            const enableTrans = config.playTranslation;
+
+            if (isTransFirst && enableTrans) {
+                // 1. Pre Text
+                await waitDelay(config.delayPreTranslation);
+                if (!autoPlayRef.current) return;
+
+                // 2. Speak
+                await speakWait(index);
+                if (!autoPlayRef.current) return;
+
+                // 3. Post Text
+                await waitDelay(config.delayPostTranslation);
+                if (!autoPlayRef.current) return;
+            }
+
+            // 4. Pre Arabic
+            await waitDelay(config.delayPreArabic);
+            if (!autoPlayRef.current) return;
+
+            // 5. Play Arabic (Trigger handlePlaybackFinish when done)
+            // Store the active config in a ref so handlePlaybackFinish can access the current SESSION config
+            // This is a workaround since handlePlaybackFinish is a listener callback
+            activeSessionConfigRef.current = config;
+            await playVerse(index);
+        } catch (e) {
+            Logger.logError(`playVerseSequence Failed at index ${index}`, e);
+            console.error("Sequence Error", e);
+            // Optionally stop auto play or try next
+            setIsPlaying(false);
+            setAutoPlay(false);
         }
-
-        const isTransFirst = config.order === 'translation_first';
-        const enableTrans = config.playTranslation;
-
-        if (isTransFirst && enableTrans) {
-            // 1. Pre Text
-            await waitDelay(config.delayPreTranslation);
-            if (!autoPlayRef.current) return;
-
-            // 2. Speak
-            await speakWait(index);
-            if (!autoPlayRef.current) return;
-
-            // 3. Post Text
-            await waitDelay(config.delayPostTranslation);
-            if (!autoPlayRef.current) return;
-        }
-
-        // 4. Pre Arabic
-        await waitDelay(config.delayPreArabic);
-        if (!autoPlayRef.current) return;
-
-        // 5. Play Arabic (Trigger handlePlaybackFinish when done)
-        // Store the active config in a ref so handlePlaybackFinish can access the current SESSION config
-        // This is a workaround since handlePlaybackFinish is a listener callback
-        activeSessionConfigRef.current = config;
-        playVerse(index);
     };
 
     const activeSessionConfigRef = useRef(null);
@@ -564,39 +575,43 @@ export default function VerseViewScreen({ route, navigation }) {
     };
 
     const startAutoPlaySequence = () => {
-        setShowAutoModal(false);
+        try {
+            setShowAutoModal(false);
 
-        // Update global/local translation state based on config
-        setShowTranslation(autoConfig.playTranslation);
+            // Update global/local translation state based on config
+            setShowTranslation(autoConfig.playTranslation);
 
-        // Update Refs with Session Config
-        autoEndVerseRef.current = autoConfig.endVerse;
-        autoStartVerseRef.current = autoConfig.startVerse;
-        autoSequenceRef.current = autoConfig.sequenceRepeat;
+            // Update Refs with Session Config
+            autoEndVerseRef.current = autoConfig.endVerse;
+            autoStartVerseRef.current = autoConfig.startVerse;
+            autoSequenceRef.current = autoConfig.sequenceRepeat;
 
-        // Also update the Global Refs that the engine often falls back to?
-        // Actually, engine uses `activeSessionConfigRef` mostly, but initial refs help
-        delayPostArabicRef.current = autoConfig.delayPostArabic;
-        delaySequenceLoopRef.current = autoConfig.delaySequenceLoop;
-        autoPlayEnabledTranslationRef.current = autoConfig.playTranslation;
+            // Also update the Global Refs that the engine often falls back to?
+            // Actually, engine uses `activeSessionConfigRef` mostly, but initial refs help
+            delayPostArabicRef.current = autoConfig.delayPostArabic;
+            delaySequenceLoopRef.current = autoConfig.delaySequenceLoop;
+            autoPlayEnabledTranslationRef.current = autoConfig.playTranslation;
 
-        // Apply Verse Repeat temporarily for this session (updates state)
-        setRepeatMode(autoConfig.verseRepeat);
+            // Apply Verse Repeat temporarily for this session (updates state)
+            setRepeatMode(autoConfig.verseRepeat);
 
-        // Set Auto Play ON
-        setAutoPlay(true);
-        // Important: Update ref immediately for synchronous checks
-        autoPlayRef.current = true;
+            // Set Auto Play ON
+            setAutoPlay(true);
+            // Important: Update ref immediately for synchronous checks
+            autoPlayRef.current = true;
 
-        // Find Start Index
-        const startIndex = verses.findIndex(v => v.number === autoConfig.startVerse);
+            // Find Start Index
+            const startIndex = verses.findIndex(v => v.number === autoConfig.startVerse);
 
-        if (startIndex !== -1) {
-            // Trigger Basmalah then Play
-            playBasmalah(() => {
-                // Now: Use sequence runner to respect delays/order
-                playVerseSequence(startIndex, autoConfig);
-            });
+            if (startIndex !== -1) {
+                // Trigger Basmalah then Play
+                playBasmalah(() => {
+                    // Now: Use sequence runner to respect delays/order
+                    playVerseSequence(startIndex, autoConfig);
+                });
+            }
+        } catch (e) {
+            Logger.logError("Start AutoPlay Failed", e);
         }
     };
 

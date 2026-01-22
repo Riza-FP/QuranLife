@@ -7,6 +7,7 @@ import VerseViewScreen from './screens/VerseViewScreen';
 import SettingsScreen from './screens/SettingsScreen';
 import OtherScreen from './screens/OtherScreen';
 import AboutScreen from './screens/AboutScreen';
+import LogViewerScreen from './screens/LogViewerScreen';
 
 const Stack = createStackNavigator();
 
@@ -55,6 +56,11 @@ export default function QuLifeNavigator() {
                 name="About"
                 component={AboutScreen}
                 options={{ title: 'Tentang Aplikasi' }}
+            />
+            <Stack.Screen
+                name="LogViewer"
+                component={LogViewerScreen}
+                options={{ title: 'Debug Logs' }}
             />
         </Stack.Navigator>
     );
