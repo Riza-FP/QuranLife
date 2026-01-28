@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import * as Speech from 'expo-speech';
 import { View, Text, StyleSheet, Switch, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { useSettings } from '../utils/SettingsContext';
+import Logger from '../utils/Logger';
 
 export default function SettingsScreen() {
     const {
@@ -31,22 +32,34 @@ export default function SettingsScreen() {
             try {
                 const voices = await Speech.getAvailableVoicesAsync();
 
+                // DEBUG LOGGING
+                const voiceIds = voices.map(v => `${v.language} (${v.name})`).join(', ');
+                Logger.logInfo(`TTS Check: Found ${voices.length} voices: ${voiceIds}`);
+
                 // Detailed Check
                 const hasId = voices.some(v => v.language.startsWith('id'));
                 const hasEn = voices.some(v => v.language.startsWith('en'));
 
-                setIdAvailable(hasId);
-                setEnAvailable(hasEn);
+                // Condition: Only flag as "missing" if we actually found SOME voices (API is working)
+                // If voices.length === 0, the API is likely failing on this device, so we give benefit of doubt.
+                const apiWorking = voices.length > 0;
+
+                const idMissing = apiWorking && !hasId;
+                const enMissing = apiWorking && !hasEn;
+
+                if (idMissing) Logger.logInfo("TTS Warning: ID voice missing from populated list");
+                if (enMissing) Logger.logInfo("TTS Warning: EN voice missing from populated list");
 
                 // Update missingLanguage based on CURRENT selection
-                const targetCurrent = translationLanguage === 'en' ? hasEn : hasId;
-                setMissingLanguage(!targetCurrent);
+                const targetMissing = translationLanguage === 'en' ? enMissing : idMissing;
+                setMissingLanguage(targetMissing);
 
             } catch (e) {
                 console.error("Failed to check voices", e);
+                Logger.logError("TTS Check Failed", e);
             }
         })();
-    }, [translationLanguage]); // Re-check if selection changes (to update missingLanguage flag)
+    }, [translationLanguage]); // Re-check if selection changes
 
     const increaseFont = () => setFontSize(prev => Math.min(prev + 2, 60));
     const decreaseFont = () => setFontSize(prev => Math.max(prev - 2, 16));
@@ -113,30 +126,28 @@ export default function SettingsScreen() {
                             style={[
                                 styles.langButton,
                                 translationLanguage === 'id' && styles.langButtonActive,
-                                !idAvailable && { opacity: 0.5 }
                             ]}
                             onPress={() => {
                                 setTranslationLanguage('id');
-                                if (idAvailable) Speech.speak("Bahasa Indonesia dipilih", { language: 'id' });
+                                Speech.speak("Bahasa Indonesia dipilih", { language: 'id' });
                             }}
                         >
                             <Text style={[styles.langButtonText, translationLanguage === 'id' && styles.langButtonTextActive]}>
-                                Indonesia {idAvailable ? '' : '(? N/A)'}
+                                Indonesia
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[
                                 styles.langButton,
                                 translationLanguage === 'en' && styles.langButtonActive,
-                                !enAvailable && { opacity: 0.5 }
                             ]}
                             onPress={() => {
                                 setTranslationLanguage('en');
-                                if (enAvailable) Speech.speak("English language selected", { language: 'en' });
+                                Speech.speak("English language selected", { language: 'en' });
                             }}
                         >
                             <Text style={[styles.langButtonText, translationLanguage === 'en' && styles.langButtonTextActive]}>
-                                English {enAvailable ? '' : '(? N/A)'}
+                                English
                             </Text>
                         </TouchableOpacity>
                     </View>
@@ -170,12 +181,11 @@ export default function SettingsScreen() {
                     <Switch
                         value={autoPlayEnabledTranslation}
                         onValueChange={setAutoPlayEnabledTranslation}
-                        disabled={missingLanguage} // Disable if language missing
                     />
                 </View>
                 {missingLanguage && (
-                    <Text style={{ color: '#ff4444', fontSize: 12, marginLeft: 15, marginBottom: 10 }}>
-                        ⚠ Suara Bahasa Indonesia tidak ditemukan di pengaturan HP Anda.
+                    <Text style={{ color: '#ffcc00', fontSize: 12, marginLeft: 15, marginBottom: 10 }}>
+                        ⚠ Bahasa {translationLanguage === 'id' ? 'Indonesia' : 'Inggris'} tidak terdeteksi di pengaturan HP (mungkin perlu install).
                     </Text>
                 )}
 
