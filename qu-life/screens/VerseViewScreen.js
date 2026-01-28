@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useLayoutEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Modal, FlatList, ScrollView, ImageBackground, Switch } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Modal, FlatList, ScrollView, ImageBackground, Switch, ToastAndroid, Platform, Alert } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import VersePager from '../components/VersePager';
 import PlaybackControlPanel from '../components/PlaybackControlPanel';
@@ -470,6 +470,9 @@ export default function VerseViewScreen({ route, navigation }) {
     };
 
 
+    // Track if we've already warned about TTS failure to avoid spamming
+    const hasShownTTSWarning = useRef(false);
+
     const speakWait = (index) => {
         return new Promise((resolve) => {
             const verse = verses[index];
@@ -479,10 +482,33 @@ export default function VerseViewScreen({ route, navigation }) {
                 language: translationLanguage, // Use selected language (id/en)
                 onDone: () => resolve(true),
                 onStopped: () => resolve(true),
-                onError: () => resolve(true)
+                onError: (e) => {
+                    Logger.logError(`TTS Playback Error for Verse ${index}`, e);
+                    resolve(true);
+                }
             };
 
-            Speech.speak(text, options);
+            try {
+                Speech.speak(text, options);
+            } catch (e) {
+                Logger.logError(`TTS Synchronous Error for Verse ${index}`, e);
+
+                // Show user-friendly warning ONCE
+                if (!hasShownTTSWarning.current) {
+                    console.warn("TTS Failed, skipping translation audio.");
+                    hasShownTTSWarning.current = true;
+
+                    const langName = translationLanguage === 'en' ? "English" : "Bahasa Indonesia";
+                    const msg = `Suara ${langName} tidak tersedia. Melewati audio terjemahan.`;
+                    if (Platform.OS === 'android') {
+                        ToastAndroid.show(msg, ToastAndroid.LONG);
+                    } else {
+                        // Debounce alert or just log for iOS to avoid interruption
+                        // Alert.alert("Suara Tidak Tersedia", msg);
+                    }
+                }
+                resolve(true); // Immediate resolve to continue sequence
+            }
         });
     };
 

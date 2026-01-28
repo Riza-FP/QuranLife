@@ -22,6 +22,32 @@ export default function SettingsScreen() {
         delaySequenceLoop, setDelaySequenceLoop
     } = useSettings();
 
+    const [missingLanguage, setMissingLanguage] = useState(false);
+    const [idAvailable, setIdAvailable] = useState(true);
+    const [enAvailable, setEnAvailable] = useState(true);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const voices = await Speech.getAvailableVoicesAsync();
+
+                // Detailed Check
+                const hasId = voices.some(v => v.language.startsWith('id'));
+                const hasEn = voices.some(v => v.language.startsWith('en'));
+
+                setIdAvailable(hasId);
+                setEnAvailable(hasEn);
+
+                // Update missingLanguage based on CURRENT selection
+                const targetCurrent = translationLanguage === 'en' ? hasEn : hasId;
+                setMissingLanguage(!targetCurrent);
+
+            } catch (e) {
+                console.error("Failed to check voices", e);
+            }
+        })();
+    }, [translationLanguage]); // Re-check if selection changes (to update missingLanguage flag)
+
     const increaseFont = () => setFontSize(prev => Math.min(prev + 2, 60));
     const decreaseFont = () => setFontSize(prev => Math.max(prev - 2, 16));
 
@@ -84,22 +110,34 @@ export default function SettingsScreen() {
                     <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>Bahasa Suara Terjemahan</Text>
                     <View style={styles.languageContainer}>
                         <TouchableOpacity
-                            style={[styles.langButton, translationLanguage === 'id' && styles.langButtonActive]}
+                            style={[
+                                styles.langButton,
+                                translationLanguage === 'id' && styles.langButtonActive,
+                                !idAvailable && { opacity: 0.5 }
+                            ]}
                             onPress={() => {
                                 setTranslationLanguage('id');
-                                Speech.speak("Bahasa Indonesia dipilih", { language: 'id' });
+                                if (idAvailable) Speech.speak("Bahasa Indonesia dipilih", { language: 'id' });
                             }}
                         >
-                            <Text style={[styles.langButtonText, translationLanguage === 'id' && styles.langButtonTextActive]}>Indonesia</Text>
+                            <Text style={[styles.langButtonText, translationLanguage === 'id' && styles.langButtonTextActive]}>
+                                Indonesia {idAvailable ? '' : '(? N/A)'}
+                            </Text>
                         </TouchableOpacity>
                         <TouchableOpacity
-                            style={[styles.langButton, translationLanguage === 'en' && styles.langButtonActive]}
+                            style={[
+                                styles.langButton,
+                                translationLanguage === 'en' && styles.langButtonActive,
+                                !enAvailable && { opacity: 0.5 }
+                            ]}
                             onPress={() => {
                                 setTranslationLanguage('en');
-                                Speech.speak("English language selected", { language: 'en' });
+                                if (enAvailable) Speech.speak("English language selected", { language: 'en' });
                             }}
                         >
-                            <Text style={[styles.langButtonText, translationLanguage === 'en' && styles.langButtonTextActive]}>English</Text>
+                            <Text style={[styles.langButtonText, translationLanguage === 'en' && styles.langButtonTextActive]}>
+                                English {enAvailable ? '' : '(? N/A)'}
+                            </Text>
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -132,8 +170,14 @@ export default function SettingsScreen() {
                     <Switch
                         value={autoPlayEnabledTranslation}
                         onValueChange={setAutoPlayEnabledTranslation}
+                        disabled={missingLanguage} // Disable if language missing
                     />
                 </View>
+                {missingLanguage && (
+                    <Text style={{ color: '#ff4444', fontSize: 12, marginLeft: 15, marginBottom: 10 }}>
+                        ⚠ Suara Bahasa Indonesia tidak ditemukan di pengaturan HP Anda.
+                    </Text>
+                )}
 
                 <Text style={[styles.subLabel, { marginTop: 10 }, theme === 'dark' && { color: '#aaa' }]}>Konfigurasi Jeda (Detik)</Text>
 
