@@ -6,6 +6,7 @@ const SPECIAL_ITEMS = [
     { id: '1', title: 'Al-Kahfi', subtitle: 'Ayat 1-10', surahCode: '18', start: 1, end: 10, number: 18 },
     { id: '2', title: 'Ali \'Imran', subtitle: 'Ayat 190-200', surahCode: '3', start: 190, end: 200, number: 3 },
     { id: '3', title: 'Al-Baqarah', subtitle: 'Ayat 285-286', surahCode: '2', start: 285, end: 286, number: 2 },
+    { id: '4', title: 'Ayat Kursi', subtitle: 'Al-Baqarah Ayat 255', surahCode: '2', start: 255, end: 255, number: 2 },
 ];
 
 export default function SpecialListScreen({ navigation }) {

@@ -327,31 +327,35 @@ export default function VerseViewScreen({ route, navigation }) {
         try {
             if (!isMounted.current || !autoPlayRef.current) return;
 
-            // Resolve Config: Use session-specific config if passed, else fallback to Persistent Refs
-            // This ensures recursive calls carry the one-off session config
+            // Resolve Config
             const config = sessionConfig || {
                 startVerse: autoStartVerseRef.current,
                 endVerse: autoEndVerseRef.current,
-                playTranslation: autoPlayEnabledTranslationRef.current || showTranslationRef.current, // Legacy mixed logic fallback
+                playTranslation: autoPlayEnabledTranslationRef.current || showTranslationRef.current,
                 delayPreArabic: delayPreArabicRef.current,
                 delayPostArabic: delayPostArabicRef.current,
                 delayPreTranslation: delayPreTranslationRef.current,
                 delayPostTranslation: delayPostTranslationRef.current,
                 delaySequenceLoop: delaySequenceLoopRef.current,
-                // Fallback for order is tricky to pass recursively without object
-                order: autoPlayOrderRef.current
+                order: autoPlayOrderRef.current,
+                sequenceRepeat: autoSequenceRef.current, // Ensure sequenceRepeat is in config
+                verseRepeat: repeatModeRef.current // Ensure verseRepeat is in config
             };
 
             // Update Index & Pager
             if (index !== currentVerseIndexRef.current) {
+                // New Verse Starting - Reset Repeat Counter
+                repeatCounter.current = 0;
                 setCurrentVerseIndex(index);
                 pagerRef.current?.setPage(index);
             }
 
             const isTransFirst = config.order === 'translation_first';
             const enableTrans = config.playTranslation;
+            const currentRepeat = repeatCounter.current;
 
-            if (isTransFirst && enableTrans) {
+            // 1. Translation First Logic (Only play on first iteration of verse)
+            if (isTransFirst && enableTrans && currentRepeat === 0) {
                 // 1. Pre Text
                 await waitDelay(config.delayPreTranslation);
                 if (!autoPlayRef.current) return;
@@ -365,19 +369,16 @@ export default function VerseViewScreen({ route, navigation }) {
                 if (!autoPlayRef.current) return;
             }
 
-            // 4. Pre Arabic
+            // 4. Pre Arabic (Always play for every repetition)
             await waitDelay(config.delayPreArabic);
             if (!autoPlayRef.current) return;
 
-            // 5. Play Arabic (Trigger handlePlaybackFinish when done)
-            // Store the active config in a ref so handlePlaybackFinish can access the current SESSION config
-            // This is a workaround since handlePlaybackFinish is a listener callback
+            // 5. Play Arabic
             activeSessionConfigRef.current = config;
             await playVerse(index);
         } catch (e) {
             Logger.logError(`playVerseSequence Failed at index ${index}`, e);
             console.error("Sequence Error", e);
-            // Optionally stop auto play or try next
             setIsPlaying(false);
             setAutoPlay(false);
         }
@@ -400,7 +401,8 @@ export default function VerseViewScreen({ route, navigation }) {
             delaySequenceLoop: delaySequenceLoopRef.current,
             order: autoPlayOrderRef.current,
             endVerse: autoEndVerseRef.current,
-            sequenceRepeat: autoSequenceRef.current
+            sequenceRepeat: autoSequenceRef.current,
+            verseRepeat: repeatModeRef.current
         };
 
         if (!auto) return;
@@ -409,11 +411,26 @@ export default function VerseViewScreen({ route, navigation }) {
         await waitDelay(config.delayPostArabic);
         if (!autoPlayRef.current) return;
 
-        // 7. Check if we need to play Translation (search: Arabic First)
+        // Increment Repeat Counter
+        repeatCounter.current += 1;
+        const currentMode = config.verseRepeat;
+        const isLoop = currentMode === 'loop';
+        const targetRepeats = isLoop ? Infinity : currentMode;
+        const isLastRepetition = repeatCounter.current >= targetRepeats;
+
+        // 7. Arabic First Logic (Only play translation on LAST repetition)
         const isArabicFirst = config.order !== 'translation_first';
         const enableTrans = config.playTranslation;
 
-        if (isArabicFirst && enableTrans) {
+        // Check if we should play translation NOW (Arabic First, and finished all Arabic repeats)
+        // BUT wait, if it's LOOP mode, when is "Last"? Loop never ends until manual stop.
+        // Rule: In Loop mode, maybe play translation every time? Or only once?
+        // User request: "Translation surely only once". So in Loop, maybe once at start or end?
+        // Let's assume standard N repeats for now based on user request "3x".
+        // In Loop mode, likely play Arabic forever. Translation might never play if "End", or play once if "Start".
+
+        // If Arabic First AND Finished Repeats (not loop) -> Play Translation
+        if (isArabicFirst && enableTrans && isLastRepetition && !isLoop) {
             await waitDelay(config.delayPreTranslation);
             if (!autoPlayRef.current) return;
 
@@ -424,44 +441,39 @@ export default function VerseViewScreen({ route, navigation }) {
             if (!autoPlayRef.current) return;
         }
 
-        // 8. Logic Complete -> Decide Next Step
-        repeatCounter.current += 1;
-
-        // Note: 'repeatMode' is updated in state for session, but access via Ref for consistency in engine
-        const currentMode = repeatModeRef.current;
-
-        if (currentMode === 'loop' || repeatCounter.current < currentMode) {
-            playVerseSequence(index, config); // Recurse with config
+        // 8. Decide Next Step
+        if (!isLastRepetition) {
+            // Repeat Verse (Arabic Only cycle)
+            playVerseSequence(index, config);
         } else {
+            // Next Verse
             const currentNumber = verses[index].number;
             const endNumber = config.endVerse || verses[verses.length - 1].number;
 
             if (currentNumber >= endNumber || index >= verses.length - 1) {
-                // End of Range
-                let seqRepeat = config.sequenceRepeat; // Use local var from config, fallback to ref if loose
-
-                // If config was constructed from refs, seqRepeat might be undefined in object, check Ref
+                // End of Range -> Sequence Repeat Logic
+                let seqRepeat = config.sequenceRepeat;
+                // ... (Existing Sequence Repeat Logic) ... 
+                // Simplify for readability in replacement
                 if (seqRepeat === undefined) seqRepeat = autoSequenceRef.current;
 
                 if (seqRepeat > 1 || seqRepeat === 'loop') {
                     if (seqRepeat !== 'loop') {
-                        // Update the Ref/Config counter for next run? 
-                        // Since config is immutable in this scope, we must check Ref for mutable logic effectively
-                        // For Session, decrementing a variable in a closure object is hard.
-                        // Simplified: Update the Global Ref used for counting, even if sourced from Session Config
-                        autoSequenceRef.current -= 1;
+                        autoSequenceRef.current -= 1; // Decrement global ref
                     }
-
                     const startNumber = autoStartVerseRef.current || verses[0].number;
                     const startIndex = verses.findIndex(v => v.number === startNumber);
 
                     if (startIndex !== -1) {
                         await waitDelay(config.delaySequenceLoop);
-                        if (autoPlayRef.current) playVerseSequence(startIndex, config);
+                        if (autoPlayRef.current) {
+                            // Reset for new sequence
+                            repeatCounter.current = 0;
+                            playVerseSequence(startIndex, config);
+                        }
                         return;
                     }
                 }
-                // Stop if finished sequence
                 setAutoPlay(false);
             } else {
                 playVerseSequence(index + 1, config);
@@ -537,12 +549,19 @@ export default function VerseViewScreen({ route, navigation }) {
             setLoadingAudio(true);
             setIsPlaying(true);
             const verse = verses[index];
-            const response = await fetch(`https://api.alquran.cloud/v1/ayah/${surah.nomor}:${verse.number}/ar.alafasy`);
+            const metaUrl = `https://api.alquran.cloud/v1/ayah/${surah.nomor}:${verse.number}/ar.alafasy`;
+            console.log("Fetching Audio Meta:", metaUrl);
+            Logger.logInfo(`Fetching Audio: ${metaUrl}`);
+
+            const response = await fetch(metaUrl);
             const data = await response.json();
 
             if (data.code === 200 && isMounted.current) {
+                const audioUrl = data.data.audio;
+                console.log("Loading Audio Stream:", audioUrl);
+
                 const { sound: newSound } = await Audio.Sound.createAsync(
-                    { uri: data.data.audio },
+                    { uri: audioUrl },
                     { shouldPlay: false }
                 );
 
@@ -558,13 +577,21 @@ export default function VerseViewScreen({ route, navigation }) {
                 });
                 await newSound.playAsync();
             } else {
+                console.error("Audio Meta Fetch Failed:", data);
+                Logger.logError("Audio Fetch API Error", data);
                 setLoadingAudio(false);
                 setIsPlaying(false);
+                Alert.alert("Gagal Memuat Audio", "Terjadi kesalahan saat memuat data audio dari server.");
             }
         } catch (error) {
-            console.error("Error playing sound:", error);
+            console.error("Error playing sound catch:", error);
+            Logger.logError("Audio Network/Playback Error", error);
             setLoadingAudio(false);
             setIsPlaying(false);
+
+            if (error.message.includes('Network request failed')) {
+                ToastAndroid.show("Koneksi Error: Gagal menghubungi server audio.", ToastAndroid.LONG);
+            }
         }
     }
 
@@ -964,7 +991,6 @@ export default function VerseViewScreen({ route, navigation }) {
                                 <TouchableOpacity
                                     style={styles.startButton}
                                     onPress={async () => {
-                                        // Save Logic
                                         try {
                                             const settingsToSave = {
                                                 autoPlayOrder: localAutoPlayOrder,
@@ -987,8 +1013,47 @@ export default function VerseViewScreen({ route, navigation }) {
                                     <Text style={styles.startButtonText}>Simpan Pengaturan Surah</Text>
                                 </TouchableOpacity>
 
+                                {/* Reset Button */}
+                                <TouchableOpacity
+                                    style={[styles.startButton, { marginTop: 10, backgroundColor: '#8e8e93' }]}
+                                    onPress={async () => {
+                                        Alert.alert(
+                                            "Reset Pengaturan",
+                                            "Kembalikan pengaturan surah ini ke standar global?",
+                                            [
+                                                { text: "Batal", style: "cancel" },
+                                                {
+                                                    text: "Reset", onPress: async () => {
+                                                        try {
+                                                            const key = `surah_settings_${surah.kode}`;
+                                                            await AsyncStorage.removeItem(key);
+                                                            // Restore Globals
+                                                            setLocalAutoPlayOrder(globalAutoPlayOrder);
+                                                            setLocalEnabledTranslation(globalEnabledTranslation);
+                                                            setLocalDelayPreArabic(globalDelayPreArabic);
+                                                            setLocalDelayPostArabic(globalDelayPostArabic);
+                                                            setLocalDelayPreTranslation(globalDelayPreTranslation);
+                                                            setLocalDelayPostTranslation(globalDelayPostTranslation);
+                                                            setLocalDelaySequenceLoop(globalDelaySequenceLoop);
+                                                            setDelaySeconds(defaultDelay);
+                                                            setRepeatMode(defaultRepeat);
+
+                                                            ToastAndroid.show("Pengaturan di-reset ke Global", ToastAndroid.SHORT);
+                                                            setShowSurahSettings(false);
+                                                        } catch (e) {
+                                                            console.error("Reset failed", e);
+                                                        }
+                                                    }
+                                                }
+                                            ]
+                                        );
+                                    }}
+                                >
+                                    <Text style={styles.startButtonText}>Reset ke Global</Text>
+                                </TouchableOpacity>
+
                                 {/* Batal Button */}
-                                <TouchableOpacity style={[styles.startButton, { marginTop: 10, backgroundColor: '#ff4444' }]} onPress={() => setShowSurahSettings(false)}>
+                                <TouchableOpacity style={[styles.startButton, { marginTop: 10, backgroundColor: '#ff4444', marginBottom: 20 }]} onPress={() => setShowSurahSettings(false)}>
                                     <Text style={styles.startButtonText}>Batal</Text>
                                 </TouchableOpacity>
                                 <View style={{ height: 20 }} />
@@ -1067,6 +1132,25 @@ export default function VerseViewScreen({ route, navigation }) {
                                     <View style={styles.detailContainer}>
                                         <View style={styles.detailHeader}>
                                             <Text style={styles.detailTitle}>Pengaturan Sesi Ini</Text>
+                                        </View>
+
+                                        {/* Playback Order */}
+                                        <View style={styles.configRow}>
+                                            <Text style={[styles.configLabel, { fontSize: 14 }]}>Urutan</Text>
+                                            <View style={{ flexDirection: 'row' }}>
+                                                <TouchableOpacity
+                                                    style={[styles.miniButton, autoConfig.order === 'translation_first' && styles.miniButtonActive]}
+                                                    onPress={() => setAutoConfig(p => ({ ...p, order: 'translation_first' }))}
+                                                >
+                                                    <Text style={[styles.miniButtonText, autoConfig.order === 'translation_first' && { color: '#fff' }]}>Terj. Dulu</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity
+                                                    style={[styles.miniButton, autoConfig.order === 'arabic_first' && styles.miniButtonActive, { marginLeft: 5 }]}
+                                                    onPress={() => setAutoConfig(p => ({ ...p, order: 'arabic_first' }))}
+                                                >
+                                                    <Text style={[styles.miniButtonText, autoConfig.order === 'arabic_first' && { color: '#fff' }]}>Ayat Dulu</Text>
+                                                </TouchableOpacity>
+                                            </View>
                                         </View>
 
                                         {/* Play Translation Toggle */}
@@ -1201,42 +1285,7 @@ export default function VerseViewScreen({ route, navigation }) {
                     </TouchableOpacity>
                 </Modal>
 
-                {/* Bottom Settings Modal (Detail/Jeda Only) */}
-                <Modal
-                    animationType="slide"
-                    transparent={true}
-                    visible={showBottomSettings}
-                    onRequestClose={() => setShowBottomSettings(false)}
-                >
-                    <TouchableOpacity
-                        style={styles.modalOverlay}
-                        activeOpacity={1}
-                        onPress={() => setShowBottomSettings(false)}
-                    >
-                        <View style={[styles.modalContent, { position: 'absolute', bottom: 20 }]}>
-                            <Text style={styles.modalTitle}>Pengaturan Jeda & Audio</Text>
 
-                            {/* Reusing ConfigCounter for Local Surah Settings */}
-                            <Text style={[styles.modalSubtitle, { marginTop: 5, marginBottom: 15 }]}>Konfigurasi Jeda (Detik)</Text>
-
-                            <ConfigCounter label="Sebelum Ayat" value={localDelayPreArabic} setValue={setLocalDelayPreArabic} />
-                            <ConfigCounter label="Setelah Ayat" value={localDelayPostArabic} setValue={setLocalDelayPostArabic} />
-
-                            {localEnabledTranslation && (
-                                <>
-                                    <ConfigCounter label="Sebelum Terj." value={localDelayPreTranslation} setValue={setLocalDelayPreTranslation} />
-                                    <ConfigCounter label="Setelah Terj." value={localDelayPostTranslation} setValue={setLocalDelayPostTranslation} />
-                                </>
-                            )}
-
-                            <ConfigCounter label="Antar Pengulangan" value={localDelaySequenceLoop} setValue={setLocalDelaySequenceLoop} />
-
-                            <TouchableOpacity style={styles.startButton} onPress={() => setShowBottomSettings(false)}>
-                                <Text style={styles.startButtonText}>Tutup</Text>
-                            </TouchableOpacity>
-                        </View>
-                    </TouchableOpacity>
-                </Modal>
             </SafeAreaView>
         </ImageBackground >
     );

@@ -32,10 +32,6 @@ export default function SettingsScreen() {
             try {
                 const voices = await Speech.getAvailableVoicesAsync();
 
-                // DEBUG LOGGING
-                const voiceIds = voices.map(v => `${v.language} (${v.name})`).join(', ');
-                Logger.logInfo(`TTS Check: Found ${voices.length} voices: ${voiceIds}`);
-
                 // Detailed Check
                 const hasId = voices.some(v => v.language.startsWith('id'));
                 const hasEn = voices.some(v => v.language.startsWith('en'));
@@ -46,9 +42,6 @@ export default function SettingsScreen() {
 
                 const idMissing = apiWorking && !hasId;
                 const enMissing = apiWorking && !hasEn;
-
-                if (idMissing) Logger.logInfo("TTS Warning: ID voice missing from populated list");
-                if (enMissing) Logger.logInfo("TTS Warning: EN voice missing from populated list");
 
                 // Update missingLanguage based on CURRENT selection
                 const targetMissing = translationLanguage === 'en' ? enMissing : idMissing;

@@ -4,8 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 export default function OtherScreen({ navigation }) {
 
-    // Dummy link for now
-    const REPORT_FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSe_dummy_link/viewform";
+    const REPORT_FORM_URL = "https://forms.gle/fd3n5n3UN85wF7oS7";
 
     const handleReportPress = async () => {
         try {
