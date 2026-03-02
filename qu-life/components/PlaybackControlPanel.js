@@ -30,7 +30,14 @@ export default function PlaybackControlPanel({
                 </TouchableOpacity>
 
                 {/* 2. Audio (Center - Big Play Button) */}
-                <TouchableOpacity style={styles.mainPlayButton} onPress={onPlayPause} disabled={loading}>
+                <TouchableOpacity
+                    style={[
+                        styles.mainPlayButton,
+                        autoPlay && { backgroundColor: '#8A2BE2', shadowColor: '#8A2BE2' } // Purple when Auto Play is ON
+                    ]}
+                    onPress={onPlayPause}
+                    disabled={loading}
+                >
                     {loading ? (
                         <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 16 }}>...</Text>
                     ) : (
