@@ -1,18 +1,35 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
-import { getSurahList, getSurahByCode } from '../utils/DataLoader';
+import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground, TextInput } from 'react-native';
+import { getSurahList } from '../utils/DataLoader';
+import { useSettings } from '../utils/SettingsContext';
+import { translate } from '../utils/i18n';
+import { Ionicons } from '@expo/vector-icons';
 
 export default function SurahListScreen({ navigation }) {
     const [surahs, setSurahs] = useState([]);
-    const hasAutoRestored = useRef(false);
+    const [filteredSurahs, setFilteredSurahs] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
+    const { appLanguage } = useSettings();
 
     useEffect(() => {
-        setSurahs(getSurahList());
+        const fullList = getSurahList();
+        setSurahs(fullList);
+        setFilteredSurahs(fullList);
     }, []);
 
-    useEffect(() => {
-        setSurahs(getSurahList());
-    }, []);
+    const handleSearch = (text) => {
+        setSearchQuery(text);
+        if (text) {
+            const lowerText = text.toLowerCase();
+            const filtered = surahs.filter(surah => 
+                surah.nama.toLowerCase().includes(lowerText) || 
+                String(surah.nomor).includes(lowerText)
+            );
+            setFilteredSurahs(filtered);
+        } else {
+            setFilteredSurahs(surahs);
+        }
+    };
 
     const renderItem = ({ item }) => (
         <TouchableOpacity
@@ -24,7 +41,7 @@ export default function SurahListScreen({ navigation }) {
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.name}>{item.nama}</Text>
-                <Text style={styles.details}>{item.jumlah_ayat} Ayat</Text>
+                <Text style={styles.details}>{item.jumlah_ayat} {translate('surahList.verseCount', appLanguage)}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -36,8 +53,18 @@ export default function SurahListScreen({ navigation }) {
             resizeMode="cover"
         >
             <View style={styles.container}>
+                <View style={styles.searchContainer}>
+                    <Ionicons name="search" size={20} color="#868e96" style={styles.searchIcon} />
+                    <TextInput
+                        style={styles.searchInput}
+                        placeholder={translate('surahList.searchPlaceholder', appLanguage)}
+                        value={searchQuery}
+                        onChangeText={handleSearch}
+                        placeholderTextColor="#868e96"
+                    />
+                </View>
                 <FlatList
-                    data={surahs}
+                    data={filteredSurahs}
                     renderItem={renderItem}
                     keyExtractor={(item) => item.kode}
                     contentContainerStyle={styles.listContent}
@@ -56,6 +83,29 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'rgba(255,255,255,0.5)', // Adjusted transparency
+    },
+    searchContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        marginHorizontal: 16,
+        marginTop: 16,
+        paddingHorizontal: 12,
+        borderRadius: 8,
+        elevation: 2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 1 },
+        shadowOpacity: 0.2,
+        shadowRadius: 1.41,
+    },
+    searchIcon: {
+        marginRight: 8,
+    },
+    searchInput: {
+        flex: 1,
+        height: 40,
+        fontSize: 16,
+        color: '#212529',
     },
     listContent: {
         padding: 16,

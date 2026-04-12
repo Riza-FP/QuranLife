@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ImageBackground, Linking, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSettings } from '../utils/SettingsContext';
+import { translate } from '../utils/i18n';
 
 export default function OtherScreen({ navigation }) {
+    const { appLanguage } = useSettings();
 
     const REPORT_FORM_URL = "https://forms.gle/fd3n5n3UN85wF7oS7";
 
@@ -13,10 +16,10 @@ export default function OtherScreen({ navigation }) {
             if (supported) {
                 await Linking.openURL(REPORT_FORM_URL);
             } else {
-                Alert.alert("Error", "Tidak dapat membuka link laporan.");
+                Alert.alert("Error", translate('other.errorNoLink', appLanguage));
             }
         } catch (error) {
-            Alert.alert("Error", "Terjadi kesalahan saat membuka link.");
+            Alert.alert("Error", translate('other.errorOpenLink', appLanguage));
         }
     };
 
@@ -37,8 +40,8 @@ export default function OtherScreen({ navigation }) {
                             <Ionicons name="settings-outline" size={24} color="#6c757d" />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={styles.menuTitle}>Pengaturan</Text>
-                            <Text style={styles.menuSubtitle}>Konfigurasi global aplikasi</Text>
+                            <Text style={styles.menuTitle}>{translate('other.settings', appLanguage)}</Text>
+                            <Text style={styles.menuSubtitle}>{translate('other.settingsSubtitle', appLanguage)}</Text>
                         </View>
                         <Ionicons name="chevron-forward" size={20} color="#ccc" />
                     </TouchableOpacity>
@@ -48,8 +51,8 @@ export default function OtherScreen({ navigation }) {
                             <Ionicons name="information-circle-outline" size={24} color="#007AFF" />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={styles.menuTitle}>Tentang</Text>
-                            <Text style={styles.menuSubtitle}>Informasi aplikasi</Text>
+                            <Text style={styles.menuTitle}>{translate('other.about', appLanguage)}</Text>
+                            <Text style={styles.menuSubtitle}>{translate('other.aboutSubtitle', appLanguage)}</Text>
                         </View>
                         <Ionicons name="chevron-forward" size={20} color="#ccc" />
                     </TouchableOpacity>
@@ -59,8 +62,8 @@ export default function OtherScreen({ navigation }) {
                             <Ionicons name="warning-outline" size={24} color="#ffc107" />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={styles.menuTitle}>Laporan</Text>
-                            <Text style={styles.menuSubtitle}>Laporkan kesalahan atau usulan</Text>
+                            <Text style={styles.menuTitle}>{translate('other.report', appLanguage)}</Text>
+                            <Text style={styles.menuSubtitle}>{translate('other.reportSubtitle', appLanguage)}</Text>
                         </View>
                         <Ionicons name="open-outline" size={20} color="#ccc" />
                     </TouchableOpacity>
@@ -71,7 +74,7 @@ export default function OtherScreen({ navigation }) {
                         </View>
                         <View style={styles.textContainer}>
                             <Text style={styles.menuTitle}>Debug Logs</Text>
-                            <Text style={styles.menuSubtitle}>Lihat log error sistem</Text>
+                            <Text style={styles.menuSubtitle}>{translate('other.debugSubtitle', appLanguage) || 'Lihat log error sistem'}</Text>
                         </View>
                         <Ionicons name="chevron-forward" size={20} color="#ccc" />
                     </TouchableOpacity>

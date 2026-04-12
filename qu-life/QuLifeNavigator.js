@@ -8,10 +8,15 @@ import SettingsScreen from './screens/SettingsScreen';
 import OtherScreen from './screens/OtherScreen';
 import AboutScreen from './screens/AboutScreen';
 import LogViewerScreen from './screens/LogViewerScreen';
+import InspiraScreen from './screens/InspiraScreen';
+import { useSettings } from './utils/SettingsContext';
+import { translate } from './utils/i18n';
 
 const Stack = createStackNavigator();
 
 export default function QuLifeNavigator() {
+    const { appLanguage } = useSettings();
+
     return (
         <Stack.Navigator
             initialRouteName="Home"
@@ -30,32 +35,37 @@ export default function QuLifeNavigator() {
             <Stack.Screen
                 name="SurahList"
                 component={SurahListScreen}
-                options={{ title: 'Daftar Surah' }}
+                options={{ title: translate('home.surahList', appLanguage) || 'Daftar Surah' }}
             />
             <Stack.Screen
                 name="SpecialList"
                 component={SpecialListScreen}
-                options={{ title: 'Daftar Khusus' }}
+                options={{ title: translate('home.specialList', appLanguage) || 'Daftar Khusus' }}
             />
             <Stack.Screen
                 name="VerseView"
                 component={VerseViewScreen}
-                options={{ title: 'Ayat' }}
+                options={{ title: translate('home.verse', appLanguage) || 'Ayat' }}
             />
             <Stack.Screen
                 name="Settings"
                 component={SettingsScreen}
-                options={{ title: 'Pengaturan' }}
+                options={{ title: translate('other.generalSettings', appLanguage) || 'Pengaturan Umum' }}
             />
             <Stack.Screen
                 name="Other"
                 component={OtherScreen}
-                options={{ title: 'Lain-lain' }}
+                options={{ title: translate('home.others', appLanguage) || 'Lain-lain' }}
+            />
+            <Stack.Screen
+                name="Inspira"
+                component={InspiraScreen}
+                options={{ title: translate('home.inspira', appLanguage) || 'Cari Inspirasi', headerShown: false }}
             />
             <Stack.Screen
                 name="About"
                 component={AboutScreen}
-                options={{ title: 'Tentang Aplikasi' }}
+                options={{ title: translate('other.about', appLanguage) || 'Tentang Aplikasi' }}
             />
             <Stack.Screen
                 name="LogViewer"

@@ -34,8 +34,10 @@ export default function VerseViewScreen({ route, navigation }) {
         delayPostArabic: globalDelayPostArabic,
         delayPreTranslation: globalDelayPreTranslation,
         delayPostTranslation: globalDelayPostTranslation,
-        delaySequenceLoop: globalDelaySequenceLoop
+        delaySequenceLoop: globalDelaySequenceLoop,
+        appLanguage
     } = useSettings();
+    const { translate } = require('../utils/i18n');
 
     // Playback State
     const [sound, setSound] = useState();
@@ -926,7 +928,7 @@ export default function VerseViewScreen({ route, navigation }) {
                     <View style={styles.modalOverlay}>
                         <View style={[styles.modalContent, { maxHeight: '80%' }]}>
                             <ScrollView showsVerticalScrollIndicator={false}>
-                                <Text style={styles.modalTitle}>Pengaturan Surah {surah?.nama}</Text>
+                                <Text style={styles.modalTitle}>{translate('verseView.surahSettings', appLanguage) || 'Pengaturan Surah'} {surah?.nama}</Text>
                                 <Text style={styles.modalSubtitle}>Pengaturan ini hanya berlaku untuk surah ini.</Text>
 
                                 {/* Order & Translation Toggle */}
@@ -937,13 +939,13 @@ export default function VerseViewScreen({ route, navigation }) {
                                             style={[styles.miniButton, localAutoPlayOrder === 'translation_first' && styles.miniButtonActive]}
                                             onPress={() => setLocalAutoPlayOrder('translation_first')}
                                         >
-                                            <Text style={[styles.miniButtonText, localAutoPlayOrder === 'translation_first' && { color: '#fff' }]}>Terjemahan Dulu</Text>
+                                            <Text style={[styles.miniButtonText, localAutoPlayOrder === 'translation_first' && { color: '#fff' }]}>{translate('settings.transFirst', appLanguage) || 'Terj. Dulu'}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
                                             style={[styles.miniButton, localAutoPlayOrder === 'arabic_first' && styles.miniButtonActive, { marginLeft: 5 }]}
                                             onPress={() => setLocalAutoPlayOrder('arabic_first')}
                                         >
-                                            <Text style={[styles.miniButtonText, localAutoPlayOrder === 'arabic_first' && { color: '#fff' }]}>Ayat Dulu</Text>
+                                            <Text style={[styles.miniButtonText, localAutoPlayOrder === 'arabic_first' && { color: '#fff' }]}>{translate('settings.arabFirst', appLanguage) || 'Ayat Dulu'}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
@@ -1010,7 +1012,7 @@ export default function VerseViewScreen({ route, navigation }) {
                                         }
                                     }}
                                 >
-                                    <Text style={styles.startButtonText}>Simpan Pengaturan Surah</Text>
+                                    <Text style={styles.startButtonText}>{translate('verseView.saveSettings', appLanguage) || 'Simpan Pengaturan Surah'}</Text>
                                 </TouchableOpacity>
 
                                 {/* Reset Button */}
@@ -1049,7 +1051,7 @@ export default function VerseViewScreen({ route, navigation }) {
                                         );
                                     }}
                                 >
-                                    <Text style={styles.startButtonText}>Reset ke Global</Text>
+                                    <Text style={styles.startButtonText}>{translate('verseView.resetGlobal', appLanguage) || 'Reset ke Global'}</Text>
                                 </TouchableOpacity>
 
                                 {/* Batal Button */}
@@ -1072,10 +1074,10 @@ export default function VerseViewScreen({ route, navigation }) {
                     <View style={styles.modalOverlay}>
                         <View style={[styles.modalContent, { maxHeight: '85%' }]}>
                             <ScrollView showsVerticalScrollIndicator={false}>
-                                <Text style={styles.modalTitle}>Konfigurasi Auto Play</Text>
+                                <Text style={styles.modalTitle}>{translate('verseView.autoConfigTitle', appLanguage) || 'Konfigurasi Auto Play'}</Text>
 
                                 <View style={styles.configRow}>
-                                    <Text style={styles.configLabel}>Mulai Ayat:</Text>
+                                    <Text style={styles.configLabel}>{translate('verseView.startVerse', appLanguage)}:</Text>
                                     <View style={styles.counterControl}>
                                         <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, startVerse: Math.max(1, p.startVerse - 1) }))}>
                                             <Ionicons name="remove-circle-outline" size={28} color="#007AFF" />
@@ -1088,7 +1090,7 @@ export default function VerseViewScreen({ route, navigation }) {
                                 </View>
 
                                 <View style={styles.configRow}>
-                                    <Text style={styles.configLabel}>Akhir Ayat:</Text>
+                                    <Text style={styles.configLabel}>{translate('verseView.endVerse', appLanguage)}:</Text>
                                     <View style={styles.counterControl}>
                                         <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, endVerse: Math.max(autoConfig.startVerse, p.endVerse - 1) }))}>
                                             <Ionicons name="remove-circle-outline" size={28} color="#007AFF" />
@@ -1102,7 +1104,7 @@ export default function VerseViewScreen({ route, navigation }) {
 
                                 {/* Sequence Repeat */}
                                 <View style={styles.configRow}>
-                                    <Text style={styles.configLabel}>Pengulangan Sequence:</Text>
+                                    <Text style={styles.configLabel}>{translate('verseView.repeatSequence', appLanguage)}:</Text>
                                     <TouchableOpacity
                                         style={{ flexDirection: 'row', alignItems: 'center' }}
                                         onPress={() => {
@@ -1124,14 +1126,14 @@ export default function VerseViewScreen({ route, navigation }) {
 
                                 {/* Detail Button */}
                                 <TouchableOpacity style={styles.detailButton} onPress={() => setShowAutoDetail(!showAutoDetail)}>
-                                    <Text style={styles.detailButtonText}>{showAutoDetail ? "Sembunyikan Detail" : "Tampilkan Opsi Tambahan"}</Text>
+                                    <Text style={styles.detailButtonText}>{showAutoDetail ? translate('verseView.hideOptions', appLanguage) : translate('verseView.showOptions', appLanguage)}</Text>
                                 </TouchableOpacity>
 
                                 {/* Detail Config Section */}
                                 {showAutoDetail && (
                                     <View style={styles.detailContainer}>
                                         <View style={styles.detailHeader}>
-                                            <Text style={styles.detailTitle}>Pengaturan Sesi Ini</Text>
+                                            <Text style={styles.detailTitle}>{translate('verseView.sessionConfig', appLanguage) || 'Pengaturan Sesi Ini'}</Text>
                                         </View>
 
                                         {/* Playback Order */}

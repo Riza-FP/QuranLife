@@ -3,6 +3,7 @@ import * as Speech from 'expo-speech';
 import { View, Text, StyleSheet, Switch, Button, TouchableOpacity, ScrollView } from 'react-native';
 import { useSettings } from '../utils/SettingsContext';
 import Logger from '../utils/Logger';
+import { translate } from '../utils/i18n';
 
 export default function SettingsScreen() {
     const {
@@ -20,7 +21,8 @@ export default function SettingsScreen() {
         delayPostArabic, setDelayPostArabic,
         delayPreTranslation, setDelayPreTranslation,
         delayPostTranslation, setDelayPostTranslation,
-        delaySequenceLoop, setDelaySequenceLoop
+        delaySequenceLoop, setDelaySequenceLoop,
+        appLanguage, setAppLanguage
     } = useSettings();
 
     const [missingLanguage, setMissingLanguage] = useState(false);
@@ -73,10 +75,10 @@ export default function SettingsScreen() {
 
             {/* SECTION: TAMPILAN */}
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>Tampilan (Visual)</Text>
+                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>{translate('settings.visual', appLanguage)}</Text>
 
                 <View style={styles.settingItem}>
-                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>Ukuran Font Arab: {fontSize}</Text>
+                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>{translate('settings.arabFontSize', appLanguage)}: {fontSize}</Text>
                     <View style={styles.buttonContainer}>
                         <Button title="A-" onPress={decreaseFont} />
                         <View style={{ width: 20 }} />
@@ -92,10 +94,10 @@ export default function SettingsScreen() {
 
             {/* SECTION: AUDIO & TERJEMAHAN */}
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>Audio & Terjemahan</Text>
+                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>{translate('settings.audioTrans', appLanguage)}</Text>
 
                 <View style={styles.settingItem}>
-                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>Bahasa Terjemahan</Text>
+                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>{translate('settings.transLanguage', appLanguage)}</Text>
                     <View style={styles.languageContainer}>
                         <TouchableOpacity
                             style={[styles.langButton, translationCode === 'tr_id' && styles.langButtonActive]}
@@ -113,7 +115,7 @@ export default function SettingsScreen() {
                 </View>
 
                 <View style={styles.settingItem}>
-                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>Bahasa Suara Terjemahan</Text>
+                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>{translate('settings.audioVoiceLanguage', appLanguage)}</Text>
                     <View style={styles.languageContainer}>
                         <TouchableOpacity
                             style={[
@@ -145,32 +147,61 @@ export default function SettingsScreen() {
                         </TouchableOpacity>
                     </View>
                 </View>
+
+                {/* APP LANGUAGE TOGGLE */}
+                <View style={styles.settingItem}>
+                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>{translate('settings.appLanguage', appLanguage)}</Text>
+                    <View style={styles.languageContainer}>
+                        <TouchableOpacity
+                            style={[
+                                styles.langButton,
+                                appLanguage === 'id' && styles.langButtonActive,
+                            ]}
+                            onPress={() => setAppLanguage('id')}
+                        >
+                            <Text style={[styles.langButtonText, appLanguage === 'id' && styles.langButtonTextActive]}>
+                                Indonesia
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[
+                                styles.langButton,
+                                appLanguage === 'en' && styles.langButtonActive,
+                            ]}
+                            onPress={() => setAppLanguage('en')}
+                        >
+                            <Text style={[styles.langButtonText, appLanguage === 'en' && styles.langButtonTextActive]}>
+                                English
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
 
             {/* SECTION: AUTO-PLAY ADVANCED */}
             <View style={styles.section}>
-                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>Pengaturan Auto-Play</Text>
+                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>{translate('settings.autoplayAdvanced', appLanguage)}</Text>
 
-                <Text style={[styles.subLabel, theme === 'dark' && { color: '#aaa' }]}>Urutan & Mode Playback</Text>
+                <Text style={[styles.subLabel, theme === 'dark' && { color: '#aaa' }]}>{translate('settings.autoplayOrder', appLanguage)}</Text>
                 <View style={styles.settingItem}>
                     <View style={styles.languageContainer}>
                         <TouchableOpacity
                             style={[styles.langButton, autoPlayOrder === 'translation_first' && styles.langButtonActive]}
                             onPress={() => setAutoPlayOrder('translation_first')}
                         >
-                            <Text style={[styles.langButtonText, autoPlayOrder === 'translation_first' && styles.langButtonTextActive]}>Terjemahan Dulu</Text>
+                            <Text style={[styles.langButtonText, autoPlayOrder === 'translation_first' && styles.langButtonTextActive]}>{translate('settings.transFirst', appLanguage)}</Text>
                         </TouchableOpacity>
                         <TouchableOpacity
                             style={[styles.langButton, autoPlayOrder === 'arabic_first' && styles.langButtonActive]}
                             onPress={() => setAutoPlayOrder('arabic_first')}
                         >
-                            <Text style={[styles.langButtonText, autoPlayOrder === 'arabic_first' && styles.langButtonTextActive]}>Ayat (Arab) Dulu</Text>
+                            <Text style={[styles.langButtonText, autoPlayOrder === 'arabic_first' && styles.langButtonTextActive]}>{translate('settings.arabFirst', appLanguage)}</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
 
                 <View style={[styles.settingItem, { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }]}>
-                    <Text style={[styles.label, { marginBottom: 0 }, theme === 'dark' && { color: '#ddd' }]}>Bacakan Terjemahan?</Text>
+                    <Text style={[styles.label, { marginBottom: 0 }, theme === 'dark' && { color: '#ddd' }]}>{translate('settings.playTransText', appLanguage)}</Text>
                     <Switch
                         value={autoPlayEnabledTranslation}
                         onValueChange={setAutoPlayEnabledTranslation}
@@ -182,19 +213,19 @@ export default function SettingsScreen() {
                     </Text>
                 )}
 
-                <Text style={[styles.subLabel, { marginTop: 10 }, theme === 'dark' && { color: '#aaa' }]}>Konfigurasi Jeda (Detik)</Text>
+                <Text style={[styles.subLabel, { marginTop: 10 }, theme === 'dark' && { color: '#aaa' }]}>{translate('settings.delayConfig', appLanguage)}</Text>
 
-                <RenderCounter label="Jeda Sebelum Ayat" value={delayPreArabic} setValue={setDelayPreArabic} />
-                <RenderCounter label="Jeda Setelah Ayat" value={delayPostArabic} setValue={setDelayPostArabic} />
+                <RenderCounter label={translate('settings.preArab', appLanguage)} value={delayPreArabic} setValue={setDelayPreArabic} />
+                <RenderCounter label={translate('settings.postArab', appLanguage)} value={delayPostArabic} setValue={setDelayPostArabic} />
 
                 {autoPlayEnabledTranslation && (
                     <>
-                        <RenderCounter label="Jeda Sebelum Terjemahan" value={delayPreTranslation} setValue={setDelayPreTranslation} />
-                        <RenderCounter label="Jeda Setelah Terjemahan" value={delayPostTranslation} setValue={setDelayPostTranslation} />
+                        <RenderCounter label={translate('settings.preTrans', appLanguage)} value={delayPreTranslation} setValue={setDelayPreTranslation} />
+                        <RenderCounter label={translate('settings.postTrans', appLanguage)} value={delayPostTranslation} setValue={setDelayPostTranslation} />
                     </>
                 )}
 
-                <RenderCounter label="Jeda Antar Pengulangan" value={delaySequenceLoop} setValue={setDelaySequenceLoop} />
+                <RenderCounter label={translate('settings.loopDelay', appLanguage)} value={delaySequenceLoop} setValue={setDelaySequenceLoop} />
             </View>
 
 

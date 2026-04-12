@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useSettings } from '../utils/SettingsContext';
+import { translate } from '../utils/i18n';
 
 export default function PlaybackControlPanel({
     isPlaying,
@@ -13,6 +15,7 @@ export default function PlaybackControlPanel({
     translationIcon,
     onOpenSettings // KEPT for prop compatibility, but not used in UI here
 }) {
+    const { appLanguage } = useSettings();
 
     return (
         <View style={styles.container}>
@@ -26,7 +29,7 @@ export default function PlaybackControlPanel({
                         size={28}
                         color={autoPlay ? "#007AFF" : "#666"}
                     />
-                    <Text style={[styles.controlText, autoPlay && styles.activeText]}>Auto Play</Text>
+                    <Text style={[styles.controlText, autoPlay && styles.activeText]}>{translate('playback.autoPlay', appLanguage)}</Text>
                 </TouchableOpacity>
 
                 {/* 2. Audio (Center - Big Play Button) */}
@@ -57,7 +60,7 @@ export default function PlaybackControlPanel({
                         size={28}
                         color={showTranslation ? "#007AFF" : "#666"}
                     />
-                    <Text style={[styles.controlText, showTranslation && styles.activeText]}>Terjemahan</Text>
+                    <Text style={[styles.controlText, showTranslation && styles.activeText]}>{translate('playback.translation', appLanguage)}</Text>
                 </TouchableOpacity>
 
             </View>

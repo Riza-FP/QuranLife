@@ -12,6 +12,7 @@ export const SettingsProvider = ({ children }) => {
 
     // Advanced Global Auto-Play Settings
     const [theme, setTheme] = useState('light'); // 'light' | 'dark'
+    const [appLanguage, setAppLanguage] = useState('id'); // 'id' | 'en' for UI menus
     const [autoPlayOrder, setAutoPlayOrder] = useState('translation_first'); // 'translation_first' | 'arabic_first'
     const [autoPlayEnabledTranslation, setAutoPlayEnabledTranslation] = useState(true);
     const [translationLanguage, setTranslationLanguage] = useState('id'); // 'id' | 'en'
@@ -35,6 +36,7 @@ export const SettingsProvider = ({ children }) => {
             defaultDelay, setDefaultDelay,
             defaultRepeat, setDefaultRepeat,
             theme, setTheme,
+            appLanguage, setAppLanguage,
             autoPlayOrder, setAutoPlayOrder,
             autoPlayEnabledTranslation, setAutoPlayEnabledTranslation,
             translationLanguage, setTranslationLanguage,

@@ -4,11 +4,14 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useLastPosition } from '../utils/LastPositionContext';
 import { getSurahByCode } from '../utils/DataLoader';
+import { useSettings } from '../utils/SettingsContext';
+import { translate } from '../utils/i18n';
 
 let hasShownResumePrompt = false;
 
 export default function HomeScreen({ navigation }) {
     const { lastPosition, isLoaded } = useLastPosition();
+    const { appLanguage, theme } = useSettings();
     const [showResumeModal, setShowResumeModal] = useState(false);
 
     useEffect(() => {
@@ -42,25 +45,25 @@ export default function HomeScreen({ navigation }) {
         >
             <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
-                    <Image
-                        source={require('../../qulife_logo_new.png')}
-                        style={styles.logo}
-                        resizeMode="contain"
-                    />
-                    <Text style={styles.title}>QuLife</Text>
-                    <Text style={styles.subtitle}>Petunjuk Hidup dari Al-Quran</Text>
-                </View>
+                        <Image
+                            source={require('../../qulife_logo_new.png')}
+                            style={styles.logo}
+                            resizeMode="contain"
+                        />
+                        <Text style={styles.title}>{translate('home.title', appLanguage)}</Text>
+                        <Text style={styles.subtitle}>{translate('home.subtitle', appLanguage)}</Text>
+                    </View>
 
-                <View style={styles.menuContainer}>
-                    {/* Last Read Card */}
-                    {isLoaded && lastPosition && (
-                        <TouchableOpacity
+                    <View style={styles.menuContainer}>
+                        {/* Last Read Card */}
+                        {isLoaded && lastPosition && (
+                            <TouchableOpacity
                             style={[styles.card, styles.lastReadCard]}
                             onPress={handleContinueReading}
                         >
-                            <Text style={styles.lastReadLabel}>Terakhir Dibaca</Text>
+                            <Text style={styles.lastReadLabel}>{translate('home.lastRead', appLanguage)}</Text>
                             <Text style={styles.cardTitle}>{lastPosition.surahName}</Text>
-                            <Text style={styles.cardSubtitle}>Ayat {lastPosition.verseIndex + 1}</Text>
+                            <Text style={styles.cardSubtitle}>{translate('home.verse', appLanguage)} {lastPosition.verseIndex + 1}</Text>
                         </TouchableOpacity>
                     )}
 
@@ -68,24 +71,30 @@ export default function HomeScreen({ navigation }) {
                         style={styles.card}
                         onPress={() => navigation.navigate('SurahList')}
                     >
-                        <Text style={styles.cardTitle}>Daftar Surah</Text>
+                        <Text style={styles.cardTitle}>{translate('home.surahList', appLanguage)}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         style={styles.card}
                         onPress={() => navigation.navigate('SpecialList')}
                     >
-                        <Text style={styles.cardTitle}>Daftar Khusus</Text>
+                        <Text style={styles.cardTitle}>{translate('home.specialList', appLanguage)}</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.card}
+                        onPress={() => navigation.navigate('Inspira')}
+                    >
+                        <Text style={styles.cardTitle}>{translate('home.inspira', appLanguage) || 'Cari Inspirasi'}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         style={styles.card}
                         onPress={() => navigation.navigate('Other')}
                     >
-                        <Text style={styles.cardTitle}>Lain-lain</Text>
+                        <Text style={styles.cardTitle}>{translate('home.others', appLanguage)}</Text>
                     </TouchableOpacity>
                 </View>
-
 
                 {/* Resume Modal */}
                 <Modal
@@ -96,9 +105,9 @@ export default function HomeScreen({ navigation }) {
                 >
                     <View style={styles.modalOverlay}>
                         <View style={styles.modalContent}>
-                            <Text style={styles.modalTitle}>Lanjutkan Membaca?</Text>
+                            <Text style={styles.modalTitle}>{translate('home.resumeTitle', appLanguage)}</Text>
                             <Text style={styles.modalSubtitle}>
-                                Anda terakhir membaca {lastPosition?.surahName} Ayat {lastPosition?.verseIndex + 1}
+                                {translate('home.resumeSubtitle', appLanguage)} {lastPosition?.surahName} {translate('home.verse', appLanguage)} {lastPosition?.verseIndex + 1}
                             </Text>
 
                             <View style={styles.modalButtons}>
@@ -106,7 +115,7 @@ export default function HomeScreen({ navigation }) {
                                     style={[styles.modalButton, styles.cancelButton]}
                                     onPress={() => setShowResumeModal(false)}
                                 >
-                                    <Text style={styles.cancelButtonText}>Nanti</Text>
+                                    <Text style={styles.cancelButtonText}>{translate('home.later', appLanguage)}</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
@@ -116,7 +125,7 @@ export default function HomeScreen({ navigation }) {
                                         handleContinueReading();
                                     }}
                                 >
-                                    <Text style={styles.confirmButtonText}>Lanjut</Text>
+                                    <Text style={styles.confirmButtonText}>{translate('home.continue', appLanguage)}</Text>
                                 </TouchableOpacity>
                             </View>
                         </View>

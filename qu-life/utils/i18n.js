@@ -1,0 +1,152 @@
+const translations = {
+    id: {
+        // Home Screen
+        "home.title": "QuLife",
+        "home.subtitle": "Petunjuk Hidup dari Al-Quran",
+        "home.lastRead": "Terakhir Dibaca",
+        "home.verse": "Ayat",
+        "home.surahList": "Daftar Surah",
+        "home.specialList": "Daftar Khusus",
+        "home.inspira": "Cari Inspirasi",
+        "home.inspiraTitle": "Roda Inspirasi",
+        "home.inspiraSubtitle": "Temukan satu Ayat secara acak untuk direnungkan hari ini",
+        "home.others": "Lain-lain",
+        "home.resumeTitle": "Lanjutkan Membaca?",
+        "home.resumeSubtitle": "Anda terakhir membaca",
+        "home.later": "Nanti",
+        "home.continue": "Lanjut",
+
+        // Surah List
+        "surahList.searchPlaceholder": "Cari surah (nama atau nomor)...",
+        "surahList.verseCount": "Ayat",
+
+        // Settings Screen
+        "settings.title": "Pengaturan",
+        "settings.visual": "Tampilan (Visual)",
+        "settings.arabFontSize": "Ukuran Font Arab",
+        "settings.audioTrans": "Audio & Terjemahan",
+        "settings.transLanguage": "Bahasa Terjemahan",
+        "settings.audioVoiceLanguage": "Bahasa Suara Terjemahan",
+        "settings.appLanguage": "Bahasa Menu & Aplikasi",
+        "settings.autoplayAdvanced": "Auto-Play Lanjutan (Global)",
+        "settings.autoplayOrder": "Urutan Pemutaran",
+        "settings.transFirst": "Terjemahan Dulu",
+        "settings.arabFirst": "Ayat Dulu",
+        "settings.playTransText": "Putar Audio Terjemahan?",
+        "settings.delayConfig": "Pengaturan Jeda (Detik)",
+        "settings.preArab": "Sebelum Ayat",
+        "settings.postArab": "Setelah Ayat",
+        "settings.preTrans": "Sebelum Terjemahan",
+        "settings.postTrans": "Setelah Terjemahan",
+        "settings.loopDelay": "Jeda Antar Siklus",
+
+        // Playback Control Panel
+        "playback.autoPlay": "Auto Play",
+        "playback.translation": "Terjemahan",
+
+        // Verse View Screen
+        "verseView.surahSettings": "Pengaturan Surah",
+        "verseView.sessionConfig": "Pengaturan Sesi Ini",
+        "verseView.startVerse": "Mulai dari Ayat",
+        "verseView.endVerse": "Sampai Ayat (inklusif)",
+        "verseView.repeatVerse": "Pengulangan per Ayat",
+        "verseView.repeatSequence": "Pengulangan Sekuens (Rentang)",
+        "verseView.unlimited": "Tanpa Batas",
+        "verseView.showOptions": "Tampilkan Opsi Tambahan",
+        "verseView.hideOptions": "Sembunyikan Opsi Tambahan",
+        "verseView.saveSettings": "Simpan Pengaturan Surah",
+        "verseView.resetGlobal": "Reset ke Global",
+        "verseView.startAutoPlay": "Mulai Auto Play",
+        "verseView.jumpVerse": "Loncat Ayat",
+        "verseView.goToVerse": "Tuju Ayat",
+        "verseView.goTo": "Loncat",
+
+        // Other Screen
+        "other.settings": "Pengaturan",
+        "other.settingsSubtitle": "Konfigurasi global aplikasi",
+        "other.about": "Tentang",
+        "other.aboutSubtitle": "Informasi aplikasi",
+        "other.report": "Laporan Kesalahan",
+        "other.reportSubtitle": "Laporkan terjemahan/audio",
+        "other.errorNoLink": "Tidak dapat membuka link laporan.",
+        "other.errorOpenLink": "Terjadi kesalahan saat membuka link.",
+        "other.debugSubtitle": "Lihat log error sistem"
+    },
+    en: {
+        // Home Screen
+        "home.title": "QuLife",
+        "home.subtitle": "Petunjuk Hidup dari Al-Quran", // Kept intentionally as requested
+        "home.lastRead": "Last Read",
+        "home.verse": "Verse",
+        "home.surahList": "Surah List",
+        "home.specialList": "Special List",
+        "home.inspira": "Find Inspiration",
+        "home.inspiraTitle": "Inspiration Wheel",
+        "home.inspiraSubtitle": "Find a random Ayah to reflect upon today",
+        "home.others": "Others",
+        "home.resumeTitle": "Continue Reading?",
+        "home.resumeSubtitle": "You last read",
+        "home.later": "Later",
+        "home.continue": "Continue",
+
+        // Surah List
+        "surahList.searchPlaceholder": "Search surah (name or number)...",
+        "surahList.verseCount": "Verses",
+
+        // Settings Screen
+        "settings.title": "Settings",
+        "settings.visual": "Display (Visual)",
+        "settings.arabFontSize": "Arabic Font Size",
+        "settings.audioTrans": "Audio & Translation",
+        "settings.transLanguage": "Translation Text Language",
+        "settings.audioVoiceLanguage": "Translation Audio Language",
+        "settings.appLanguage": "App UI Language",
+        "settings.autoplayAdvanced": "Advanced Auto-Play (Global)",
+        "settings.autoplayOrder": "Playback Order",
+        "settings.transFirst": "Translation First",
+        "settings.arabFirst": "Arabic First",
+        "settings.playTransText": "Play Translation Audio?",
+        "settings.delayConfig": "Delay Configuration (Seconds)",
+        "settings.preArab": "Before Arabic",
+        "settings.postArab": "After Arabic",
+        "settings.preTrans": "Before Translation",
+        "settings.postTrans": "After Translation",
+        "settings.loopDelay": "Delay Between Loops",
+
+        // Playback Control Panel
+        "playback.autoPlay": "Auto Play",
+        "playback.translation": "Translation",
+
+        // Verse View Screen
+        "verseView.surahSettings": "Surah Settings",
+        "verseView.sessionConfig": "Session Configuration",
+        "verseView.startVerse": "Start from Verse",
+        "verseView.endVerse": "End at Verse (Inclusive)",
+        "verseView.repeatVerse": "Repeat per Verse",
+        "verseView.repeatSequence": "Repeat Sequence",
+        "verseView.unlimited": "Unlimited",
+        "verseView.showOptions": "Show Additional Options",
+        "verseView.hideOptions": "Hide Additional Options",
+        "verseView.saveSettings": "Save Surah Settings",
+        "verseView.resetGlobal": "Reset to Global",
+        "verseView.startAutoPlay": "Start Auto Play",
+        "verseView.jumpVerse": "Jump Verse",
+        "verseView.goToVerse": "Go to Verse",
+        "verseView.goTo": "Go",
+
+        // Other Screen
+        "other.settings": "Settings",
+        "other.settingsSubtitle": "Global application configuration",
+        "other.about": "About",
+        "other.aboutSubtitle": "Application information",
+        "other.report": "Report Error",
+        "other.reportSubtitle": "Report translation/audio errors",
+        "other.errorNoLink": "Cannot open the report link.",
+        "other.errorOpenLink": "An error occurred while opening the link.",
+        "other.debugSubtitle": "View system error logs"
+    }
+};
+
+export const translate = (key, languageCode = 'id') => {
+    return translations[languageCode]?.[key] || key;
+};
