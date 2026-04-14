@@ -73,6 +73,37 @@ export default function SettingsScreen() {
     return (
         <ScrollView style={[styles.container, theme === 'dark' && { backgroundColor: '#121212' }]}>
 
+            {/* SECTION: GENERAL / BAHASA APLIKASI */}
+            <View style={styles.section}>
+                <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>{translate('settings.appLanguage', appLanguage)}</Text>
+                <View style={[styles.settingItem, { marginBottom: 10 }]}>
+                    <View style={styles.languageContainer}>
+                        <TouchableOpacity
+                            style={[
+                                styles.langButton,
+                                appLanguage === 'id' && styles.langButtonActive,
+                            ]}
+                            onPress={() => setAppLanguage('id')}
+                        >
+                            <Text style={[styles.langButtonText, appLanguage === 'id' && styles.langButtonTextActive]}>
+                                Indonesia
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[
+                                styles.langButton,
+                                appLanguage === 'en' && styles.langButtonActive,
+                            ]}
+                            onPress={() => setAppLanguage('en')}
+                        >
+                            <Text style={[styles.langButtonText, appLanguage === 'en' && styles.langButtonTextActive]}>
+                                English
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+
             {/* SECTION: TAMPILAN */}
             <View style={styles.section}>
                 <Text style={[styles.sectionHeader, theme === 'dark' && { color: '#fff' }]}>{translate('settings.visual', appLanguage)}</Text>
@@ -148,34 +179,6 @@ export default function SettingsScreen() {
                     </View>
                 </View>
 
-                {/* APP LANGUAGE TOGGLE */}
-                <View style={styles.settingItem}>
-                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>{translate('settings.appLanguage', appLanguage)}</Text>
-                    <View style={styles.languageContainer}>
-                        <TouchableOpacity
-                            style={[
-                                styles.langButton,
-                                appLanguage === 'id' && styles.langButtonActive,
-                            ]}
-                            onPress={() => setAppLanguage('id')}
-                        >
-                            <Text style={[styles.langButtonText, appLanguage === 'id' && styles.langButtonTextActive]}>
-                                Indonesia
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity
-                            style={[
-                                styles.langButton,
-                                appLanguage === 'en' && styles.langButtonActive,
-                            ]}
-                            onPress={() => setAppLanguage('en')}
-                        >
-                            <Text style={[styles.langButtonText, appLanguage === 'en' && styles.langButtonTextActive]}>
-                                English
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
             </View>
 
             {/* SECTION: AUTO-PLAY ADVANCED */}

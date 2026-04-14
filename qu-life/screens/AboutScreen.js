@@ -1,8 +1,11 @@
 import React from 'react';
 import { View, Text, StyleSheet, ImageBackground, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSettings } from '../utils/SettingsContext';
+import { translate } from '../utils/i18n';
 
 export default function AboutScreen() {
+    const { appLanguage } = useSettings();
     return (
         <ImageBackground
             source={require('../../qulife_bg.png')}
@@ -23,7 +26,7 @@ export default function AboutScreen() {
 
                     <View style={styles.infoContainer}>
                         <Text style={styles.description}>
-                            Aplikasi Al-Quran digital yang dirancang untuk memudahkan membaca dan memahami Al-Quran dengan fitur audio dan terjemahan yang lengkap.
+                            {translate('about.description', appLanguage)}
                         </Text>
                     </View>
 

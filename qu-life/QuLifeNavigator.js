@@ -50,7 +50,7 @@ export default function QuLifeNavigator() {
             <Stack.Screen
                 name="Settings"
                 component={SettingsScreen}
-                options={{ title: translate('other.generalSettings', appLanguage) || 'Pengaturan Umum' }}
+                options={{ title: translate('other.settings', appLanguage) || 'Pengaturan' }}
             />
             <Stack.Screen
                 name="Other"
@@ -70,7 +70,7 @@ export default function QuLifeNavigator() {
             <Stack.Screen
                 name="LogViewer"
                 component={LogViewerScreen}
-                options={{ title: 'Debug Logs' }}
+                options={{ title: translate('other.debug', appLanguage) || 'Debug Logs' }}
             />
         </Stack.Navigator>
     );

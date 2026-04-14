@@ -2,14 +2,18 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground } from 'react-native';
 import { getSurahByCode } from '../utils/DataLoader';
 
+import { useSettings } from '../utils/SettingsContext';
+import { translate } from '../utils/i18n';
+
 const SPECIAL_ITEMS = [
-    { id: '1', title: 'Al-Kahfi', subtitle: 'Ayat 1-10', surahCode: '18', start: 1, end: 10, number: 18 },
-    { id: '2', title: 'Ali \'Imran', subtitle: 'Ayat 190-200', surahCode: '3', start: 190, end: 200, number: 3 },
-    { id: '3', title: 'Al-Baqarah', subtitle: 'Ayat 285-286', surahCode: '2', start: 285, end: 286, number: 2 },
-    { id: '4', title: 'Ayat Kursi', subtitle: 'Al-Baqarah Ayat 255', surahCode: '2', start: 255, end: 255, number: 2 },
+    { id: '1', title: 'Al-Kahfi', start: 1, end: 10, surahCode: '18', number: 18 },
+    { id: '2', title: 'Ali \'Imran', start: 190, end: 200, surahCode: '3', number: 3 },
+    { id: '3', title: 'Al-Baqarah', start: 285, end: 286, surahCode: '2', number: 2 },
+    { id: '4', title: 'Ayat Kursi', start: 255, end: 255, surahCode: '2', number: 2, customSubtitleKey: 'Al-Baqarah Ayat 255' },
 ];
 
 export default function SpecialListScreen({ navigation }) {
+    const { appLanguage } = useSettings();
 
     const handlePress = (item) => {
         const surahData = getSurahByCode(item.surahCode);
@@ -25,17 +29,23 @@ export default function SpecialListScreen({ navigation }) {
         }
     };
 
-    const renderItem = ({ item }) => (
-        <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
-            <View style={styles.numberContainer}>
-                <Text style={styles.number}>{item.number}</Text>
-            </View>
-            <View style={styles.textContainer}>
-                <Text style={styles.name}>{item.title}</Text>
-                <Text style={styles.translation}>{item.subtitle}</Text>
-            </View>
-        </TouchableOpacity>
-    );
+    const renderItem = ({ item }) => {
+        const subtitle = item.customSubtitleKey 
+            ? `Al-Baqarah ${translate('home.verse', appLanguage)} 255` 
+            : `${translate('home.verse', appLanguage)} ${item.start}-${item.end}`;
+            
+        return (
+            <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
+                <View style={styles.numberContainer}>
+                    <Text style={styles.number}>{item.number}</Text>
+                </View>
+                <View style={styles.textContainer}>
+                    <Text style={styles.name}>{item.title}</Text>
+                    <Text style={styles.translation}>{subtitle}</Text>
+                </View>
+            </TouchableOpacity>
+        );
+    };
 
     return (
         <ImageBackground

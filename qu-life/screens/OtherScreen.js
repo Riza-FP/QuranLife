@@ -73,7 +73,7 @@ export default function OtherScreen({ navigation }) {
                             <Ionicons name="bug-outline" size={24} color="#dc3545" />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={styles.menuTitle}>Debug Logs</Text>
+                            <Text style={styles.menuTitle}>{translate('other.debug', appLanguage) || 'Debug Logs'}</Text>
                             <Text style={styles.menuSubtitle}>{translate('other.debugSubtitle', appLanguage) || 'Lihat log error sistem'}</Text>
                         </View>
                         <Ionicons name="chevron-forward" size={20} color="#ccc" />

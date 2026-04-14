@@ -60,6 +60,17 @@ const translations = {
         "verseView.jumpVerse": "Loncat Ayat",
         "verseView.goToVerse": "Tuju Ayat",
         "verseView.goTo": "Loncat",
+        "verseView.tapToTranslate": "Tap untuk terjemahan",
+        "verseView.delayConfig": "JEDA (DETIK)",
+        "verseView.cancel": "Batal",
+        "verseView.autoConfigTitle": "Konfigurasi Auto Play",
+        "verseView.order": "Urutan",
+        "verseView.surahSettingsDesc": "Pengaturan ini hanya berlaku untuk surah ini.",
+        "verseView.mode": "Mode:",
+        "verseView.repeatGeneric": "Pengulangan:",
+        "verseView.resetSettings": "Reset Pengaturan",
+        "verseView.resetDesc": "Kembalikan pengaturan surah ini ke standar global?",
+        "verseView.settingsReset": "Pengaturan di-reset ke Global",
 
         // Other Screen
         "other.settings": "Pengaturan",
@@ -70,12 +81,16 @@ const translations = {
         "other.reportSubtitle": "Laporkan terjemahan/audio",
         "other.errorNoLink": "Tidak dapat membuka link laporan.",
         "other.errorOpenLink": "Terjadi kesalahan saat membuka link.",
-        "other.debugSubtitle": "Lihat log error sistem"
+        "other.debugSubtitle": "Lihat log error sistem",
+        "other.debug": "Debug Logs",
+
+        // About Screen
+        "about.description": "Aplikasi Al-Quran digital yang dirancang untuk memudahkan membaca dan memahami Al-Quran dengan fitur audio dan terjemahan yang lengkap."
     },
     en: {
         // Home Screen
         "home.title": "QuLife",
-        "home.subtitle": "Petunjuk Hidup dari Al-Quran", // Kept intentionally as requested
+        "home.subtitle": "Life Guidance from the Al-Quran",
         "home.lastRead": "Last Read",
         "home.verse": "Verse",
         "home.surahList": "Surah List",
@@ -133,6 +148,17 @@ const translations = {
         "verseView.jumpVerse": "Jump Verse",
         "verseView.goToVerse": "Go to Verse",
         "verseView.goTo": "Go",
+        "verseView.tapToTranslate": "Tap for translation",
+        "verseView.delayConfig": "DELAY (SECONDS)",
+        "verseView.cancel": "Cancel",
+        "verseView.autoConfigTitle": "Auto Play Configuration",
+        "verseView.order": "Order",
+        "verseView.surahSettingsDesc": "These settings only apply to this surah.",
+        "verseView.mode": "Mode:",
+        "verseView.repeatGeneric": "Repeat:",
+        "verseView.resetSettings": "Reset Settings",
+        "verseView.resetDesc": "Restore this surah's settings to global defaults?",
+        "verseView.settingsReset": "Settings reset to Global",
 
         // Other Screen
         "other.settings": "Settings",
@@ -143,7 +169,11 @@ const translations = {
         "other.reportSubtitle": "Report translation/audio errors",
         "other.errorNoLink": "Cannot open the report link.",
         "other.errorOpenLink": "An error occurred while opening the link.",
-        "other.debugSubtitle": "View system error logs"
+        "other.debugSubtitle": "View system error logs",
+        "other.debug": "Debug Logs",
+
+        // About Screen
+        "about.description": "A digital Al-Quran application designed to make it easier to read and understand the Al-Quran with complete audio and translation features."
     }
 };
 

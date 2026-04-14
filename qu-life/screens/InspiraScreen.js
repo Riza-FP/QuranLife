@@ -152,11 +152,11 @@ export default function InspiraScreen({ navigation }) {
             <View style={styles.container}>
 
                 <Text style={styles.title}>
-                    {translate('home.inspiraTitle') || (appLanguage === 'en' ? 'Inspiration Wheel' : 'Roda Inspirasi')}
+                    {translate('home.inspiraTitle', appLanguage) || 'Roda Inspirasi'}
                 </Text>
                 
                 <Text style={styles.subtitle}>
-                    {translate('home.inspiraSubtitle') || (appLanguage === 'en' ? 'Find a random Ayah to reflect upon today' : 'Temukan satu Ayat secara acak untuk direnungkan hari ini')}
+                    {translate('home.inspiraSubtitle', appLanguage) || 'Temukan satu Ayat secara acak untuk direnungkan hari ini'}
                 </Text>
 
                 <View style={styles.wheelContainer}>
