@@ -27,30 +27,16 @@ const Logger = {
     },
 
     async logInfo(message) {
-        try {
-            const timestamp = new Date().toISOString();
-            const newLog = {
-                id: Date.now().toString(),
-                timestamp,
-                level: 'INFO',
-                message,
-                details: ''
-            };
-
-            const existingLogs = await Logger.getLogs();
-            const updatedLogs = [newLog, ...existingLogs].slice(0, MAX_LOGS);
-
-            await AsyncStorage.setItem(LOG_STORAGE_KEY, JSON.stringify(updatedLogs));
-            console.log(`[Logger] ${message}`);
-        } catch (e) {
-            console.error("Failed to save log:", e);
-        }
+        // Only log to console, do not save INFO logs to persistent storage
+        console.log(`[Logger] ${message}`);
     },
 
     async getLogs() {
         try {
             const logs = await AsyncStorage.getItem(LOG_STORAGE_KEY);
-            return logs ? JSON.parse(logs) : [];
+            const parsedLogs = logs ? JSON.parse(logs) : [];
+            // Filter out any existing INFO logs from older versions
+            return parsedLogs.filter(log => log.level === 'ERROR');
         } catch (e) {
             console.error("Failed to get logs:", e);
             return [];

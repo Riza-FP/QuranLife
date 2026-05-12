@@ -9,17 +9,21 @@ import OtherScreen from './screens/OtherScreen';
 import AboutScreen from './screens/AboutScreen';
 import LogViewerScreen from './screens/LogViewerScreen';
 import InspiraScreen from './screens/InspiraScreen';
+import LanguageSetupScreen from './screens/LanguageSetupScreen';
 import { useSettings } from './utils/SettingsContext';
 import { translate } from './utils/i18n';
 
 const Stack = createStackNavigator();
 
 export default function QuLifeNavigator() {
-    const { appLanguage } = useSettings();
+    const { appLanguage, settingsLoaded } = useSettings();
+
+    // Prevent rendering the navigation tree until we know if it's the first launch
+    if (!settingsLoaded) return null;
 
     return (
         <Stack.Navigator
-            initialRouteName="Home"
+            initialRouteName={appLanguage === null ? "LanguageSetup" : "Home"}
             screenOptions={{
                 headerStyle: { backgroundColor: '#fff' },
                 headerTintColor: '#007AFF',
@@ -27,6 +31,11 @@ export default function QuLifeNavigator() {
                 cardStyle: { backgroundColor: '#fff' }, // Fix black flash on navigation
             }}
         >
+            <Stack.Screen
+                name="LanguageSetup"
+                component={LanguageSetupScreen}
+                options={{ headerShown: false }}
+            />
             <Stack.Screen
                 name="Home"
                 component={HomeScreen}
