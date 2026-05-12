@@ -7,7 +7,9 @@ import { translate } from '../utils/i18n';
 export default function OtherScreen({ navigation }) {
     const { appLanguage } = useSettings();
 
-    const REPORT_FORM_URL = "https://forms.gle/fd3n5n3UN85wF7oS7";
+    const REPORT_FORM_URL = appLanguage === 'en' 
+        ? "https://forms.gle/z9gNfKpGai5vkPCaA" 
+        : "https://forms.gle/fd3n5n3UN85wF7oS7";
 
     const handleReportPress = async () => {
         try {

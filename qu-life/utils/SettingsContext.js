@@ -38,6 +38,11 @@ export const SettingsProvider = ({ children }) => {
                 if (savedAppLang) {
                     setAppLanguage(savedAppLang);
                 }
+                
+                const savedVoice = await AsyncStorage.getItem('@voice_id');
+                if (savedVoice) {
+                    setVoiceIdentifier(savedVoice);
+                }
                 // (Other settings can be loaded here in the future)
             } catch (e) {
                 console.error("Failed to load settings from storage", e);
@@ -56,6 +61,15 @@ export const SettingsProvider = ({ children }) => {
             );
         }
     }, [appLanguage]);
+
+    // Save voiceIdentifier when it changes
+    useEffect(() => {
+        if (voiceIdentifier) {
+            AsyncStorage.setItem('@voice_id', voiceIdentifier).catch(e => console.error(e));
+        } else {
+            AsyncStorage.removeItem('@voice_id').catch(e => console.error(e));
+        }
+    }, [voiceIdentifier]);
 
     return (
         <SettingsContext.Provider value={{

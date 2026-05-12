@@ -24,7 +24,7 @@ export default function VerseViewScreen({ route, navigation }) {
     const [verses, setVerses] = useState([]);
     const [showJumpModal, setShowJumpModal] = useState(false);
     const {
-        fontSize, showTranslation, setShowTranslation, translationCode, translationLanguage,
+        fontSize, showTranslation, setShowTranslation, translationCode, translationLanguage, voiceIdentifier,
         defaultDelay, defaultRepeat,
         theme,
         // Rename Globals to avoid conflict with Local State
@@ -494,6 +494,7 @@ export default function VerseViewScreen({ route, navigation }) {
 
             const options = {
                 language: translationLanguage, // Use selected language (id/en)
+                voice: voiceIdentifier || undefined,
                 onDone: () => resolve(true),
                 onStopped: () => resolve(true),
                 onError: (e) => {
@@ -766,7 +767,11 @@ export default function VerseViewScreen({ route, navigation }) {
                     setTranslationStage('audio');
                     setIsTranslationPlaying(true);
                     const text = currentVerse.translations?.[translationCode] || currentVerse.translation || 'Tidak ada terjemahan';
-                    const options = { language: translationLanguage, onDone: () => setIsTranslationPlaying(false) };
+                    const options = { 
+                        language: translationLanguage, 
+                        voice: voiceIdentifier || undefined,
+                        onDone: () => setIsTranslationPlaying(false) 
+                    };
                     Speech.speak(text, options);
                 } else {
                     // Fallback if no verse?
@@ -865,7 +870,11 @@ export default function VerseViewScreen({ route, navigation }) {
                                                     setTranslationStage('audio');
                                                     setIsTranslationPlaying(true);
                                                     const text = verse.translations?.[translationCode] || verse.translation || 'Tidak ada terjemahan';
-                                                    const options = { language: translationLanguage, onDone: () => setIsTranslationPlaying(false) };
+                                                    const options = { 
+                                                        language: translationLanguage, 
+                                                        voice: voiceIdentifier || undefined,
+                                                        onDone: () => setIsTranslationPlaying(false) 
+                                                    };
                                                     Speech.speak(text, options);
                                                 } else {
                                                     // Step 3: Close (Stage 'audio' -> 'off')

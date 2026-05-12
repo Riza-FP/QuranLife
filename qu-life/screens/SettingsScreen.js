@@ -10,6 +10,7 @@ export default function SettingsScreen() {
         fontSize, setFontSize,
         showTranslation, setShowTranslation,
         translationCode, setTranslationCode,
+        voiceIdentifier, setVoiceIdentifier,
         defaultDelay, setDefaultDelay,
         defaultRepeat, setDefaultRepeat,
         // New Advanced Settings
@@ -26,17 +27,22 @@ export default function SettingsScreen() {
     } = useSettings();
 
     const [missingLanguage, setMissingLanguage] = useState(false);
-    const [idAvailable, setIdAvailable] = useState(true);
-    const [enAvailable, setEnAvailable] = useState(true);
+    const [availableVoices, setAvailableVoices] = useState([]);
 
     useEffect(() => {
         (async () => {
             try {
                 const voices = await Speech.getAvailableVoicesAsync();
 
+                const isId = (langCode) => {
+                    const l = langCode.toLowerCase();
+                    return l.startsWith('id') || l.startsWith('in');
+                };
+                const isEn = (langCode) => langCode.toLowerCase().startsWith('en');
+
                 // Detailed Check
-                const hasId = voices.some(v => v.language.startsWith('id'));
-                const hasEn = voices.some(v => v.language.startsWith('en'));
+                const hasId = voices.some(v => isId(v.language));
+                const hasEn = voices.some(v => isEn(v.language));
 
                 // Condition: Only flag as "missing" if we actually found SOME voices (API is working)
                 // If voices.length === 0, the API is likely failing on this device, so we give benefit of doubt.
@@ -45,9 +51,14 @@ export default function SettingsScreen() {
                 const idMissing = apiWorking && !hasId;
                 const enMissing = apiWorking && !hasEn;
 
-                // Update missingLanguage based on CURRENT selection
                 const targetMissing = translationLanguage === 'en' ? enMissing : idMissing;
                 setMissingLanguage(targetMissing);
+
+                // Filter voices for currently selected language
+                const matchingVoices = voices.filter(v => 
+                    translationLanguage === 'en' ? isEn(v.language) : isId(v.language)
+                );
+                setAvailableVoices(matchingVoices);
 
             } catch (e) {
                 console.error("Failed to check voices", e);
@@ -169,6 +180,7 @@ export default function SettingsScreen() {
                             ]}
                             onPress={() => {
                                 setTranslationLanguage('en');
+                                setVoiceIdentifier(null); // Reset voice when language changes
                                 Speech.speak("English language selected", { language: 'en' });
                             }}
                         >
@@ -177,6 +189,49 @@ export default function SettingsScreen() {
                             </Text>
                         </TouchableOpacity>
                     </View>
+                </View>
+
+                {/* Voice Selector UI */}
+                <View style={styles.settingItem}>
+                    <Text style={[styles.label, theme === 'dark' && { color: '#ddd' }]}>{translate('settings.voiceSelector', appLanguage)}</Text>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{ marginTop: 5 }}>
+                        <TouchableOpacity
+                            style={[styles.voiceButton, !voiceIdentifier && styles.voiceButtonActive]}
+                            onPress={() => setVoiceIdentifier(null)}
+                        >
+                            <Text style={[styles.voiceButtonText, !voiceIdentifier && styles.voiceButtonTextActive]}>
+                                {translate('settings.systemDefault', appLanguage)}
+                            </Text>
+                        </TouchableOpacity>
+                        
+                        {availableVoices.length === 0 ? (
+                            <Text style={[styles.hintText, { paddingHorizontal: 10 }]}>Hanya default yang tersedia di HP ini.</Text>
+                        ) : (
+                            availableVoices.map((voice, index) => (
+                                <View key={voice.identifier} style={styles.voiceCard}>
+                                    <TouchableOpacity
+                                        style={[styles.voiceButton, voiceIdentifier === voice.identifier && styles.voiceButtonActive, { marginRight: 0, borderBottomRightRadius: 0, borderTopRightRadius: 0 }]}
+                                        onPress={() => setVoiceIdentifier(voice.identifier)}
+                                    >
+                                        <Text style={[styles.voiceButtonText, voiceIdentifier === voice.identifier && styles.voiceButtonTextActive]}>
+                                            Voice {index + 1}
+                                        </Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity 
+                                        style={styles.testVoiceButton}
+                                        onPress={() => {
+                                            Speech.speak("Test", { language: translationLanguage, voice: voice.identifier });
+                                        }}
+                                    >
+                                        <Text style={styles.testVoiceButtonText}>{translate('settings.testVoice', appLanguage)}</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            ))
+                        )}
+                    </ScrollView>
+                    <Text style={styles.hintText}>
+                        * Nama suara bawaan HP tidak bisa menampilkan Gender. Tekan "Test" untuk mendengar.
+                    </Text>
                 </View>
 
             </View>
@@ -306,11 +361,29 @@ const styles = StyleSheet.create({
         borderColor: '#007AFF',
     },
     voiceButtonText: {
-        fontSize: 12,
+        fontSize: 14,
         color: '#495057',
     },
     voiceButtonTextActive: {
         color: '#fff',
+        fontWeight: 'bold',
+    },
+    voiceCard: {
+        flexDirection: 'row',
+        marginRight: 10,
+        marginBottom: 8,
+    },
+    testVoiceButton: {
+        backgroundColor: '#28a745',
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderTopRightRadius: 8,
+        borderBottomRightRadius: 8,
+        justifyContent: 'center',
+    },
+    testVoiceButtonText: {
+        color: '#fff',
+        fontSize: 12,
         fontWeight: 'bold',
     },
     hintText: {
