@@ -1,15 +1,15 @@
 {
   "expo": {
-    "name": "QuLife",
-    "slug": "QuLife",
+    "name": "Aktifi - Quran",
+    "slug": "AktifiQuran",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./qulife_logo_new.png",
-    "userInterfaceStyle": "light",
+    "icon": "./assets/aktifi_icon.png",
+    "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./qulife_landing-page.png",
-      "resizeMode": "cover",
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "ios": {
@@ -17,12 +17,12 @@
     },
     "android": {
       "splash": {
-        "image": "./qulife_logo_new.png",
+        "image": "./assets/splash-icon.png",
         "resizeMode": "contain",
         "backgroundColor": "#ffffff"
       },
       "adaptiveIcon": {
-        "foregroundImage": "./qulife_logo_new.png",
+        "foregroundImage": "./assets/aktifi_icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.ronimhdlc.qulife",

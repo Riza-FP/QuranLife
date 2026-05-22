@@ -4,7 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useSettings } from '../utils/SettingsContext';
 
 export default function LanguageSetupScreen({ navigation }) {
-    const { setAppLanguage } = useSettings();
+    const { setAppLanguage, theme } = useSettings();
+    const isDark = theme === 'dark';
 
     const selectLanguage = (lang) => {
         setAppLanguage(lang);
@@ -13,34 +14,45 @@ export default function LanguageSetupScreen({ navigation }) {
 
     return (
         <ImageBackground
-            source={require('../../qulife_bg.png')}
+            source={isDark ? require('../../assets/bg_dark_normal.jpg') : require('../../assets/bg_light_normal.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
         >
             <SafeAreaView style={styles.container}>
                 <View style={styles.logoContainer}>
                     <Image
-                        source={require('../../qulife_logo_new.png')}
+                        source={require('../../assets/aktifi_icon.png')}
                         style={styles.logo}
                         resizeMode="contain"
                     />
-                    <Text style={styles.title}>Welcome to QuLife</Text>
-                    <Text style={styles.subtitle}>Please select your language / Silakan pilih bahasa Anda</Text>
+                    <Text style={[styles.title, { color: isDark ? '#81c784' : '#2e7d32' }]}>Welcome to Aktifi - Quran</Text>
+                    <Text style={[styles.subtitle, isDark && { color: '#a5d6a7' }]}>Please select your language / Silakan pilih bahasa Anda</Text>
                 </View>
 
                 <View style={styles.buttonContainer}>
                     <TouchableOpacity
-                        style={styles.languageButton}
+                        style={[styles.languageButton, { backgroundColor: isDark ? '#1b5e20' : '#2e7d32' }]}
                         onPress={() => selectLanguage('id')}
                     >
                         <Text style={styles.languageButtonText}>Bahasa Indonesia</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={[styles.languageButton, styles.englishButton]}
+                        style={[
+                            styles.languageButton,
+                            styles.englishButton,
+                            {
+                                backgroundColor: isDark ? '#1c261c' : '#fff',
+                                borderColor: isDark ? '#81c784' : '#2e7d32'
+                            }
+                        ]}
                         onPress={() => selectLanguage('en')}
                     >
-                        <Text style={[styles.languageButtonText, styles.englishButtonText]}>English</Text>
+                        <Text style={[
+                            styles.languageButtonText,
+                            styles.englishButtonText,
+                            { color: isDark ? '#81c784' : '#2e7d32' }
+                        ]}>English</Text>
                     </TouchableOpacity>
                 </View>
             </SafeAreaView>
@@ -56,7 +68,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.85)',
+        backgroundColor: 'transparent',
         justifyContent: 'center',
         padding: 24,
     },
@@ -73,7 +85,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         fontWeight: 'bold',
-        color: '#007AFF',
+        color: '#2e7d32',
         marginBottom: 12,
     },
     subtitle: {
@@ -87,7 +99,7 @@ const styles = StyleSheet.create({
         gap: 16, // Requires React Native 0.71+
     },
     languageButton: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#2e7d32',
         paddingVertical: 18,
         borderRadius: 16,
         alignItems: 'center',
@@ -106,9 +118,9 @@ const styles = StyleSheet.create({
     englishButton: {
         backgroundColor: '#fff',
         borderWidth: 2,
-        borderColor: '#007AFF',
+        borderColor: '#2e7d32',
     },
     englishButtonText: {
-        color: '#007AFF',
+        color: '#2e7d32',
     },
 });

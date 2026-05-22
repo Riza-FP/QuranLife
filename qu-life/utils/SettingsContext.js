@@ -43,7 +43,11 @@ export const SettingsProvider = ({ children }) => {
                 if (savedVoice) {
                     setVoiceIdentifier(savedVoice);
                 }
-                // (Other settings can be loaded here in the future)
+
+                const savedTheme = await AsyncStorage.getItem('@theme');
+                if (savedTheme) {
+                    setTheme(savedTheme);
+                }
             } catch (e) {
                 console.error("Failed to load settings from storage", e);
             } finally {
@@ -61,6 +65,15 @@ export const SettingsProvider = ({ children }) => {
             );
         }
     }, [appLanguage]);
+
+    // Save theme when it changes
+    useEffect(() => {
+        if (theme) {
+            AsyncStorage.setItem('@theme', theme).catch(e => 
+                console.error("Failed to save theme", e)
+            );
+        }
+    }, [theme]);
 
     // Save voiceIdentifier when it changes
     useEffect(() => {

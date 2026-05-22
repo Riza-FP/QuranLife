@@ -2,9 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, SafeAreaView, Clipboard } from 'react-native';
 import Logger from '../utils/Logger';
 import { Ionicons } from '@expo/vector-icons';
+import { useSettings } from '../utils/SettingsContext';
 
 export default function LogViewerScreen() {
     const [logs, setLogs] = useState([]);
+    const { theme } = useSettings();
+    const isDark = theme === 'dark';
 
     const loadLogs = async () => {
         const data = await Logger.getLogs();
@@ -21,23 +24,31 @@ export default function LogViewerScreen() {
     }, []);
 
     const renderItem = ({ item }) => (
-        <View style={[styles.logItem, item.level === 'ERROR' ? styles.errorItem : styles.infoItem]}>
+        <View style={[
+            styles.logItem,
+            item.level === 'ERROR' ? styles.errorItem : [styles.infoItem, isDark && { borderLeftColor: '#81c784' }],
+            isDark && { backgroundColor: '#162016', elevation: 0 }
+        ]}>
             <View style={styles.logHeader}>
-                <Text style={styles.timestamp}>{new Date(item.timestamp).toLocaleString()}</Text>
-                <Text style={styles.level}>{item.level}</Text>
+                <Text style={[styles.timestamp, isDark && { color: '#759e75' }]}>{new Date(item.timestamp).toLocaleString()}</Text>
+                <Text style={[styles.level, isDark && { color: '#e8f5e9' }]}>{item.level}</Text>
             </View>
-            <Text style={styles.message}>{item.message}</Text>
-            {item.details ? <Text style={styles.details}>{item.details}</Text> : null}
+            <Text style={[styles.message, isDark && { color: '#e8f5e9' }]}>{item.message}</Text>
+            {item.details ? (
+                <Text style={[styles.details, isDark && { backgroundColor: '#1c261c', color: '#a5d6a7' }]}>
+                    {item.details}
+                </Text>
+            ) : null}
         </View>
     );
 
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.header}>
-                <Text style={styles.title}>Debug Logs</Text>
+        <SafeAreaView style={[styles.container, isDark && { backgroundColor: '#0f140f' }]}>
+            <View style={[styles.header, isDark && { backgroundColor: '#162016', borderBottomColor: '#2d3b2d' }]}>
+                <Text style={[styles.title, isDark && { color: '#81c784' }]}>Debug Logs</Text>
                 <View style={styles.actions}>
                     <TouchableOpacity onPress={loadLogs} style={styles.iconButton}>
-                        <Ionicons name="refresh" size={24} color="#007AFF" />
+                        <Ionicons name="refresh" size={24} color={isDark ? '#81c784' : '#2e7d32'} />
                     </TouchableOpacity>
                     <TouchableOpacity onPress={clearLogs} style={styles.iconButton}>
                         <Ionicons name="trash-outline" size={24} color="#FF3B30" />
@@ -50,7 +61,7 @@ export default function LogViewerScreen() {
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
                 contentContainerStyle={styles.listContent}
-                ListEmptyComponent={<Text style={styles.emptyText}>No logs found.</Text>}
+                ListEmptyComponent={<Text style={[styles.emptyText, isDark && { color: '#759e75' }]}>No logs found.</Text>}
             />
         </SafeAreaView>
     );
@@ -97,7 +108,7 @@ const styles = StyleSheet.create({
     },
     infoItem: {
         borderLeftWidth: 4,
-        borderLeftColor: '#007AFF',
+        borderLeftColor: '#2e7d32',
     },
     logHeader: {
         flexDirection: 'row',

@@ -1,7 +1,7 @@
 const translations = {
     id: {
         // Home Screen
-        "home.title": "QuLife",
+        "home.title": "Aktifi - Quran",
         "home.subtitle": "Petunjuk Hidup dari Al-Quran",
         "home.lastRead": "Terakhir Dibaca",
         "home.verse": "Ayat",
@@ -89,11 +89,11 @@ const translations = {
         "other.debug": "Debug Logs",
 
         // About Screen
-        "about.description": "Aplikasi Al-Quran digital yang dirancang untuk memudahkan membaca dan memahami Al-Quran dengan fitur audio dan terjemahan yang lengkap."
+        "about.description": "Sebagai alat bantu untuk mengaktifkan mindset Qurani dalam kehidupan sehari-hari, aplikasi ini dirancang agar Al-Qur’an tidak hanya dibaca, tetapi juga dipahami, direnungkan, dan diterapkan dalam setiap langkah kehidupan."
     },
     en: {
         // Home Screen
-        "home.title": "QuLife",
+        "home.title": "Aktifi - Quran",
         "home.subtitle": "Life Guidance from the Al-Quran",
         "home.lastRead": "Last Read",
         "home.verse": "Verse",
@@ -181,7 +181,7 @@ const translations = {
         "other.debug": "Debug Logs",
 
         // About Screen
-        "about.description": "A digital Al-Quran application designed to make it easier to read and understand the Al-Quran with complete audio and translation features."
+        "about.description": "As a tool to help activate a Qur’anic mindset in everyday life, this application is designed so that the Qur’an is not only read, but also understood, reflected upon, and applied in every step of life."
     }
 };
 

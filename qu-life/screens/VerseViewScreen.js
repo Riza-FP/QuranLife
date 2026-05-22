@@ -241,7 +241,7 @@ export default function VerseViewScreen({ route, navigation }) {
             title: surah?.nama || 'Verse View',
             headerRight: () => (
                 <TouchableOpacity onPress={() => setShowSurahSettings(true)} style={{ marginRight: 15 }}>
-                    <Ionicons name="settings-outline" size={24} color="#007AFF" />
+                    <Ionicons name="settings-outline" size={24} color={isDark ? '#81c784' : '#2e7d32'} />
                 </TouchableOpacity>
             ),
         });
@@ -800,8 +800,8 @@ export default function VerseViewScreen({ route, navigation }) {
     };
 
     const isDark = theme === 'dark';
-    const bgSource = isDark ? null : require('../../qulife_bg.png');
-    const bgStyle = [styles.backgroundImage, isDark && { backgroundColor: '#121212' }];
+    const bgSource = isDark ? require('../../assets/bg_dark_verse.jpg') : require('../../assets/bg_light_verse.jpg');
+    const bgStyle = styles.backgroundImage;
     const textStyle = isDark ? { color: '#E0E0E0' } : { color: '#000' };
 
     return (
@@ -836,14 +836,14 @@ export default function VerseViewScreen({ route, navigation }) {
                     {verses.map((verse) => (
                         <View key={String(verse.number)} style={styles.page}>
                             <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-                                <View style={styles.contentContainer}>
+                                <View style={[styles.contentContainer, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1, shadowColor: '#0c120c' }]}>
                                     <View style={{ flex: 1 }} />
                                     <TouchableOpacity style={styles.verseHeader} onPress={() => setShowJumpModal(true)}>
-                                        <Text style={[styles.verseNumber, isDark && { color: '#ccc' }]}>{translate('home.verse', appLanguage) || 'Ayat'} {verse.number} ▼</Text>
+                                        <Text style={[styles.verseNumber, isDark && { backgroundColor: '#222f22', color: '#a5d6a7' }]}>{translate('home.verse', appLanguage) || 'Ayat'} {verse.number} ▼</Text>
                                     </TouchableOpacity>
 
                                     <View style={styles.arabicContainer}>
-                                        <Text style={[styles.arabicText, { fontSize }, isDark && { color: '#fff' }]}>{verse.arabic}</Text>
+                                        <Text style={[styles.arabicText, { fontSize }, isDark && { color: '#e8f5e9' }]}>{verse.arabic}</Text>
                                     </View>
 
                                     {/* Interaction Logic: Local Tri-State OR Global Show */}
@@ -889,8 +889,8 @@ export default function VerseViewScreen({ route, navigation }) {
                                         >
                                             <Text style={[
                                                 styles.translationText,
-                                                (activeTranslationVerse === verse.number && isTranslationPlaying) && { color: '#007AFF', fontWeight: '500' },
-                                                isDark && !(activeTranslationVerse === verse.number && isTranslationPlaying) && { color: '#ccc' }
+                                                (activeTranslationVerse === verse.number && isTranslationPlaying) && { color: isDark ? '#81c784' : '#2e7d32', fontWeight: '500' },
+                                                isDark && !(activeTranslationVerse === verse.number && isTranslationPlaying) && { color: '#a5d6a7' }
                                             ]}>
                                                 {verse.translations?.[translationCode] || verse.translation}
                                             </Text>
@@ -905,7 +905,7 @@ export default function VerseViewScreen({ route, navigation }) {
                                                 setIsTranslationPlaying(false);
                                             }}
                                         >
-                                            <Text style={styles.tapToTranslate}>{translate('verseView.tapToTranslate', appLanguage) || 'Tap untuk terjemahan'}</Text>
+                                            <Text style={[styles.tapToTranslate, isDark && { color: '#759e75' }]}>{translate('verseView.tapToTranslate', appLanguage) || 'Tap untuk terjemahan'}</Text>
                                         </TouchableOpacity>
                                     )}
                                 </View>
@@ -927,7 +927,7 @@ export default function VerseViewScreen({ route, navigation }) {
                     onToggleTranslation={handleGlobalTranslationToggle}
                     translationIcon={getTranslationIcon()}
                     loading={loadingAudio}
-                    onOpenSettings={() => setShowBottomSettings(true)}
+                    onOpenSettings={() => setShowSurahSettings(true)}
                 />
 
                 {/* Surah Settings Modal (Top Right) */}
@@ -938,63 +938,65 @@ export default function VerseViewScreen({ route, navigation }) {
                     onRequestClose={() => setShowSurahSettings(false)}
                 >
                     <View style={styles.modalOverlay}>
-                        <View style={[styles.modalContent, { maxHeight: '80%' }]}>
+                        <View style={[styles.modalContent, isDark && { backgroundColor: '#162016' }, { maxHeight: '80%' }]}>
                             <ScrollView showsVerticalScrollIndicator={false}>
-                                <Text style={styles.modalTitle}>{translate('verseView.surahSettings', appLanguage) || 'Pengaturan Surah'} {surah?.nama}</Text>
-                                <Text style={styles.modalSubtitle}>{translate('verseView.surahSettingsDesc', appLanguage) || 'Pengaturan ini hanya berlaku untuk surah ini.'}</Text>
+                                <Text style={[styles.modalTitle, isDark && { color: '#e8f5e9' }]}>{translate('verseView.surahSettings', appLanguage) || 'Pengaturan Surah'} {surah?.nama}</Text>
+                                <Text style={[styles.modalSubtitle, isDark && { color: '#a5d6a7' }]}>{translate('verseView.surahSettingsDesc', appLanguage) || 'Pengaturan ini hanya berlaku untuk surah ini.'}</Text>
 
                                 {/* Order & Translation Toggle */}
                                 <View style={styles.configRow}>
-                                    <Text style={styles.configLabel}>{translate('verseView.mode', appLanguage) || 'Mode:'}</Text>
+                                    <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.mode', appLanguage) || 'Mode:'}</Text>
                                     <View style={{ flexDirection: 'row' }}>
                                         <TouchableOpacity
-                                            style={[styles.miniButton, localAutoPlayOrder === 'translation_first' && styles.miniButtonActive]}
+                                            style={[styles.miniButton, isDark && { backgroundColor: '#222f22' }, localAutoPlayOrder === 'translation_first' && [styles.miniButtonActive, isDark && { backgroundColor: '#1b5e20' }]]}
                                             onPress={() => setLocalAutoPlayOrder('translation_first')}
                                         >
-                                            <Text style={[styles.miniButtonText, localAutoPlayOrder === 'translation_first' && { color: '#fff' }]}>{translate('settings.transFirst', appLanguage) || 'Terj. Dulu'}</Text>
+                                            <Text style={[styles.miniButtonText, isDark && { color: '#a5d6a7' }, localAutoPlayOrder === 'translation_first' && { color: '#fff' }]}>{translate('settings.transFirst', appLanguage) || 'Terj. Dulu'}</Text>
                                         </TouchableOpacity>
                                         <TouchableOpacity
-                                            style={[styles.miniButton, localAutoPlayOrder === 'arabic_first' && styles.miniButtonActive, { marginLeft: 5 }]}
+                                            style={[styles.miniButton, isDark && { backgroundColor: '#222f22' }, localAutoPlayOrder === 'arabic_first' && [styles.miniButtonActive, isDark && { backgroundColor: '#1b5e20' }], { marginLeft: 5 }]}
                                             onPress={() => setLocalAutoPlayOrder('arabic_first')}
                                         >
-                                            <Text style={[styles.miniButtonText, localAutoPlayOrder === 'arabic_first' && { color: '#fff' }]}>{translate('settings.arabFirst', appLanguage) || 'Ayat Dulu'}</Text>
+                                            <Text style={[styles.miniButtonText, isDark && { color: '#a5d6a7' }, localAutoPlayOrder === 'arabic_first' && { color: '#fff' }]}>{translate('settings.arabFirst', appLanguage) || 'Ayat Dulu'}</Text>
                                         </TouchableOpacity>
                                     </View>
                                 </View>
 
                                 <View style={styles.configRow}>
-                                    <Text style={styles.configLabel}>{translate('settings.playTransText', appLanguage) || 'Bacakan Terjemahan?'}</Text>
+                                    <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('settings.playTransText', appLanguage) || 'Bacakan Terjemahan?'}</Text>
                                     <Switch
                                         value={localEnabledTranslation}
+                                        trackColor={{ false: isDark ? '#222f22' : '#767577', true: isDark ? '#1b5e20' : '#a5d6a7' }}
+                                        thumbColor={localEnabledTranslation ? (isDark ? '#81c784' : '#2e7d32') : '#f4f3f4'}
                                         onValueChange={setLocalEnabledTranslation}
                                     />
                                 </View>
 
                                 {/* Delays */}
-                                <Text style={[styles.modalSubtitle, { marginTop: 15, marginBottom: 5 }]}>{translate('verseView.delayConfig', appLanguage) || 'Jeda (Detik)'}</Text>
+                                <Text style={[styles.modalSubtitle, { marginTop: 15, marginBottom: 5 }, isDark && { color: '#a5d6a7' }]}>{translate('verseView.delayConfig', appLanguage) || 'Jeda (Detik)'}</Text>
 
-                                <ConfigCounter label={translate('settings.preArab', appLanguage) || 'Sebelum Ayat'} value={localDelayPreArabic} setValue={setLocalDelayPreArabic} />
-                                <ConfigCounter label={translate('settings.postArab', appLanguage) || 'Setelah Ayat'} value={localDelayPostArabic} setValue={setLocalDelayPostArabic} />
+                                <ConfigCounter label={translate('settings.preArab', appLanguage) || 'Sebelum Ayat'} value={localDelayPreArabic} setValue={setLocalDelayPreArabic} isDark={isDark} />
+                                <ConfigCounter label={translate('settings.postArab', appLanguage) || 'Setelah Ayat'} value={localDelayPostArabic} setValue={setLocalDelayPostArabic} isDark={isDark} />
 
                                 {localEnabledTranslation && (
                                     <>
-                                        <ConfigCounter label={translate('settings.preTrans', appLanguage) || 'Sebelum Terj.'} value={localDelayPreTranslation} setValue={setLocalDelayPreTranslation} />
-                                        <ConfigCounter label={translate('settings.postTrans', appLanguage) || 'Setelah Terj.'} value={localDelayPostTranslation} setValue={setLocalDelayPostTranslation} />
+                                        <ConfigCounter label={translate('settings.preTrans', appLanguage) || 'Sebelum Terj.'} value={localDelayPreTranslation} setValue={setLocalDelayPreTranslation} isDark={isDark} />
+                                        <ConfigCounter label={translate('settings.postTrans', appLanguage) || 'Setelah Terj.'} value={localDelayPostTranslation} setValue={setLocalDelayPostTranslation} isDark={isDark} />
                                     </>
                                 )}
 
-                                <ConfigCounter label={translate('settings.loopDelay', appLanguage) || 'Antar Pengulangan'} value={localDelaySequenceLoop} setValue={setLocalDelaySequenceLoop} />
+                                <ConfigCounter label={translate('settings.loopDelay', appLanguage) || 'Antar Pengulangan'} value={localDelaySequenceLoop} setValue={setLocalDelaySequenceLoop} isDark={isDark} />
 
 
                                 {/* OLD Repeat Setting (Generic) */}
                                 <View style={[styles.configRow, { marginTop: 15 }]}>
-                                    <Text style={styles.configLabel}>{translate('verseView.repeatGeneric', appLanguage) || 'Pengulangan:'}</Text>
+                                    <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.repeatGeneric', appLanguage) || 'Pengulangan:'}</Text>
                                     <TouchableOpacity
-                                        style={{ flexDirection: 'row', alignItems: 'center', padding: 5, backgroundColor: '#f0f0f0', borderRadius: 8 }}
+                                        style={{ flexDirection: 'row', alignItems: 'center', padding: 5, backgroundColor: isDark ? '#222f22' : '#f0f0f0', borderRadius: 8 }}
                                         onPress={cycleRepeat}
                                     >
-                                        <Ionicons name={repeatMode === 'loop' ? "infinite" : "repeat"} size={20} color="#007AFF" />
-                                        <Text style={[styles.counterText, { marginHorizontal: 8, minWidth: 20 }]}>
+                                        <Ionicons name={repeatMode === 'loop' ? "infinite" : "repeat"} size={20} color={isDark ? '#81c784' : '#2e7d32'} />
+                                        <Text style={[styles.counterText, isDark && { color: '#e8f5e9' }, { marginHorizontal: 8, minWidth: 20 }]}>
                                             {repeatMode === 'loop' ? 'Loop' : `${repeatMode}x`}
                                         </Text>
                                     </TouchableOpacity>
@@ -1003,7 +1005,7 @@ export default function VerseViewScreen({ route, navigation }) {
                                 <View style={{ height: 20 }} />
 
                                 <TouchableOpacity
-                                    style={styles.startButton}
+                                    style={[styles.startButton, isDark ? { backgroundColor: '#1b5e20' } : { backgroundColor: '#2e7d32' }]}
                                     onPress={async () => {
                                         try {
                                             const settingsToSave = {
@@ -1029,7 +1031,7 @@ export default function VerseViewScreen({ route, navigation }) {
 
                                 {/* Reset Button */}
                                 <TouchableOpacity
-                                    style={[styles.startButton, { marginTop: 10, backgroundColor: '#8e8e93' }]}
+                                    style={[styles.startButton, { marginTop: 10, backgroundColor: isDark ? '#2c3540' : '#8e8e93' }]}
                                     onPress={async () => {
                                         Alert.alert(
                                             translate('verseView.resetSettings', appLanguage) || "Reset Pengaturan",
@@ -1067,7 +1069,7 @@ export default function VerseViewScreen({ route, navigation }) {
                                 </TouchableOpacity>
 
                                 {/* Batal Button */}
-                                <TouchableOpacity style={[styles.startButton, { marginTop: 10, backgroundColor: '#ff4444', marginBottom: 20 }]} onPress={() => setShowSurahSettings(false)}>
+                                <TouchableOpacity style={[styles.startButton, { marginTop: 10, backgroundColor: isDark ? '#8b2525' : '#ff4444', marginBottom: 20 }]} onPress={() => setShowSurahSettings(false)}>
                                     <Text style={styles.startButtonText}>{translate('verseView.cancel', appLanguage) || 'Batal'}</Text>
                                 </TouchableOpacity>
                                 <View style={{ height: 20 }} />
@@ -1084,39 +1086,39 @@ export default function VerseViewScreen({ route, navigation }) {
                     onRequestClose={() => setShowAutoModal(false)}
                 >
                     <View style={styles.modalOverlay}>
-                        <View style={[styles.modalContent, { maxHeight: '85%' }]}>
+                        <View style={[styles.modalContent, isDark && { backgroundColor: '#162016' }, { maxHeight: '85%' }]}>
                             <ScrollView showsVerticalScrollIndicator={false}>
-                                <Text style={styles.modalTitle}>{translate('verseView.autoConfigTitle', appLanguage) || 'Konfigurasi Auto Play'}</Text>
+                                <Text style={[styles.modalTitle, isDark && { color: '#e8f5e9' }]}>{translate('verseView.autoConfigTitle', appLanguage) || 'Konfigurasi Auto Play'}</Text>
 
                                 <View style={styles.configRow}>
-                                    <Text style={styles.configLabel}>{translate('verseView.startVerse', appLanguage)}:</Text>
-                                    <View style={styles.counterControl}>
+                                    <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.startVerse', appLanguage)}:</Text>
+                                    <View style={[styles.counterControl, isDark && { backgroundColor: '#222f22' }]}>
                                         <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, startVerse: Math.max(1, p.startVerse - 1) }))}>
-                                            <Ionicons name="remove-circle-outline" size={28} color="#007AFF" />
+                                            <Ionicons name="remove-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
                                         </TouchableOpacity>
-                                        <Text style={styles.counterText}>{autoConfig.startVerse}</Text>
+                                        <Text style={[styles.counterText, isDark && { color: '#e8f5e9' }]}>{autoConfig.startVerse}</Text>
                                         <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, startVerse: Math.min(autoConfig.endVerse, p.startVerse + 1) }))}>
-                                            <Ionicons name="add-circle-outline" size={28} color="#007AFF" />
+                                            <Ionicons name="add-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
 
                                 <View style={styles.configRow}>
-                                    <Text style={styles.configLabel}>{translate('verseView.endVerse', appLanguage)}:</Text>
-                                    <View style={styles.counterControl}>
+                                    <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.endVerse', appLanguage)}:</Text>
+                                    <View style={[styles.counterControl, isDark && { backgroundColor: '#222f22' }]}>
                                         <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, endVerse: Math.max(autoConfig.startVerse, p.endVerse - 1) }))}>
-                                            <Ionicons name="remove-circle-outline" size={28} color="#007AFF" />
+                                            <Ionicons name="remove-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
                                         </TouchableOpacity>
-                                        <Text style={styles.counterText}>{autoConfig.endVerse}</Text>
+                                        <Text style={[styles.counterText, isDark && { color: '#e8f5e9' }]}>{autoConfig.endVerse}</Text>
                                         <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, endVerse: Math.min(verses[verses.length - 1].number, p.endVerse + 1) }))}>
-                                            <Ionicons name="add-circle-outline" size={28} color="#007AFF" />
+                                            <Ionicons name="add-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
                                         </TouchableOpacity>
                                     </View>
                                 </View>
 
                                 {/* Sequence Repeat */}
                                 <View style={styles.configRow}>
-                                    <Text style={styles.configLabel}>{translate('verseView.repeatSequence', appLanguage)}:</Text>
+                                    <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.repeatSequence', appLanguage)}:</Text>
                                     <TouchableOpacity
                                         style={{ flexDirection: 'row', alignItems: 'center' }}
                                         onPress={() => {
@@ -1129,62 +1131,62 @@ export default function VerseViewScreen({ route, navigation }) {
                                             setAutoConfig(p => ({ ...p, sequenceRepeat: next }));
                                         }}
                                     >
-                                        <Ionicons name={autoConfig.sequenceRepeat === 'loop' ? "infinite" : "repeat"} size={20} color="#007AFF" />
-                                        <Text style={[styles.counterText, { marginHorizontal: 8 }]}>
+                                        <Ionicons name={autoConfig.sequenceRepeat === 'loop' ? "infinite" : "repeat"} size={20} color={isDark ? '#81c784' : '#2e7d32'} />
+                                        <Text style={[styles.counterText, isDark && { color: '#e8f5e9' }, { marginHorizontal: 8 }]}>
                                             {autoConfig.sequenceRepeat === 'loop' ? 'Loop' : `${autoConfig.sequenceRepeat}x`}
                                         </Text>
                                     </TouchableOpacity>
                                 </View>
 
                                 {/* Detail Button */}
-                                <TouchableOpacity style={styles.detailButton} onPress={() => setShowAutoDetail(!showAutoDetail)}>
-                                    <Text style={styles.detailButtonText}>{showAutoDetail ? translate('verseView.hideOptions', appLanguage) : translate('verseView.showOptions', appLanguage)}</Text>
+                                <TouchableOpacity style={[styles.detailButton, isDark && { backgroundColor: '#222f22' }]} onPress={() => setShowAutoDetail(!showAutoDetail)}>
+                                    <Text style={[styles.detailButtonText, isDark && { color: '#a5d6a7' }]}>{showAutoDetail ? translate('verseView.hideOptions', appLanguage) : translate('verseView.showOptions', appLanguage)}</Text>
                                 </TouchableOpacity>
 
                                 {/* Detail Config Section */}
                                 {showAutoDetail && (
-                                    <View style={styles.detailContainer}>
-                                        <View style={styles.detailHeader}>
-                                            <Text style={styles.detailTitle}>{translate('verseView.sessionConfig', appLanguage) || 'Pengaturan Sesi Ini'}</Text>
+                                    <View style={[styles.detailContainer, isDark && { backgroundColor: '#1c261c', borderColor: '#2d3b2d' }]}>
+                                        <View style={[styles.detailHeader, isDark && { borderBottomColor: '#2d3b2d' }]}>
+                                            <Text style={[styles.detailTitle, isDark && { color: '#759e75' }]}>{translate('verseView.sessionConfig', appLanguage) || 'Pengaturan Sesi Ini'}</Text>
                                         </View>
 
                                         {/* Playback Order */}
                                         <View style={styles.configRow}>
-                                            <Text style={[styles.configLabel, { fontSize: 14 }]}>{translate('verseView.order', appLanguage) || 'Urutan'}</Text>
+                                            <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }, { fontSize: 14 }]}>{translate('verseView.order', appLanguage) || 'Urutan'}</Text>
                                             <View style={{ flexDirection: 'row' }}>
                                                 <TouchableOpacity
-                                                    style={[styles.miniButton, autoConfig.order === 'translation_first' && styles.miniButtonActive]}
+                                                    style={[styles.miniButton, isDark && { backgroundColor: '#222f22' }, autoConfig.order === 'translation_first' && [styles.miniButtonActive, isDark && { backgroundColor: '#1b5e20' }]]}
                                                     onPress={() => setAutoConfig(p => ({ ...p, order: 'translation_first' }))}
                                                 >
-                                                    <Text style={[styles.miniButtonText, autoConfig.order === 'translation_first' && { color: '#fff' }]}>{translate('settings.transFirst', appLanguage) || 'Terj. Dulu'}</Text>
+                                                    <Text style={[styles.miniButtonText, isDark && { color: '#a5d6a7' }, autoConfig.order === 'translation_first' && { color: '#fff' }]}>{translate('settings.transFirst', appLanguage) || 'Terj. Dulu'}</Text>
                                                 </TouchableOpacity>
                                                 <TouchableOpacity
-                                                    style={[styles.miniButton, autoConfig.order === 'arabic_first' && styles.miniButtonActive, { marginLeft: 5 }]}
+                                                    style={[styles.miniButton, isDark && { backgroundColor: '#222f22' }, autoConfig.order === 'arabic_first' && [styles.miniButtonActive, isDark && { backgroundColor: '#1b5e20' }], { marginLeft: 5 }]}
                                                     onPress={() => setAutoConfig(p => ({ ...p, order: 'arabic_first' }))}
                                                 >
-                                                    <Text style={[styles.miniButtonText, autoConfig.order === 'arabic_first' && { color: '#fff' }]}>{translate('settings.arabFirst', appLanguage) || 'Ayat Dulu'}</Text>
+                                                    <Text style={[styles.miniButtonText, isDark && { color: '#a5d6a7' }, autoConfig.order === 'arabic_first' && { color: '#fff' }]}>{translate('settings.arabFirst', appLanguage) || 'Ayat Dulu'}</Text>
                                                 </TouchableOpacity>
                                             </View>
                                         </View>
 
                                         {/* Play Translation Toggle */}
                                         <View style={styles.configRow}>
-                                            <Text style={[styles.configLabel, { fontSize: 14 }]}>{translate('settings.playTransText', appLanguage) || 'Putar Terjemahan'}</Text>
+                                            <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }, { fontSize: 14 }]}>{translate('settings.playTransText', appLanguage) || 'Putar Terjemahan'}</Text>
                                             <Switch
                                                 value={autoConfig.playTranslation}
-                                                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                                thumbColor={autoConfig.playTranslation ? "#007AFF" : "#f4f3f4"}
+                                                trackColor={{ false: isDark ? '#222f22' : '#767577', true: isDark ? '#1b5e20' : '#a5d6a7' }}
+                                                thumbColor={autoConfig.playTranslation ? (isDark ? '#81c784' : '#2e7d32') : '#f4f3f4'}
                                                 onValueChange={(val) => setAutoConfig(p => ({ ...p, playTranslation: val }))}
                                             />
                                         </View>
 
-                                        <View style={styles.divider} />
+                                        <View style={[styles.divider, isDark && { backgroundColor: '#2d3b2d' }]} />
 
                                         {/* Verse Repeat */}
                                         <View style={styles.configRow}>
-                                            <Text style={[styles.configLabel, { fontSize: 14 }]}>{translate('verseView.repeatVerse', appLanguage) || 'Ulangi per Ayat'}</Text>
+                                            <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }, { fontSize: 14 }]}>{translate('verseView.repeatVerse', appLanguage) || 'Ulangi per Ayat'}</Text>
                                             <TouchableOpacity
-                                                style={styles.pillButton}
+                                                style={[styles.pillButton, isDark ? { backgroundColor: '#1b5e20' } : { backgroundColor: '#2e7d32' }]}
                                                 onPress={() => {
                                                     const r = autoConfig.verseRepeat;
                                                     let next = 1;
@@ -1202,19 +1204,21 @@ export default function VerseViewScreen({ route, navigation }) {
                                             </TouchableOpacity>
                                         </View>
 
-                                        <View style={styles.divider} />
+                                        <View style={[styles.divider, isDark && { backgroundColor: '#2d3b2d' }]} />
 
-                                        <Text style={[styles.configLabel, { fontSize: 12, fontWeight: 'bold', marginBottom: 10, color: '#aaa', letterSpacing: 1 }]}>{translate('verseView.delayConfig', appLanguage) || 'JEDA (DETIK)'}</Text>
+                                        <Text style={[styles.configLabel, { fontSize: 12, fontWeight: 'bold', marginBottom: 10, color: isDark ? '#759e75' : '#aaa', letterSpacing: 1 }]}>{translate('verseView.delayConfig', appLanguage) || 'JEDA (DETIK)'}</Text>
 
                                         <ConfigCounter
                                             label={translate('settings.preArab', appLanguage) || 'Sebelum Ayat'}
                                             value={autoConfig.delayPreArabic}
                                             setValue={(nextFn) => setAutoConfig(p => ({ ...p, delayPreArabic: nextFn(autoConfig.delayPreArabic) }))}
+                                            isDark={isDark}
                                         />
                                         <ConfigCounter
                                             label={translate('settings.postArab', appLanguage) || 'Setelah Ayat'}
                                             value={autoConfig.delayPostArabic}
                                             setValue={(nextFn) => setAutoConfig(p => ({ ...p, delayPostArabic: nextFn(autoConfig.delayPostArabic) }))}
+                                            isDark={isDark}
                                         />
 
                                         {autoConfig.playTranslation && (
@@ -1223,11 +1227,13 @@ export default function VerseViewScreen({ route, navigation }) {
                                                     label={translate('settings.preTrans', appLanguage) || 'Sebelum Terj.'}
                                                     value={autoConfig.delayPreTranslation}
                                                     setValue={(nextFn) => setAutoConfig(p => ({ ...p, delayPreTranslation: nextFn(autoConfig.delayPreTranslation) }))}
+                                                    isDark={isDark}
                                                 />
                                                 <ConfigCounter
                                                     label={translate('settings.postTrans', appLanguage) || 'Setelah Terj.'}
                                                     value={autoConfig.delayPostTranslation}
                                                     setValue={(nextFn) => setAutoConfig(p => ({ ...p, delayPostTranslation: nextFn(autoConfig.delayPostTranslation) }))}
+                                                    isDark={isDark}
                                                 />
                                             </>
                                         )}
@@ -1236,18 +1242,18 @@ export default function VerseViewScreen({ route, navigation }) {
                                             label={translate('settings.loopDelay', appLanguage) || 'Antar Pengulangan'}
                                             value={autoConfig.delaySequenceLoop}
                                             setValue={(nextFn) => setAutoConfig(p => ({ ...p, delaySequenceLoop: nextFn(autoConfig.delaySequenceLoop) }))}
+                                            isDark={isDark}
                                         />
                                     </View>
                                 )}
 
                                 {/* Start Button */}
-                                {/* Start Button */}
-                                <TouchableOpacity style={[styles.startButton, { marginTop: 10 }]} onPress={startAutoPlaySequence}>
+                                <TouchableOpacity style={[styles.startButton, isDark ? { backgroundColor: '#1b5e20' } : { backgroundColor: '#2e7d32' }, { marginTop: 10 }]} onPress={startAutoPlaySequence}>
                                     <Text style={styles.startButtonText}>{translate('verseView.startAutoPlay', appLanguage) || 'Mulai Auto Play'}</Text>
                                 </TouchableOpacity>
 
                                 {/* Batal Button */}
-                                <TouchableOpacity style={[styles.startButton, { marginTop: 10, backgroundColor: '#ff4444' }]} onPress={() => setShowAutoModal(false)}>
+                                <TouchableOpacity style={[styles.startButton, { marginTop: 10, backgroundColor: isDark ? '#8b2525' : '#ff4444' }]} onPress={() => setShowAutoModal(false)}>
                                     <Text style={styles.startButtonText}>{translate('verseView.cancel', appLanguage) || 'Batal'}</Text>
                                 </TouchableOpacity>
 
@@ -1269,8 +1275,8 @@ export default function VerseViewScreen({ route, navigation }) {
                         activeOpacity={1}
                         onPress={() => setShowJumpModal(false)}
                     >
-                        <View style={styles.modalContent}>
-                            <Text style={styles.modalTitle}>Lompat ke Ayat</Text>
+                        <View style={[styles.modalContent, isDark && { backgroundColor: '#162016' }]}>
+                            <Text style={[styles.modalTitle, isDark && { color: '#e8f5e9' }]}>Lompat ke Ayat</Text>
                             <FlatList
                                 data={verses}
                                 keyExtractor={(item) => String(item.number)}
@@ -1279,7 +1285,9 @@ export default function VerseViewScreen({ route, navigation }) {
                                     <TouchableOpacity
                                         style={[
                                             styles.gridItem,
-                                            currentVerseIndex === index && styles.gridItemActive
+                                            isDark && { backgroundColor: '#222f22', borderColor: '#2d3b2d' },
+                                            currentVerseIndex === index && styles.gridItemActive,
+                                            (currentVerseIndex === index && isDark) && { backgroundColor: '#1b5e20', borderColor: '#81c784' }
                                         ]}
                                         onPress={() => {
                                             goToVerse(index);
@@ -1288,7 +1296,9 @@ export default function VerseViewScreen({ route, navigation }) {
                                     >
                                         <Text style={[
                                             styles.gridText,
-                                            currentVerseIndex === index && styles.gridTextActive
+                                            isDark && { color: '#a5d6a7' },
+                                            currentVerseIndex === index && styles.gridTextActive,
+                                            (currentVerseIndex === index && isDark) && { color: '#e8f5e9' }
                                         ]}>
                                             {item.number}
                                         </Text>
@@ -1306,16 +1316,16 @@ export default function VerseViewScreen({ route, navigation }) {
 }
 
 // Helper Component for Modal
-const ConfigCounter = ({ label, value, setValue }) => (
+const ConfigCounter = ({ label, value, setValue, isDark }) => (
     <View style={styles.configRow}>
-        <Text style={[styles.configLabel, { fontSize: 14 }]}>{label}:</Text>
-        <View style={styles.counterControl}>
+        <Text style={[styles.configLabel, { fontSize: 14 }, isDark && { color: '#e8f5e9' }]}>{label}:</Text>
+        <View style={[styles.counterControl, isDark && { backgroundColor: '#222f22' }]}>
             <TouchableOpacity onPress={() => setValue(p => Math.max(0, p - 1))}>
-                <Ionicons name="remove-circle-outline" size={24} color="#007AFF" />
+                <Ionicons name="remove-circle-outline" size={24} color={isDark ? '#81c784' : '#2e7d32'} />
             </TouchableOpacity>
-            <Text style={[styles.counterText, { fontSize: 14, minWidth: 20 }]}>{value}s</Text>
+            <Text style={[styles.counterText, { fontSize: 14, minWidth: 20 }, isDark && { color: '#e8f5e9' }]}>{value}s</Text>
             <TouchableOpacity onPress={() => setValue(p => Math.min(20, p + 1))}>
-                <Ionicons name="add-circle-outline" size={24} color="#007AFF" />
+                <Ionicons name="add-circle-outline" size={24} color={isDark ? '#81c784' : '#2e7d32'} />
             </TouchableOpacity>
         </View>
     </View>
@@ -1329,7 +1339,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.5)', // Transparent for bg
+        backgroundColor: 'transparent',
         paddingBottom: 20, // Added per user request
     },
     center: {
@@ -1461,7 +1471,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 10,
     },
     startButton: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#2e7d32',
         paddingVertical: 12,
         borderRadius: 10,
         alignItems: 'center',
@@ -1479,7 +1489,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#eee',
     },
     miniButtonActive: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#2e7d32',
     },
     miniButtonText: {
         fontSize: 12,
@@ -1497,8 +1507,8 @@ const styles = StyleSheet.create({
         borderColor: '#dee2e6',
     },
     gridItemActive: {
-        backgroundColor: '#007AFF',
-        borderColor: '#007AFF',
+        backgroundColor: '#2e7d32',
+        borderColor: '#2e7d32',
     },
     gridText: {
         fontSize: 16,
@@ -1552,7 +1562,7 @@ const styles = StyleSheet.create({
     pillButton: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor: '#007AFF',
+        backgroundColor: '#2e7d32',
         paddingVertical: 6,
         paddingHorizontal: 12,
         borderRadius: 15,

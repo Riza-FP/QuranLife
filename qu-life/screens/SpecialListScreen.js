@@ -13,7 +13,7 @@ const SPECIAL_ITEMS = [
 ];
 
 export default function SpecialListScreen({ navigation }) {
-    const { appLanguage } = useSettings();
+    const { appLanguage, theme } = useSettings();
 
     const handlePress = (item) => {
         const surahData = getSurahByCode(item.surahCode);
@@ -29,19 +29,24 @@ export default function SpecialListScreen({ navigation }) {
         }
     };
 
+    const isDark = theme === 'dark';
+
     const renderItem = ({ item }) => {
         const subtitle = item.customSubtitleKey 
             ? `Al-Baqarah ${translate('home.verse', appLanguage)} 255` 
             : `${translate('home.verse', appLanguage)} ${item.start}-${item.end}`;
             
         return (
-            <TouchableOpacity style={styles.card} onPress={() => handlePress(item)}>
-                <View style={styles.numberContainer}>
-                    <Text style={styles.number}>{item.number}</Text>
+            <TouchableOpacity 
+                style={[styles.card, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1, shadowColor: '#0c120c' }]} 
+                onPress={() => handlePress(item)}
+            >
+                <View style={[styles.numberContainer, isDark && { backgroundColor: '#222f22' }]}>
+                    <Text style={[styles.number, isDark && { color: '#a5d6a7' }]}>{item.number}</Text>
                 </View>
                 <View style={styles.textContainer}>
-                    <Text style={styles.name}>{item.title}</Text>
-                    <Text style={styles.translation}>{subtitle}</Text>
+                    <Text style={[styles.name, isDark ? { color: '#ffffff' } : { color: '#2e7d32' }]}>{item.title}</Text>
+                    <Text style={[styles.translation, isDark && { color: '#a5d6a7' }]}>{subtitle}</Text>
                 </View>
             </TouchableOpacity>
         );
@@ -49,7 +54,7 @@ export default function SpecialListScreen({ navigation }) {
 
     return (
         <ImageBackground
-            source={require('../../qulife_bg.png')}
+            source={isDark ? require('../../assets/bg_dark_normal.jpg') : require('../../assets/bg_light_normal.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
         >
@@ -73,7 +78,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.5)',
+        backgroundColor: 'transparent',
     },
     list: {
         padding: 16,
@@ -111,7 +116,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#212529',
+        color: '#2e7d32',
         marginBottom: 4,
     },
     translation: {

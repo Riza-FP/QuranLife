@@ -15,10 +15,14 @@ export default function PlaybackControlPanel({
     translationIcon,
     onOpenSettings // KEPT for prop compatibility, but not used in UI here
 }) {
-    const { appLanguage } = useSettings();
+    const { appLanguage, theme } = useSettings();
+    const isDark = theme === 'dark';
+
+    const activeColor = isDark ? '#81c784' : '#2e7d32';
+    const inactiveColor = isDark ? '#759e75' : '#666';
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, isDark && { backgroundColor: '#162016', borderTopColor: '#2d3b2d', shadowColor: '#0c120c' }]}>
             {/* New Layout: Auto (Left) | Audio (Center/Big) | Terjemahan (Right) */}
             <View style={styles.controlsRow}>
 
@@ -27,16 +31,23 @@ export default function PlaybackControlPanel({
                     <Ionicons
                         name={autoPlay ? "play-skip-forward-circle" : "play-skip-forward-circle-outline"}
                         size={28}
-                        color={autoPlay ? "#007AFF" : "#666"}
+                        color={autoPlay ? activeColor : inactiveColor}
                     />
-                    <Text style={[styles.controlText, autoPlay && styles.activeText]}>{translate('playback.autoPlay', appLanguage)}</Text>
+                    <Text style={[
+                        styles.controlText, 
+                        isDark && { color: '#a5d6a7' },
+                        autoPlay && { color: activeColor, fontWeight: 'bold' }
+                    ]}>
+                        {translate('playback.autoPlay', appLanguage)}
+                    </Text>
                 </TouchableOpacity>
 
                 {/* 2. Audio (Center - Big Play Button) */}
                 <TouchableOpacity
                     style={[
                         styles.mainPlayButton,
-                        autoPlay && { backgroundColor: '#8A2BE2', shadowColor: '#8A2BE2' } // Purple when Auto Play is ON
+                        { backgroundColor: isDark ? '#1b5e20' : '#2e7d32', shadowColor: isDark ? '#1b5e20' : '#2e7d32' },
+                        autoPlay && { backgroundColor: '#00a86b', shadowColor: '#00a86b' } // Emerald green when Auto Play is ON
                     ]}
                     onPress={onPlayPause}
                     disabled={loading}
@@ -58,9 +69,15 @@ export default function PlaybackControlPanel({
                     <Ionicons
                         name={translationIcon || (showTranslation ? "language" : "language-outline")}
                         size={28}
-                        color={showTranslation ? "#007AFF" : "#666"}
+                        color={showTranslation ? activeColor : inactiveColor}
                     />
-                    <Text style={[styles.controlText, showTranslation && styles.activeText]}>{translate('playback.translation', appLanguage)}</Text>
+                    <Text style={[
+                        styles.controlText, 
+                        isDark && { color: '#a5d6a7' },
+                        showTranslation && { color: activeColor, fontWeight: 'bold' }
+                    ]}>
+                        {translate('playback.translation', appLanguage)}
+                    </Text>
                 </TouchableOpacity>
 
             </View>
@@ -96,11 +113,11 @@ const styles = StyleSheet.create({
         width: 70,
         height: 70,
         borderRadius: 35,
-        backgroundColor: '#007AFF',
+        backgroundColor: '#2e7d32',
         alignItems: 'center',
         justifyContent: 'center',
         elevation: 5,
-        shadowColor: "#007AFF",
+        shadowColor: "#2e7d32",
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.3,
         shadowRadius: 5,
@@ -114,7 +131,7 @@ const styles = StyleSheet.create({
         fontWeight: '500',
     },
     activeText: {
-        color: '#007AFF',
+        color: '#2e7d32',
         fontWeight: 'bold',
     },
 });

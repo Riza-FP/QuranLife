@@ -5,7 +5,8 @@ import { useSettings } from '../utils/SettingsContext';
 import { translate } from '../utils/i18n';
 
 export default function OtherScreen({ navigation }) {
-    const { appLanguage } = useSettings();
+    const { appLanguage, theme } = useSettings();
+    const isDark = theme === 'dark';
 
     const REPORT_FORM_URL = appLanguage === 'en' 
         ? "https://forms.gle/z9gNfKpGai5vkPCaA" 
@@ -31,54 +32,82 @@ export default function OtherScreen({ navigation }) {
 
     return (
         <ImageBackground
-            source={require('../../qulife_bg.png')}
+            source={isDark ? require('../../assets/bg_dark_normal.jpg') : require('../../assets/bg_light_normal.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
         >
             <View style={styles.container}>
                 <View style={styles.menuContainer}>
-                    <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('Settings')}>
-                        <View style={[styles.iconContainer, { backgroundColor: '#e2e6ea' }]}>
-                            <Ionicons name="settings-outline" size={24} color="#6c757d" />
+                    {/* Settings Option */}
+                    <TouchableOpacity 
+                        style={[
+                            styles.menuItem, 
+                            isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1 }
+                        ]} 
+                        onPress={() => navigation.navigate('Settings')}
+                    >
+                        <View style={[styles.iconContainer, isDark ? { backgroundColor: '#1c261c' } : { backgroundColor: '#e2e6ea' }]}>
+                            <Ionicons name="settings-outline" size={24} color={isDark ? '#a5d6a7' : '#6c757d'} />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={styles.menuTitle}>{translate('other.settings', appLanguage)}</Text>
-                            <Text style={styles.menuSubtitle}>{translate('other.settingsSubtitle', appLanguage)}</Text>
+                            <Text style={[styles.menuTitle, isDark && { color: '#e8f5e9' }]}>{translate('other.settings', appLanguage)}</Text>
+                            <Text style={[styles.menuSubtitle, isDark && { color: '#a5d6a7' }]}>{translate('other.settingsSubtitle', appLanguage)}</Text>
                         </View>
-                        <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                        <Ionicons name="chevron-forward" size={20} color={isDark ? '#759e75' : '#ccc'} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} onPress={handleAboutPress}>
-                        <View style={styles.iconContainer}>
-                            <Ionicons name="information-circle-outline" size={24} color="#007AFF" />
+                    {/* About Option */}
+                    <TouchableOpacity 
+                        style={[
+                            styles.menuItem, 
+                            isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1 }
+                        ]} 
+                        onPress={handleAboutPress}
+                    >
+                        <View style={[styles.iconContainer, isDark ? { backgroundColor: '#182c18' } : { backgroundColor: '#e8f5e9' }]}>
+                            <Ionicons name="information-circle-outline" size={24} color={isDark ? '#81c784' : '#2e7d32'} />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={styles.menuTitle}>{translate('other.about', appLanguage)}</Text>
-                            <Text style={styles.menuSubtitle}>{translate('other.aboutSubtitle', appLanguage)}</Text>
+                            <Text style={[styles.menuTitle, isDark && { color: '#e8f5e9' }]}>{translate('other.about', appLanguage)}</Text>
+                            <Text style={[styles.menuSubtitle, isDark && { color: '#a5d6a7' }]}>{translate('other.aboutSubtitle', appLanguage)}</Text>
                         </View>
-                        <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                        <Ionicons name="chevron-forward" size={20} color={isDark ? '#759e75' : '#ccc'} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} onPress={handleReportPress}>
-                        <View style={[styles.iconContainer, { backgroundColor: '#fff3cd' }]}>
-                            <Ionicons name="warning-outline" size={24} color="#ffc107" />
+                    {/* Report Option */}
+                    <TouchableOpacity 
+                        style={[
+                            styles.menuItem, 
+                            isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1 }
+                        ]} 
+                        onPress={handleReportPress}
+                    >
+                        <View style={[styles.iconContainer, isDark ? { backgroundColor: '#2a2415' } : { backgroundColor: '#fff3cd' }]}>
+                            <Ionicons name="warning-outline" size={24} color={isDark ? '#e9c46a' : '#ffc107'} />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={styles.menuTitle}>{translate('other.report', appLanguage)}</Text>
-                            <Text style={styles.menuSubtitle}>{translate('other.reportSubtitle', appLanguage)}</Text>
+                            <Text style={[styles.menuTitle, isDark && { color: '#e8f5e9' }]}>{translate('other.report', appLanguage)}</Text>
+                            <Text style={[styles.menuSubtitle, isDark && { color: '#a5d6a7' }]}>{translate('other.reportSubtitle', appLanguage)}</Text>
                         </View>
-                        <Ionicons name="open-outline" size={20} color="#ccc" />
+                        <Ionicons name="open-outline" size={20} color={isDark ? '#759e75' : '#ccc'} />
                     </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.menuItem} onPress={() => navigation.navigate('LogViewer')}>
-                        <View style={[styles.iconContainer, { backgroundColor: '#ffe8e8' }]}>
-                            <Ionicons name="bug-outline" size={24} color="#dc3545" />
+                    {/* Debug Logs Option */}
+                    <TouchableOpacity 
+                        style={[
+                            styles.menuItem, 
+                            isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1 }
+                        ]} 
+                        onPress={() => navigation.navigate('LogViewer')}
+                    >
+                        <View style={[styles.iconContainer, isDark ? { backgroundColor: '#2d1618' } : { backgroundColor: '#ffe8e8' }]}>
+                            <Ionicons name="bug-outline" size={24} color={isDark ? '#e57373' : '#dc3545'} />
                         </View>
                         <View style={styles.textContainer}>
-                            <Text style={styles.menuTitle}>{translate('other.debug', appLanguage) || 'Debug Logs'}</Text>
-                            <Text style={styles.menuSubtitle}>{translate('other.debugSubtitle', appLanguage) || 'Lihat log error sistem'}</Text>
+                            <Text style={[styles.menuTitle, isDark && { color: '#e8f5e9' }]}>{translate('other.debug', appLanguage) || 'Debug Logs'}</Text>
+                            <Text style={[styles.menuSubtitle, isDark && { color: '#a5d6a7' }]}>{translate('other.debugSubtitle', appLanguage) || 'Lihat log error sistem'}</Text>
                         </View>
-                        <Ionicons name="chevron-forward" size={20} color="#ccc" />
+                        <Ionicons name="chevron-forward" size={20} color={isDark ? '#759e75' : '#ccc'} />
                     </TouchableOpacity>
                 </View>
             </View>
@@ -94,7 +123,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.5)',
+        backgroundColor: 'transparent',
         padding: 20,
     },
     menuContainer: {

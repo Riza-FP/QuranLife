@@ -1,29 +1,16 @@
 import React, { useRef, useState, useCallback } from 'react';
-import { View, Text, StyleSheet, Animated, Easing, Pressable, ImageBackground, Dimensions } from 'react-native';
-import Svg, { G, Path } from 'react-native-svg';
+import { View, Text, StyleSheet, Animated, Easing, Pressable, ImageBackground, Dimensions, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { getRandomVerse, getSurahByCode } from '../utils/DataLoader';
 import { useSettings } from '../utils/SettingsContext';
 import { translate } from '../utils/i18n';
 
-// Helper for wheel slices
-const makeSlice = (cx, cy, r, startAngle, endAngle, color) => {
-    const x1 = cx + r * Math.cos((Math.PI * startAngle) / 180);
-    const y1 = cy + r * Math.sin((Math.PI * startAngle) / 180);
-    const x2 = cx + r * Math.cos((Math.PI * endAngle) / 180);
-    const y2 = cy + r * Math.sin((Math.PI * endAngle) / 180);
-    const largeArc = endAngle - startAngle <= 180 ? "0" : "1";
-    return (
-        <Path
-            key={startAngle}
-            d={`M${cx},${cy} L${x1},${y1} A${r},${r} 0 ${largeArc} 1 ${x2},${y2} Z`}
-            fill={color}
-        />
-    );
-};
+const lightWheel = require('../../assets/bg_light_inspira.jpg');
+const darkWheel = require('../../assets/bg_dark_inspira.jpg');
 
 export default function InspiraScreen({ navigation }) {
-    const { appLanguage } = useSettings();
+    const { appLanguage, theme } = useSettings();
+    const isDark = theme === 'dark';
 
     const [loadingVerse, setLoadingVerse] = useState(false);
     const [pressAgain, setPressAgain] = useState(false);
@@ -83,7 +70,7 @@ export default function InspiraScreen({ navigation }) {
     const navigateToRandomVerse = useCallback(() => {
         if (navigationPendingRef.current) return;
         navigationPendingRef.current = true;
-
+ 
         if (timeoutRef.current) {
             clearTimeout(timeoutRef.current);
             timeoutRef.current = null;
@@ -145,17 +132,17 @@ export default function InspiraScreen({ navigation }) {
 
     return (
         <ImageBackground
-            source={require('../../qulife_bg.png')}
+            source={isDark ? require('../../assets/bg_dark_normal.jpg') : require('../../assets/bg_light_normal.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
         >
             <View style={styles.container}>
 
-                <Text style={styles.title}>
+                <Text style={[styles.title, { color: isDark ? '#81c784' : '#2e7d32' }]}>
                     {translate('home.inspiraTitle', appLanguage) || 'Roda Inspirasi'}
                 </Text>
                 
-                <Text style={styles.subtitle}>
+                <Text style={[styles.subtitle, isDark && { color: '#a5d6a7' }]}>
                     {translate('home.inspiraSubtitle', appLanguage) || 'Temukan satu Ayat secara acak untuk direnungkan hari ini'}
                 </Text>
 
@@ -167,31 +154,35 @@ export default function InspiraScreen({ navigation }) {
                     >
                         <Animated.View
                             style={[
-                                styles.wheelPlaceholder,
+                                styles.wheelWrapper,
                                 {
-                                    transform: [{ rotate: spinInterpolate }, { scale: scaleAnim }],
+                                    transform: [{ scale: scaleAnim }],
                                 },
                             ]}
                         >
-                            <Svg height="300" width="300" viewBox="0 0 300 300">
-                                <G>
-                                    {makeSlice(150, 150, 150, 0, 30, "#FF6B6B")}
-                                    {makeSlice(150, 150, 150, 30, 60, "#FFD93D")}
-                                    {makeSlice(150, 150, 150, 60, 90, "#6BCB77")}
-                                    {makeSlice(150, 150, 150, 90, 120, "#4D96FF")}
-                                    {makeSlice(150, 150, 150, 120, 150, "#9D4EDD")}
-                                    {makeSlice(150, 150, 150, 150, 180, "#FF8C42")}
-                                    {makeSlice(150, 150, 150, 180, 210, "#FF6B6B")}
-                                    {makeSlice(150, 150, 150, 210, 240, "#FFD93D")}
-                                    {makeSlice(150, 150, 150, 240, 270, "#6BCB77")}
-                                    {makeSlice(150, 150, 150, 270, 300, "#4D96FF")}
-                                    {makeSlice(150, 150, 150, 300, 330, "#9D4EDD")}
-                                    {makeSlice(150, 150, 150, 330, 360, "#FF8C42")}
-                                </G>
-                            </Svg>
-                            <View style={styles.centerTextContainer}>
-                                <Ionicons name="sparkles" size={32} color="#fff" />
-                                <Text style={styles.centerText}>
+                            {/* Animated circular masked image */}
+                            <Animated.Image
+                                source={isDark ? darkWheel : lightWheel}
+                                style={[
+                                    styles.wheelImage,
+                                    {
+                                        transform: [{ rotate: spinInterpolate }],
+                                    },
+                                ]}
+                                resizeMode="cover"
+                            />
+                            {/* Dynamic glassmorphic gold/emerald button overlay */}
+                            <View 
+                                style={[
+                                    styles.centerTextContainer,
+                                    {
+                                        backgroundColor: isDark ? 'rgba(12, 33, 23, 0.85)' : 'rgba(255, 255, 255, 0.85)',
+                                        borderColor: isDark ? 'rgba(255, 215, 0, 0.7)' : 'rgba(46, 125, 50, 0.5)',
+                                    }
+                                ]}
+                            >
+                                <Ionicons name="sparkles" size={24} color={isDark ? '#ffd700' : '#2E7D32'} />
+                                <Text style={[styles.centerText, { color: isDark ? '#ffd700' : '#2E7D32' }]}>
                                     {appLanguage === 'en' ? 'TAP' : 'TEKAN'}
                                 </Text>
                             </View>
@@ -199,7 +190,7 @@ export default function InspiraScreen({ navigation }) {
                     </Pressable>
 
                     {pressAgain && (
-                        <Text style={styles.pressAgainText}>
+                        <Text style={[styles.pressAgainText, isDark && { color: '#ff8c42' }]}>
                             {appLanguage === 'en' ? 'Tap again to stop manually' : 'Tekan lagi untuk berhenti manual'}
                         </Text>
                     )}
@@ -220,7 +211,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'rgba(255,255,255,0.4)',
+        backgroundColor: 'transparent',
         padding: 20,
     },
     title: {
@@ -241,36 +232,44 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    wheelPlaceholder: {
+    wheelWrapper: {
         width: 300,
         height: 300,
         borderRadius: 150,
-        borderWidth: 4,
-        borderColor: '#fff',
+        borderWidth: 6,
+        borderColor: 'rgba(255, 255, 255, 0.95)',
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
-        backgroundColor: '#f8f9fa',
-        elevation: 8,
+        backgroundColor: 'transparent',
+        elevation: 12,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.3,
-        shadowRadius: 5.46,
+        shadowOffset: { width: 0, height: 6 },
+        shadowOpacity: 0.35,
+        shadowRadius: 8,
+    },
+    wheelImage: {
+        width: '100%',
+        height: '100%',
     },
     centerTextContainer: {
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'rgba(0,0,0,0.4)',
-        width: 100,
-        height: 100,
-        borderRadius: 50,
+        width: 84,
+        height: 84,
+        borderRadius: 42,
+        borderWidth: 3,
+        elevation: 8,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 3 },
+        shadowOpacity: 0.3,
+        shadowRadius: 4,
     },
     centerText: {
-        fontSize: 18,
+        fontSize: 14,
         fontWeight: 'bold',
-        color: '#ffffff',
-        marginTop: 5,
+        marginTop: 3,
         letterSpacing: 2,
     },
     pressAgainText: {

@@ -37,62 +37,68 @@ export default function HomeScreen({ navigation }) {
         }
     };
 
+    const isDark = theme === 'dark';
+
     return (
         <ImageBackground
-            source={require('../../qulife_bg.png')}
+            source={isDark ? require('../../assets/bg_dark_home.jpg') : require('../../assets/bg_light_home.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
         >
             <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
                         <Image
-                            source={require('../../qulife_logo_new.png')}
+                            source={require('../../assets/aktifi_icon.png')}
                             style={styles.logo}
                             resizeMode="contain"
                         />
-                        <Text style={styles.title}>{translate('home.title', appLanguage)}</Text>
-                        <Text style={styles.subtitle}>{translate('home.subtitle', appLanguage)}</Text>
+                        <Text style={[styles.title, isDark && { color: '#81c784' }]}>{translate('home.title', appLanguage)}</Text>
+                        <Text style={[styles.subtitle, isDark && { color: '#a5d6a7' }]}>{translate('home.subtitle', appLanguage)}</Text>
                     </View>
 
                     <View style={styles.menuContainer}>
                         {/* Last Read Card */}
                         {isLoaded && lastPosition && (
                             <TouchableOpacity
-                            style={[styles.card, styles.lastReadCard]}
+                            style={[
+                                styles.card, 
+                                styles.lastReadCard, 
+                                isDark && { backgroundColor: '#182c18', borderColor: '#2d3b2d', shadowColor: '#0c120c' }
+                            ]}
                             onPress={handleContinueReading}
                         >
-                            <Text style={styles.lastReadLabel}>{translate('home.lastRead', appLanguage)}</Text>
-                            <Text style={styles.cardTitle}>{lastPosition.surahName}</Text>
-                            <Text style={styles.cardSubtitle}>{translate('home.verse', appLanguage)} {lastPosition.verseIndex + 1}</Text>
+                            <Text style={[styles.lastReadLabel, isDark && { color: '#81c784' }]}>{translate('home.lastRead', appLanguage)}</Text>
+                            <Text style={[styles.cardTitle, isDark && { color: '#e8f5e9' }]}>{lastPosition.surahName}</Text>
+                            <Text style={[styles.cardSubtitle, isDark && { color: '#a5d6a7' }]}>{translate('home.verse', appLanguage)} {lastPosition.verseIndex + 1}</Text>
                         </TouchableOpacity>
                     )}
 
                     <TouchableOpacity
-                        style={styles.card}
+                        style={[styles.card, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', shadowColor: '#0c120c' }]}
                         onPress={() => navigation.navigate('SurahList')}
                     >
-                        <Text style={styles.cardTitle}>{translate('home.surahList', appLanguage)}</Text>
+                        <Text style={[styles.cardTitle, isDark && { color: '#e8f5e9' }]}>{translate('home.surahList', appLanguage)}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={styles.card}
+                        style={[styles.card, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', shadowColor: '#0c120c' }]}
                         onPress={() => navigation.navigate('SpecialList')}
                     >
-                        <Text style={styles.cardTitle}>{translate('home.specialList', appLanguage)}</Text>
+                        <Text style={[styles.cardTitle, isDark && { color: '#e8f5e9' }]}>{translate('home.specialList', appLanguage)}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={styles.card}
+                        style={[styles.card, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', shadowColor: '#0c120c' }]}
                         onPress={() => navigation.navigate('Inspira')}
                     >
-                        <Text style={styles.cardTitle}>{translate('home.inspira', appLanguage) || 'Cari Inspirasi'}</Text>
+                        <Text style={[styles.cardTitle, isDark && { color: '#e8f5e9' }]}>{translate('home.inspira', appLanguage) || 'Cari Inspirasi'}</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity
-                        style={styles.card}
+                        style={[styles.card, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', shadowColor: '#0c120c' }]}
                         onPress={() => navigation.navigate('Other')}
                     >
-                        <Text style={styles.cardTitle}>{translate('home.others', appLanguage)}</Text>
+                        <Text style={[styles.cardTitle, isDark && { color: '#e8f5e9' }]}>{translate('home.others', appLanguage)}</Text>
                     </TouchableOpacity>
                 </View>
 
@@ -104,22 +110,22 @@ export default function HomeScreen({ navigation }) {
                     onRequestClose={() => setShowResumeModal(false)}
                 >
                     <View style={styles.modalOverlay}>
-                        <View style={styles.modalContent}>
-                            <Text style={styles.modalTitle}>{translate('home.resumeTitle', appLanguage)}</Text>
-                            <Text style={styles.modalSubtitle}>
+                        <View style={[styles.modalContent, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1 }]}>
+                            <Text style={[styles.modalTitle, isDark && { color: '#e8f5e9' }]}>{translate('home.resumeTitle', appLanguage)}</Text>
+                            <Text style={[styles.modalSubtitle, isDark && { color: '#a5d6a7' }]}>
                                 {translate('home.resumeSubtitle', appLanguage)} {lastPosition?.surahName} {translate('home.verse', appLanguage)} {lastPosition?.verseIndex + 1}
                             </Text>
 
                             <View style={styles.modalButtons}>
                                 <TouchableOpacity
-                                    style={[styles.modalButton, styles.cancelButton]}
+                                    style={[styles.modalButton, styles.cancelButton, isDark && { backgroundColor: '#222f22' }]}
                                     onPress={() => setShowResumeModal(false)}
                                 >
-                                    <Text style={styles.cancelButtonText}>{translate('home.later', appLanguage)}</Text>
+                                    <Text style={[styles.cancelButtonText, isDark && { color: '#a5d6a7' }]}>{translate('home.later', appLanguage)}</Text>
                                 </TouchableOpacity>
 
                                 <TouchableOpacity
-                                    style={[styles.modalButton, styles.confirmButton]}
+                                    style={[styles.modalButton, styles.confirmButton, isDark && { backgroundColor: '#1b5e20' }]}
                                     onPress={() => {
                                         setShowResumeModal(false);
                                         handleContinueReading();
@@ -144,7 +150,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.5)', // Reduced opacity to show background better
+        backgroundColor: 'transparent',
     },
     header: {
         padding: 30,
@@ -160,7 +166,7 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 32,
         fontWeight: 'bold',
-        color: '#007AFF',
+        color: '#2e7d32',
         marginBottom: 10,
     },
     subtitle: {
@@ -189,16 +195,17 @@ const styles = StyleSheet.create({
         shadowRadius: 5,
         elevation: 5,
         borderColor: '#e9ecef',
+        borderWidth: 1,
     },
     lastReadCard: {
-        backgroundColor: '#e7f5ff', // Light blue tint
-        borderColor: '#d0ebff',
+        backgroundColor: '#e8f5e9', // Light green tint
+        borderColor: '#c8e6c9',
         flexDirection: 'column',
         alignItems: 'flex-start',
     },
     lastReadLabel: {
         fontSize: 12,
-        color: '#228be6',
+        color: '#2e7d32',
         fontWeight: 'bold',
         marginBottom: 5,
         textTransform: 'uppercase',
@@ -256,7 +263,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#f1f3f5',
     },
     confirmButton: {
-        backgroundColor: '#007AFF',
+        backgroundColor: '#2e7d32',
     },
     cancelButtonText: {
         color: '#495057',

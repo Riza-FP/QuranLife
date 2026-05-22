@@ -16,7 +16,7 @@ import { translate } from './utils/i18n';
 const Stack = createStackNavigator();
 
 export default function QuLifeNavigator() {
-    const { appLanguage, settingsLoaded } = useSettings();
+    const { appLanguage, settingsLoaded, theme } = useSettings();
 
     // Prevent rendering the navigation tree until we know if it's the first launch
     if (!settingsLoaded) return null;
@@ -25,10 +25,16 @@ export default function QuLifeNavigator() {
         <Stack.Navigator
             initialRouteName={appLanguage === null ? "LanguageSetup" : "Home"}
             screenOptions={{
-                headerStyle: { backgroundColor: '#fff' },
-                headerTintColor: '#007AFF',
+                headerStyle: { 
+                    backgroundColor: theme === 'dark' ? '#162016' : '#fff',
+                    borderBottomColor: theme === 'dark' ? '#2d3b2d' : '#eee',
+                    borderBottomWidth: 1,
+                    elevation: theme === 'dark' ? 0 : 2,
+                    shadowOpacity: theme === 'dark' ? 0 : 0.1,
+                },
+                headerTintColor: theme === 'dark' ? '#81c784' : '#2e7d32',
                 headerTitleStyle: { fontWeight: 'bold' },
-                cardStyle: { backgroundColor: '#fff' }, // Fix black flash on navigation
+                cardStyle: { backgroundColor: theme === 'dark' ? '#0f140f' : '#fff' }, // Fix black flash on navigation
             }}
         >
             <Stack.Screen

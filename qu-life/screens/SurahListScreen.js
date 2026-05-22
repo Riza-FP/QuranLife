@@ -9,7 +9,7 @@ export default function SurahListScreen({ navigation }) {
     const [surahs, setSurahs] = useState([]);
     const [filteredSurahs, setFilteredSurahs] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
-    const { appLanguage } = useSettings();
+    const { appLanguage, theme } = useSettings();
 
     useEffect(() => {
         const fullList = getSurahList();
@@ -31,36 +31,38 @@ export default function SurahListScreen({ navigation }) {
         }
     };
 
+    const isDark = theme === 'dark';
+
     const renderItem = ({ item }) => (
         <TouchableOpacity
-            style={styles.item}
+            style={[styles.item, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1, shadowColor: '#0c120c' }]}
             onPress={() => navigation.navigate('VerseView', { surah: item })}
         >
-            <View style={styles.numberContainer}>
-                <Text style={styles.number}>{item.nomor}</Text>
+            <View style={[styles.numberContainer, isDark && { backgroundColor: '#222f22' }]}>
+                <Text style={[styles.number, isDark && { color: '#a5d6a7' }]}>{item.nomor}</Text>
             </View>
             <View style={styles.textContainer}>
-                <Text style={styles.name}>{item.nama}</Text>
-                <Text style={styles.details}>{item.jumlah_ayat} {translate('surahList.verseCount', appLanguage)}</Text>
+                <Text style={[styles.name, isDark ? { color: '#ffffff' } : { color: '#2e7d32' }]}>{item.nama}</Text>
+                <Text style={[styles.details, isDark && { color: '#a5d6a7' }]}>{item.jumlah_ayat} {translate('surahList.verseCount', appLanguage)}</Text>
             </View>
         </TouchableOpacity>
     );
 
     return (
         <ImageBackground
-            source={require('../../qulife_bg.png')}
+            source={isDark ? require('../../assets/bg_dark_normal.jpg') : require('../../assets/bg_light_normal.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
         >
             <View style={styles.container}>
-                <View style={styles.searchContainer}>
-                    <Ionicons name="search" size={20} color="#868e96" style={styles.searchIcon} />
+                <View style={[styles.searchContainer, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1 }]}>
+                    <Ionicons name="search" size={20} color={isDark ? "#759e75" : "#868e96"} style={styles.searchIcon} />
                     <TextInput
-                        style={styles.searchInput}
+                        style={[styles.searchInput, isDark && { color: '#e8f5e9' }]}
                         placeholder={translate('surahList.searchPlaceholder', appLanguage)}
                         value={searchQuery}
                         onChangeText={handleSearch}
-                        placeholderTextColor="#868e96"
+                        placeholderTextColor={isDark ? "#759e75" : "#868e96"}
                     />
                 </View>
                 <FlatList
@@ -82,7 +84,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.5)', // Adjusted transparency
+        backgroundColor: 'transparent',
     },
     searchContainer: {
         flexDirection: 'row',
@@ -143,7 +145,7 @@ const styles = StyleSheet.create({
     name: {
         fontSize: 18,
         fontWeight: '600',
-        color: '#212529',
+        color: '#2e7d32',
     },
     details: {
         fontSize: 14,

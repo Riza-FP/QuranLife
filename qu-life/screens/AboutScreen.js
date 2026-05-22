@@ -5,10 +5,11 @@ import { useSettings } from '../utils/SettingsContext';
 import { translate } from '../utils/i18n';
 
 export default function AboutScreen() {
-    const { appLanguage } = useSettings();
+    const { appLanguage, theme } = useSettings();
+    const isDark = theme === 'dark';
     return (
         <ImageBackground
-            source={require('../../qulife_bg.png')}
+            source={isDark ? require('../../assets/bg_dark_normal.jpg') : require('../../assets/bg_light_normal.jpg')}
             style={styles.backgroundImage}
             resizeMode="cover"
         >
@@ -16,22 +17,22 @@ export default function AboutScreen() {
                 <View style={styles.contentContainer}>
                     <View style={styles.logoContainer}>
                         <Image
-                            source={require('../../qulife_logo_new.png')}
+                            source={require('../../assets/aktifi_icon.png')}
                             style={styles.logo}
                             resizeMode="contain"
                         />
-                        <Text style={styles.appName}>QuLife</Text>
+                        <Text style={[styles.appName, { color: isDark ? '#81c784' : '#2e7d32' }]}>Aktifi - Quran</Text>
                         <Text style={styles.version}>v1.0.0</Text>
                     </View>
 
-                    <View style={styles.infoContainer}>
-                        <Text style={styles.description}>
+                    <View style={[styles.infoContainer, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1 }]}>
+                        <Text style={[styles.description, isDark && { color: '#a5d6a7' }]}>
                             {translate('about.description', appLanguage)}
                         </Text>
                     </View>
 
                     <View style={styles.footer}>
-                        <Text style={styles.copyright}>© 2026 Roni Mhd Learning Center</Text>
+                        <Text style={[styles.copyright, { color: isDark ? '#759e75' : '#495057' }]}>© 2026 Roni Mhd Learning Center</Text>
                     </View>
                 </View>
             </SafeAreaView>
@@ -47,7 +48,7 @@ const styles = StyleSheet.create({
     },
     container: {
         flex: 1,
-        backgroundColor: 'rgba(255,255,255,0.8)', // Slightly more opaque for readability
+        backgroundColor: 'transparent',
     },
     contentContainer: {
         flex: 1,
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     appName: {
         fontSize: 32,
         fontWeight: 'bold',
-        color: '#007AFF',
+        color: '#2e7d32',
         marginBottom: 8,
     },
     version: {
