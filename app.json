@@ -4,7 +4,7 @@
     "slug": "QuLife",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/aktifi_icon.png",
+    "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
@@ -22,7 +22,7 @@
         "backgroundColor": "#ffffff"
       },
       "adaptiveIcon": {
-        "foregroundImage": "./assets/aktifi_icon.png",
+        "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.ronimhdlc.qulife",
