@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Image, ImageBackground } from 'react-native';
+import { StyleSheet, View, Image, ImageBackground } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import QuLifeNavigator from './qu-life/QuLifeNavigator';
@@ -61,10 +61,8 @@ export default function App() {
 
   if (showCustomSplash) {
     return (
-      <ImageBackground
-        source={isDark ? require('./assets/bg_dark_normal.jpg') : require('./assets/bg_light_normal.jpg')}
-        style={styles.splashBackground}
-        resizeMode="cover"
+      <View
+        style={[styles.splashBackground, { backgroundColor: isDark ? '#0f140f' : '#ffffff' }]}
       >
         <Image
           source={isDark ? require('./assets/bg_dark_landing.jpg') : require('./assets/bg_light_landing.jpg')}
@@ -72,7 +70,7 @@ export default function App() {
           resizeMode="contain"
         />
         <StatusBar style={isDark ? 'light' : 'dark'} />
-      </ImageBackground>
+      </View>
     );
   }
 

@@ -59,30 +59,32 @@ export const SettingsProvider = ({ children }) => {
 
     // Save appLanguage when it changes
     useEffect(() => {
-        if (appLanguage) {
+        if (settingsLoaded && appLanguage) {
             AsyncStorage.setItem('@app_language', appLanguage).catch(e => 
                 console.error("Failed to save language", e)
             );
         }
-    }, [appLanguage]);
+    }, [appLanguage, settingsLoaded]);
 
     // Save theme when it changes
     useEffect(() => {
-        if (theme) {
+        if (settingsLoaded && theme) {
             AsyncStorage.setItem('@theme', theme).catch(e => 
                 console.error("Failed to save theme", e)
             );
         }
-    }, [theme]);
+    }, [theme, settingsLoaded]);
 
     // Save voiceIdentifier when it changes
     useEffect(() => {
-        if (voiceIdentifier) {
-            AsyncStorage.setItem('@voice_id', voiceIdentifier).catch(e => console.error(e));
-        } else {
-            AsyncStorage.removeItem('@voice_id').catch(e => console.error(e));
+        if (settingsLoaded) {
+            if (voiceIdentifier) {
+                AsyncStorage.setItem('@voice_id', voiceIdentifier).catch(e => console.error(e));
+            } else {
+                AsyncStorage.removeItem('@voice_id').catch(e => console.error(e));
+            }
         }
-    }, [voiceIdentifier]);
+    }, [voiceIdentifier, settingsLoaded]);
 
     return (
         <SettingsContext.Provider value={{
