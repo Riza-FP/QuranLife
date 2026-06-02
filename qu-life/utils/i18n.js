@@ -2,7 +2,7 @@ const translations = {
     id: {
         // Home Screen
         "home.title": "Aktifi - Quran",
-        "home.subtitle": "Petunjuk Hidup dari Al-Quran",
+        "home.subtitle": "Hadirkan Al-Quran dalam keseharian",
         "home.lastRead": "Terakhir Dibaca",
         "home.verse": "Ayat",
         "home.surahList": "Daftar Surah",
@@ -94,7 +94,7 @@ const translations = {
     en: {
         // Home Screen
         "home.title": "Aktifi - Quran",
-        "home.subtitle": "Life Guidance from the Al-Quran",
+        "home.subtitle": "Bring the Quran into everyday life",
         "home.lastRead": "Last Read",
         "home.verse": "Verse",
         "home.surahList": "Surah List",

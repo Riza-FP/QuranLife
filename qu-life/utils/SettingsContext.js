@@ -57,12 +57,21 @@ export const SettingsProvider = ({ children }) => {
         loadSettings();
     }, []);
 
-    // Save appLanguage when it changes
+    // Save appLanguage when it changes and update defaults
     useEffect(() => {
         if (settingsLoaded && appLanguage) {
             AsyncStorage.setItem('@app_language', appLanguage).catch(e => 
                 console.error("Failed to save language", e)
             );
+            
+            // Automatically switch translation and audio language to match app language
+            if (appLanguage === 'id') {
+                setTranslationCode('tr_id');
+                setTranslationLanguage('id');
+            } else if (appLanguage === 'en') {
+                setTranslationCode('tr_en');
+                setTranslationLanguage('en');
+            }
         }
     }, [appLanguage, settingsLoaded]);
 
