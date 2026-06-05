@@ -153,9 +153,11 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
     },
     header: {
-        padding: 30,
+        paddingHorizontal: 30,
+        paddingTop: 30,
+        paddingBottom: 10,
         alignItems: 'center',
-        marginTop: 30,
+        marginTop: 10,
     },
     logo: {
         width: 100,
@@ -170,8 +172,10 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     subtitle: {
-        fontSize: 16,
+        fontSize: 14,
         color: '#666',
+        textAlign: 'center',
+        paddingHorizontal: 20,
     },
     menuContainer: {
         flex: 1,
