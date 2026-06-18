@@ -2,6 +2,7 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from './screens/HomeScreen';
 import SpecialListScreen from './screens/SpecialListScreen';
+import PlaylistDetailScreen from './screens/PlaylistDetailScreen';
 import SurahListScreen from './screens/SurahListScreen';
 import VerseViewScreen from './screens/VerseViewScreen';
 import SettingsScreen from './screens/SettingsScreen';
@@ -56,6 +57,11 @@ export default function QuLifeNavigator() {
                 name="SpecialList"
                 component={SpecialListScreen}
                 options={{ title: translate('home.specialList', appLanguage) || 'Daftar Khusus' }}
+            />
+            <Stack.Screen
+                name="PlaylistDetail"
+                component={PlaylistDetailScreen}
+                options={({ route }) => ({ title: route.params?.playlistTitle || 'Playlist' })}
             />
             <Stack.Screen
                 name="VerseView"

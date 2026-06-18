@@ -16,10 +16,11 @@ import { useLastPosition } from '../utils/LastPositionContext';
 import Logger from '../utils/Logger'; // Import Logger
 
 import AsyncStorage from '@react-native-async-storage/async-storage'; // Add Import
+import { updatePenandaDelayConfig, updatePlaylistDelayConfig } from '../utils/PlaylistManager';
 
 export default function VerseViewScreen({ route, navigation }) {
     useKeepAwake(); // Prevent screen sleep while on this screen
-    const { surah, initialVerseIndex, startVerse, endVerse } = route.params;
+    const { surah, initialVerseIndex, startVerse, endVerse, contextType, contextId, delayConfig } = route.params;
     const { saveLastPosition } = useLastPosition();
     const [verses, setVerses] = useState([]);
     const [showJumpModal, setShowJumpModal] = useState(false);
@@ -45,10 +46,12 @@ export default function VerseViewScreen({ route, navigation }) {
     const [currentVerseIndex, setCurrentVerseIndex] = useState(initialVerseIndex || 0);
     const [loadingAudio, setLoadingAudio] = useState(false);
 
+    const passedDelay = delayConfig || {};
+
     // Advanced Local Settings (Initialized with Globals, but can be overridden)
     const [autoPlay, setAutoPlay] = useState(false);
-    const [repeatMode, setRepeatMode] = useState(defaultRepeat || 1);
-    const [delaySeconds, setDelaySeconds] = useState(defaultDelay || 0); // "Delay Per Ayat" alias
+    const [repeatMode, setRepeatMode] = useState(passedDelay.repeatMode ?? (defaultRepeat || 1));
+    const [delaySeconds, setDelaySeconds] = useState(passedDelay.delaySeconds ?? (defaultDelay || 0)); // "Delay Per Ayat" alias
 
     // State for Session Override (Auto Play Modal)
     const [autoConfig, setAutoConfig] = useState({
@@ -57,12 +60,12 @@ export default function VerseViewScreen({ route, navigation }) {
         sequenceRepeat: 1,
         verseRepeat: 1,
         // Session Overrides (Init with persistent defaults)
-        playTranslation: globalEnabledTranslation,
-        delayPreArabic: globalDelayPreArabic,
-        delayPostArabic: globalDelayPostArabic,
-        delayPreTranslation: globalDelayPreTranslation,
-        delayPostTranslation: globalDelayPostTranslation,
-        delaySequenceLoop: globalDelaySequenceLoop
+        playTranslation: passedDelay.enabledTranslation ?? globalEnabledTranslation,
+        delayPreArabic: passedDelay.delayPreArabic ?? globalDelayPreArabic,
+        delayPostArabic: passedDelay.delayPostArabic ?? globalDelayPostArabic,
+        delayPreTranslation: passedDelay.delayPreTranslation ?? globalDelayPreTranslation,
+        delayPostTranslation: passedDelay.delayPostTranslation ?? globalDelayPostTranslation,
+        delaySequenceLoop: passedDelay.delaySequenceLoop ?? globalDelaySequenceLoop
     });
 
     const [showAutoModal, setShowAutoModal] = useState(false);
@@ -75,19 +78,20 @@ export default function VerseViewScreen({ route, navigation }) {
     // ... (Playback Engine Logic Updated to Accept Config)
 
 
-    const [localAutoPlayOrder, setLocalAutoPlayOrder] = useState(globalAutoPlayOrder);
-    const [localEnabledTranslation, setLocalEnabledTranslation] = useState(globalEnabledTranslation);
-    const [localDelayPreArabic, setLocalDelayPreArabic] = useState(globalDelayPreArabic);
-    const [localDelayPostArabic, setLocalDelayPostArabic] = useState(globalDelayPostArabic);
-    const [localDelayPreTranslation, setLocalDelayPreTranslation] = useState(globalDelayPreTranslation);
-    const [localDelayPostTranslation, setLocalDelayPostTranslation] = useState(globalDelayPostTranslation);
-    const [localDelaySequenceLoop, setLocalDelaySequenceLoop] = useState(globalDelaySequenceLoop);
+    const [localAutoPlayOrder, setLocalAutoPlayOrder] = useState(passedDelay.autoPlayOrder ?? globalAutoPlayOrder);
+    const [localEnabledTranslation, setLocalEnabledTranslation] = useState(passedDelay.enabledTranslation ?? globalEnabledTranslation);
+    const [localDelayPreArabic, setLocalDelayPreArabic] = useState(passedDelay.delayPreArabic ?? globalDelayPreArabic);
+    const [localDelayPostArabic, setLocalDelayPostArabic] = useState(passedDelay.delayPostArabic ?? globalDelayPostArabic);
+    const [localDelayPreTranslation, setLocalDelayPreTranslation] = useState(passedDelay.delayPreTranslation ?? globalDelayPreTranslation);
+    const [localDelayPostTranslation, setLocalDelayPostTranslation] = useState(passedDelay.delayPostTranslation ?? globalDelayPostTranslation);
+    const [localDelaySequenceLoop, setLocalDelaySequenceLoop] = useState(passedDelay.delaySequenceLoop ?? globalDelaySequenceLoop);
 
     const [showBottomSettings, setShowBottomSettings] = useState(false);
 
     // Load Saved Surah Settings on Mount/Change
     useEffect(() => {
         async function loadSurahSettings() {
+            if (contextType) return; // Skip if playing Playlist/Penanda to respect specific config
             try {
                 const key = `surah_settings_${surah.kode}`;
                 const saved = await AsyncStorage.getItem(key);
@@ -1018,15 +1022,25 @@ export default function VerseViewScreen({ route, navigation }) {
                                                 delaySequenceLoop: localDelaySequenceLoop,
                                                 repeatMode: repeatMode
                                             };
-                                            const key = `surah_settings_${surah.kode}`;
-                                            await AsyncStorage.setItem(key, JSON.stringify(settingsToSave));
+                                            if (contextType === 'penanda') {
+                                                await updatePenandaDelayConfig(contextId, settingsToSave);
+                                            } else if (contextType === 'playlist') {
+                                                await updatePlaylistDelayConfig(contextId, settingsToSave);
+                                            } else {
+                                                const key = `surah_settings_${surah.kode}`;
+                                                await AsyncStorage.setItem(key, JSON.stringify(settingsToSave));
+                                            }
                                             setShowSurahSettings(false);
                                         } catch (e) {
                                             console.error("Failed to save surah settings", e);
                                         }
                                     }}
                                 >
-                                    <Text style={styles.startButtonText}>{translate('verseView.saveSettings', appLanguage) || 'Simpan Pengaturan Surah'}</Text>
+                                    <Text style={styles.startButtonText}>
+                                        {contextType 
+                                            ? (translate('verseView.saveSettings', appLanguage) || 'Simpan Pengaturan') 
+                                            : (translate('verseView.saveSettings', appLanguage) || 'Simpan Pengaturan Surah')}
+                                    </Text>
                                 </TouchableOpacity>
 
                                 {/* Reset Button */}
