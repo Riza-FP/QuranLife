@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, StyleSheet, SectionList, FlatList, TouchableOpacity, ImageBackground, Modal, TextInput, Alert, KeyboardAvoidingView, Platform, Switch, ScrollView } from 'react-native';
 import { useSettings } from '../utils/SettingsContext';
 import { translate } from '../utils/i18n';
-import { loadData, saveData, generateId } from '../utils/PlaylistManager';
+import { loadData, saveData, generateId, updatePlaylistDelayConfig, updatePenandaDelayConfig } from '../utils/PlaylistManager';
 import { getSurahByCode, getSurahList } from '../utils/DataLoader';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';

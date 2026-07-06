@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity, ImageBackground, Modal, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { getSurahByCode, getSurahList } from '../utils/DataLoader';
@@ -9,6 +9,7 @@ import { Ionicons } from '@expo/vector-icons';
 import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import WizardSelectionModal from '../components/WizardSelectionModal';
 import QuickEditModal from '../components/QuickEditModal';
+import PlaylistAutoPlayModal from '../components/PlaylistAutoPlayModal';
 
 export default function PlaylistDetailScreen({ route, navigation }) {
     const { playlistId, playlistTitle } = route.params;
@@ -27,6 +28,65 @@ export default function PlaylistDetailScreen({ route, navigation }) {
     // Quick Edit State
     const [quickEditVisible, setQuickEditVisible] = useState(false);
     const [quickEditData, setQuickEditData] = useState(null);
+
+    // Auto Play Modal State
+    const [autoPlayModalVisible, setAutoPlayModalVisible] = useState(false);
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            title: playlistTitle || 'Detail Playlist',
+            headerRight: () => (
+                <TouchableOpacity 
+                    onPress={() => {
+                        if (!items || items.length === 0) {
+                            Alert.alert(
+                                translate('playlist.error', appLanguage) || 'Error',
+                                translate('playlist.emptyPlaylist', appLanguage) || 'Playlist ini masih kosong. Tambahkan item terlebih dahulu!'
+                            );
+                            return;
+                        }
+                        setAutoPlayModalVisible(true);
+                    }} 
+                    style={{ marginRight: 15 }}
+                    disabled={!items || items.length === 0}
+                >
+                    <Ionicons name="play-circle" size={28} color={(!items || items.length === 0) ? '#aaa' : (isDark ? '#81c784' : '#2e7d32')} />
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation, playlistTitle, items, isDark, appLanguage]);
+
+    const handleStartAutoPlay = (config) => {
+        setAutoPlayModalVisible(false);
+        if (!items || items.length === 0) return;
+        const firstItem = items[0];
+        const surahData = getSurahByCode(firstItem.surahCode);
+        if (!surahData) {
+            Alert.alert(translate('playlist.error', appLanguage), translate('playlist.surahNotFound', appLanguage));
+            return;
+        }
+        navigation.navigate('VerseView', {
+            surah: surahData,
+            initialVerseIndex: 0,
+            startVerse: firstItem.start,
+            endVerse: firstItem.end,
+            contextType: currentPlaylist?.isPenanda ? 'penanda' : 'playlist',
+            contextId: currentPlaylist?.id,
+            delayConfig: config,
+            playlistQueue: items,
+            currentQueueIndex: 0,
+            autoStartPlaying: true,
+            playlistSequenceRepeat: config.sequenceRepeat,
+            playlistVerseRepeat: config.repeatMode,
+            playlistPlayTranslation: config.enabledTranslation,
+            playlistOrder: config.autoPlayOrder,
+            playlistDelayPreArabic: config.delayPreArabic,
+            playlistDelayPostArabic: config.delayPostArabic,
+            playlistDelayPreTranslation: config.delayPreTranslation,
+            playlistDelayPostTranslation: config.delayPostTranslation,
+            playlistDelaySequenceLoop: config.delaySequenceLoop
+        });
+    };
 
     useEffect(() => {
         fetchPlaylists();
@@ -240,6 +300,14 @@ export default function PlaylistDetailScreen({ route, navigation }) {
                     initialData={quickEditData}
                     onSave={handleQuickEditSave}
                     onChangeRange={handleQuickEditChangeRange}
+                />
+
+                {/* Playlist Auto Play Modal */}
+                <PlaylistAutoPlayModal
+                    visible={autoPlayModalVisible}
+                    onClose={() => setAutoPlayModalVisible(false)}
+                    playlist={currentPlaylist ? { ...currentPlaylist, items } : null}
+                    onStart={handleStartAutoPlay}
                 />
             </SafeAreaView>
         </ImageBackground>
