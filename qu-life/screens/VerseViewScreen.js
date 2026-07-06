@@ -164,6 +164,7 @@ export default function VerseViewScreen({ route, navigation }) {
     }, [currentVerseIndex]);
 
     useEffect(() => {
+        if (autoPlayRef.current) return; // Do not overwrite active session config during auto-play!
         autoPlayOrderRef.current = localAutoPlayOrder;
         autoPlayEnabledTranslationRef.current = localEnabledTranslation;
         delayPreArabicRef.current = localDelayPreArabic;
@@ -216,7 +217,7 @@ export default function VerseViewScreen({ route, navigation }) {
                     startVerse: loadedVerses[0].number,
                     endVerse: loadedVerses[loadedVerses.length - 1].number,
                     sequenceRepeat: route.params.playlistSequenceRepeat || 1,
-                    verseRepeat: repeatMode || 1,
+                    verseRepeat: route.params.playlistVerseRepeat || repeatMode || 1,
                     playTranslation: route.params.playlistPlayTranslation !== undefined ? route.params.playlistPlayTranslation : localEnabledTranslation,
                     delayPreArabic: localDelayPreArabic,
                     delayPostArabic: localDelayPostArabic,
@@ -377,7 +378,7 @@ export default function VerseViewScreen({ route, navigation }) {
             const config = sessionConfig || {
                 startVerse: autoStartVerseRef.current,
                 endVerse: autoEndVerseRef.current,
-                playTranslation: autoPlayEnabledTranslationRef.current || showTranslationRef.current,
+                playTranslation: autoPlayEnabledTranslationRef.current,
                 delayPreArabic: delayPreArabicRef.current,
                 delayPostArabic: delayPostArabicRef.current,
                 delayPreTranslation: delayPreTranslationRef.current,
@@ -529,8 +530,14 @@ export default function VerseViewScreen({ route, navigation }) {
                                 currentQueueIndex: qIdx + 1,
                                 autoStartPlaying: true,
                                 playlistSequenceRepeat: route.params.playlistSequenceRepeat || seqRepeat,
-                                playlistPlayTranslation: route.params.playlistPlayTranslation,
-                                playlistOrder: route.params.playlistOrder
+                                playlistVerseRepeat: route.params.playlistVerseRepeat || config.verseRepeat,
+                                playlistPlayTranslation: route.params.playlistPlayTranslation !== undefined ? route.params.playlistPlayTranslation : config.playTranslation,
+                                playlistOrder: route.params.playlistOrder || config.order,
+                                playlistDelayPreArabic: route.params.playlistDelayPreArabic !== undefined ? route.params.playlistDelayPreArabic : config.delayPreArabic,
+                                playlistDelayPostArabic: route.params.playlistDelayPostArabic !== undefined ? route.params.playlistDelayPostArabic : config.delayPostArabic,
+                                playlistDelayPreTranslation: route.params.playlistDelayPreTranslation !== undefined ? route.params.playlistDelayPreTranslation : config.delayPreTranslation,
+                                playlistDelayPostTranslation: route.params.playlistDelayPostTranslation !== undefined ? route.params.playlistDelayPostTranslation : config.delayPostTranslation,
+                                playlistDelaySequenceLoop: route.params.playlistDelaySequenceLoop !== undefined ? route.params.playlistDelaySequenceLoop : config.delaySequenceLoop
                             });
                             return;
                         }
@@ -559,8 +566,14 @@ export default function VerseViewScreen({ route, navigation }) {
                                     currentQueueIndex: 0,
                                     autoStartPlaying: true,
                                     playlistSequenceRepeat: plRepeat === 'loop' ? 'loop' : (typeof plRepeat === 'number' ? plRepeat - 1 : 1),
-                                    playlistPlayTranslation: route.params.playlistPlayTranslation,
-                                    playlistOrder: route.params.playlistOrder
+                                    playlistVerseRepeat: route.params.playlistVerseRepeat || config.verseRepeat,
+                                    playlistPlayTranslation: route.params.playlistPlayTranslation !== undefined ? route.params.playlistPlayTranslation : config.playTranslation,
+                                    playlistOrder: route.params.playlistOrder || config.order,
+                                    playlistDelayPreArabic: route.params.playlistDelayPreArabic !== undefined ? route.params.playlistDelayPreArabic : config.delayPreArabic,
+                                    playlistDelayPostArabic: route.params.playlistDelayPostArabic !== undefined ? route.params.playlistDelayPostArabic : config.delayPostArabic,
+                                    playlistDelayPreTranslation: route.params.playlistDelayPreTranslation !== undefined ? route.params.playlistDelayPreTranslation : config.delayPreTranslation,
+                                    playlistDelayPostTranslation: route.params.playlistDelayPostTranslation !== undefined ? route.params.playlistDelayPostTranslation : config.delayPostTranslation,
+                                    playlistDelaySequenceLoop: route.params.playlistDelaySequenceLoop !== undefined ? route.params.playlistDelaySequenceLoop : config.delaySequenceLoop
                                 });
                                 return;
                             }
@@ -729,8 +742,8 @@ export default function VerseViewScreen({ route, navigation }) {
     // Initialize config when modal opens
     const openAutoModal = () => {
         setAutoConfig({
-            startVerse: verses[currentVerseIndex]?.number || 1,
-            endVerse: verses[verses.length - 1]?.number || verses.length,
+            startVerse: route.params?.startVerse || verses[currentVerseIndex]?.number || 1,
+            endVerse: route.params?.endVerse || verses[verses.length - 1]?.number || verses.length,
             // Load persistent settings into session default
             playTranslation: localEnabledTranslation,
             sequenceRepeat: 1,
@@ -769,6 +782,31 @@ export default function VerseViewScreen({ route, navigation }) {
 
             // Apply Verse Repeat temporarily for this session (updates state)
             setRepeatMode(autoConfig.verseRepeat);
+
+            // Persist session config to playlist/penanda if applicable
+            if (contextType === 'penanda') {
+                updatePenandaDelayConfig(contextId, {
+                    autoPlayOrder: autoConfig.order,
+                    enabledTranslation: autoConfig.playTranslation,
+                    delayPreArabic: autoConfig.delayPreArabic,
+                    delayPostArabic: autoConfig.delayPostArabic,
+                    delayPreTranslation: autoConfig.delayPreTranslation,
+                    delayPostTranslation: autoConfig.delayPostTranslation,
+                    delaySequenceLoop: autoConfig.delaySequenceLoop,
+                    repeatMode: autoConfig.verseRepeat
+                }).catch(() => {});
+            } else if (contextType === 'playlist') {
+                updatePlaylistDelayConfig(contextId, {
+                    autoPlayOrder: autoConfig.order,
+                    enabledTranslation: autoConfig.playTranslation,
+                    delayPreArabic: autoConfig.delayPreArabic,
+                    delayPostArabic: autoConfig.delayPostArabic,
+                    delayPreTranslation: autoConfig.delayPreTranslation,
+                    delayPostTranslation: autoConfig.delayPostTranslation,
+                    delaySequenceLoop: autoConfig.delaySequenceLoop,
+                    repeatMode: autoConfig.verseRepeat
+                }).catch(() => {});
+            }
 
             // Set Auto Play ON
             setAutoPlay(true);
@@ -1217,31 +1255,35 @@ export default function VerseViewScreen({ route, navigation }) {
                             <ScrollView showsVerticalScrollIndicator={false}>
                                 <Text style={[styles.modalTitle, isDark && { color: '#e8f5e9' }]}>{translate('verseView.autoConfigTitle', appLanguage) || 'Konfigurasi Auto Play'}</Text>
 
-                                <View style={styles.configRow}>
-                                    <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.startVerse', appLanguage)}:</Text>
-                                    <View style={[styles.counterControl, isDark && { backgroundColor: '#222f22' }]}>
-                                        <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, startVerse: Math.max(1, p.startVerse - 1) }))}>
-                                            <Ionicons name="remove-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
-                                        </TouchableOpacity>
-                                        <Text style={[styles.counterText, isDark && { color: '#e8f5e9' }]}>{autoConfig.startVerse}</Text>
-                                        <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, startVerse: Math.min(autoConfig.endVerse, p.startVerse + 1) }))}>
-                                            <Ionicons name="add-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
-                                        </TouchableOpacity>
+                                {!contextType && (
+                                    <View style={styles.configRow}>
+                                        <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.startVerse', appLanguage)}:</Text>
+                                        <View style={[styles.counterControl, isDark && { backgroundColor: '#222f22' }]}>
+                                            <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, startVerse: Math.max(1, p.startVerse - 1) }))}>
+                                                <Ionicons name="remove-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
+                                            </TouchableOpacity>
+                                            <Text style={[styles.counterText, isDark && { color: '#e8f5e9' }]}>{autoConfig.startVerse}</Text>
+                                            <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, startVerse: Math.min(autoConfig.endVerse, p.startVerse + 1) }))}>
+                                                <Ionicons name="add-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
-                                </View>
+                                )}
 
-                                <View style={styles.configRow}>
-                                    <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.endVerse', appLanguage)}:</Text>
-                                    <View style={[styles.counterControl, isDark && { backgroundColor: '#222f22' }]}>
-                                        <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, endVerse: Math.max(autoConfig.startVerse, p.endVerse - 1) }))}>
-                                            <Ionicons name="remove-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
-                                        </TouchableOpacity>
-                                        <Text style={[styles.counterText, isDark && { color: '#e8f5e9' }]}>{autoConfig.endVerse}</Text>
-                                        <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, endVerse: Math.min(verses[verses.length - 1].number, p.endVerse + 1) }))}>
-                                            <Ionicons name="add-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
-                                        </TouchableOpacity>
+                                {!contextType && (
+                                    <View style={styles.configRow}>
+                                        <Text style={[styles.configLabel, isDark && { color: '#e8f5e9' }]}>{translate('verseView.endVerse', appLanguage)}:</Text>
+                                        <View style={[styles.counterControl, isDark && { backgroundColor: '#222f22' }]}>
+                                            <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, endVerse: Math.max(autoConfig.startVerse, p.endVerse - 1) }))}>
+                                                <Ionicons name="remove-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
+                                            </TouchableOpacity>
+                                            <Text style={[styles.counterText, isDark && { color: '#e8f5e9' }]}>{autoConfig.endVerse}</Text>
+                                            <TouchableOpacity onPress={() => setAutoConfig(p => ({ ...p, endVerse: Math.min(verses[verses.length - 1].number, p.endVerse + 1) }))}>
+                                                <Ionicons name="add-circle-outline" size={28} color={isDark ? '#81c784' : '#2e7d32'} />
+                                            </TouchableOpacity>
+                                        </View>
                                     </View>
-                                </View>
+                                )}
 
                                 {/* Sequence Repeat */}
                                 <View style={styles.configRow}>
