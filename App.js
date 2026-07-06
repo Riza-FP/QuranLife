@@ -1,4 +1,5 @@
 import 'react-native-gesture-handler';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View, Image, ImageBackground } from 'react-native';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
@@ -75,16 +76,18 @@ export default function App() {
   }
 
   return (
-    <SafeAreaProvider>
-      <SettingsProvider>
-        <LastPositionProvider>
-          <NavigationContainer theme={MyTheme}>
-            <QuLifeNavigator />
-            <StatusBar style="auto" />
-          </NavigationContainer>
-        </LastPositionProvider>
-      </SettingsProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaProvider>
+        <SettingsProvider>
+          <LastPositionProvider>
+            <NavigationContainer theme={MyTheme}>
+              <QuLifeNavigator />
+              <StatusBar style="auto" />
+            </NavigationContainer>
+          </LastPositionProvider>
+        </SettingsProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   );
 }
 

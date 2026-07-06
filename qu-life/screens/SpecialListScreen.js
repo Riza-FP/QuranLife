@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, StyleSheet, SectionList, FlatList, TouchableOpacity, ImageBackground, Modal, TextInput, Alert, KeyboardAvoidingView, Platform } from 'react-native';
+import { View, Text, StyleSheet, SectionList, FlatList, TouchableOpacity, ImageBackground, Modal, TextInput, Alert, KeyboardAvoidingView, Platform, Switch } from 'react-native';
 import { useSettings } from '../utils/SettingsContext';
 import { translate } from '../utils/i18n';
 import { loadData, saveData, generateId } from '../utils/PlaylistManager';
@@ -35,6 +35,13 @@ export default function SpecialListScreen({ navigation }) {
     // Quick Edit State
     const [quickEditVisible, setQuickEditVisible] = useState(false);
     const [quickEditData, setQuickEditData] = useState(null);
+
+    // Playlist Auto Play State
+    const [playlistAutoModalVisible, setPlaylistAutoModalVisible] = useState(false);
+    const [selectedPlaylistForPlay, setSelectedPlaylistForPlay] = useState(null);
+    const [playlistRepeat, setPlaylistRepeat] = useState(1);
+    const [playlistPlayTranslation, setPlaylistPlayTranslation] = useState(false);
+    const [playlistOrder, setPlaylistOrder] = useState('arabic_first');
 
     useFocusEffect(
         useCallback(() => {
@@ -154,6 +161,51 @@ export default function SpecialListScreen({ navigation }) {
         });
     };
 
+    const handlePlayPlaylist = (playlist) => {
+        if (!playlist.items || playlist.items.length === 0) {
+            Alert.alert(
+                translate('playlist.error', appLanguage) || 'Error',
+                translate('playlist.emptyPlaylist', appLanguage) || 'Playlist ini masih kosong. Tambahkan item terlebih dahulu!'
+            );
+            return;
+        }
+        setSelectedPlaylistForPlay(playlist);
+        setPlaylistRepeat(1);
+        setPlaylistPlayTranslation(false);
+        setPlaylistOrder('arabic_first');
+        setPlaylistAutoModalVisible(true);
+    };
+
+    const startPlaylistAutoPlay = () => {
+        if (!selectedPlaylistForPlay || !selectedPlaylistForPlay.items || selectedPlaylistForPlay.items.length === 0) {
+            setPlaylistAutoModalVisible(false);
+            return;
+        }
+        const firstItem = selectedPlaylistForPlay.items[0];
+        const surahData = getSurahByCode(firstItem.surahCode);
+        if (!surahData) {
+            Alert.alert(translate('playlist.error', appLanguage), translate('playlist.surahNotFound', appLanguage));
+            return;
+        }
+        
+        setPlaylistAutoModalVisible(false);
+        navigation.navigate('VerseView', {
+            surah: surahData,
+            initialVerseIndex: 0,
+            startVerse: firstItem.start,
+            endVerse: firstItem.end,
+            contextType: 'playlist',
+            contextId: selectedPlaylistForPlay.id,
+            delayConfig: selectedPlaylistForPlay.delayConfig,
+            playlistQueue: selectedPlaylistForPlay.items,
+            currentQueueIndex: 0,
+            autoStartPlaying: true,
+            playlistSequenceRepeat: playlistRepeat,
+            playlistPlayTranslation: playlistPlayTranslation,
+            playlistOrder: playlistOrder
+        });
+    };
+
     const openAddPlaylist = () => {
         setAddTypeModalVisible(false);
         setEditingPlaylistId(null);
@@ -252,10 +304,13 @@ export default function SpecialListScreen({ navigation }) {
             // Playlist Item
             return (
                 <View style={[styles.card, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1, shadowColor: '#0c120c' }]}>
-                    <TouchableOpacity style={styles.cardContent} onPress={() => handlePressPlaylist(item)}>
-                        <View style={[styles.iconContainer, isDark && { backgroundColor: '#222f22' }]}>
-                            <Ionicons name={item.isBuiltIn ? "star" : "folder-open"} size={20} color={isDark ? '#a5d6a7' : '#495057'} />
-                        </View>
+                    <TouchableOpacity 
+                        style={[styles.iconContainer, { marginLeft: 16, marginRight: 0 }, isDark && { backgroundColor: '#222f22' }]}
+                        onPress={() => handlePlayPlaylist(item)}
+                    >
+                        <Ionicons name="play" size={22} color={isDark ? '#81c784' : '#2e7d32'} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={[styles.cardContent, { paddingLeft: 12 }]} onPress={() => handlePressPlaylist(item)}>
                         <View style={styles.textContainer}>
                             <Text style={[styles.name, isDark ? { color: '#ffffff' } : { color: '#2e7d32' }]}>{item.title}</Text>
                             <Text style={[styles.translation, isDark && { color: '#a5d6a7' }]}>
@@ -451,6 +506,100 @@ export default function SpecialListScreen({ navigation }) {
                     onSave={handleQuickEditSave}
                     onChangeRange={handleQuickEditChangeRange}
                 />
+
+                {/* Playlist Auto Play Config Modal */}
+                <Modal visible={playlistAutoModalVisible} transparent={true} animationType="fade" onRequestClose={() => setPlaylistAutoModalVisible(false)}>
+                    <View style={styles.modalOverlay}>
+                        <View style={[styles.modalContent, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1 }]}>
+                            <Text style={[styles.modalTitle, isDark && { color: '#e8f5e9' }]}>
+                                {translate('playlist.autoPlayTitle', appLanguage) || 'Konfigurasi Auto Play'}
+                            </Text>
+
+                            {selectedPlaylistForPlay && (
+                                <View style={{ marginBottom: 20, alignItems: 'center' }}>
+                                    <Text style={{ fontSize: 18, fontWeight: 'bold', color: isDark ? '#81c784' : '#2e7d32' }}>
+                                        {selectedPlaylistForPlay.title}
+                                    </Text>
+                                    <Text style={{ fontSize: 14, color: isDark ? '#a5d6a7' : '#666', marginTop: 4 }}>
+                                        {selectedPlaylistForPlay.items.length} {translate('playlist.items', appLanguage) || 'Items'}
+                                    </Text>
+                                </View>
+                            )}
+
+                            {/* Sequence Repeat */}
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderTopWidth: 1, borderBottomWidth: 1, borderColor: isDark ? '#2d3b2d' : '#eee', marginBottom: 20 }}>
+                                <Text style={{ fontSize: 16, color: isDark ? '#e8f5e9' : '#333' }}>
+                                    {translate('verseView.repeatSequence', appLanguage) || 'Pengulangan Sekuens'}:
+                                </Text>
+                                <TouchableOpacity
+                                    style={{ flexDirection: 'row', alignItems: 'center', backgroundColor: isDark ? '#222f22' : '#f1f3f5', paddingHorizontal: 12, paddingVertical: 6, borderRadius: 20 }}
+                                    onPress={() => {
+                                        let next = 1;
+                                        if (playlistRepeat === 1) next = 2;
+                                        else if (playlistRepeat === 2) next = 3;
+                                        else if (playlistRepeat === 3) next = 'loop';
+                                        else next = 1;
+                                        setPlaylistRepeat(next);
+                                    }}
+                                >
+                                    <Ionicons name={playlistRepeat === 'loop' ? "infinite" : "repeat"} size={20} color={isDark ? '#81c784' : '#2e7d32'} />
+                                    <Text style={{ fontSize: 16, fontWeight: 'bold', color: isDark ? '#e8f5e9' : '#333', marginHorizontal: 8 }}>
+                                        {playlistRepeat === 'loop' ? 'Loop' : `${playlistRepeat}x`}
+                                    </Text>
+                                </TouchableOpacity>
+                            </View>
+
+                            {/* Play Translation Switch */}
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderColor: isDark ? '#2d3b2d' : '#eee', marginBottom: 15 }}>
+                                <Text style={{ fontSize: 16, color: isDark ? '#e8f5e9' : '#333' }}>
+                                    {translate('settings.playTransText', appLanguage) || 'Putar Terjemahan'}:
+                                </Text>
+                                <Switch
+                                    value={playlistPlayTranslation}
+                                    trackColor={{ false: isDark ? '#222f22' : '#767577', true: isDark ? '#1b5e20' : '#a5d6a7' }}
+                                    thumbColor={playlistPlayTranslation ? (isDark ? '#81c784' : '#2e7d32') : '#f4f3f4'}
+                                    onValueChange={setPlaylistPlayTranslation}
+                                />
+                            </View>
+
+                            {/* Playback Order (Only if translation is ON) */}
+                            {playlistPlayTranslation && (
+                                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingVertical: 12, borderBottomWidth: 1, borderColor: isDark ? '#2d3b2d' : '#eee', marginBottom: 20 }}>
+                                    <Text style={{ fontSize: 16, color: isDark ? '#e8f5e9' : '#333' }}>
+                                        {translate('verseView.order', appLanguage) || 'Urutan'}:
+                                    </Text>
+                                    <View style={{ flexDirection: 'row' }}>
+                                        <TouchableOpacity
+                                            style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 15, backgroundColor: playlistOrder === 'arabic_first' ? (isDark ? '#1b5e20' : '#2e7d32') : (isDark ? '#222f22' : '#f1f3f5'), marginRight: 8 }}
+                                            onPress={() => setPlaylistOrder('arabic_first')}
+                                        >
+                                            <Text style={{ fontSize: 14, color: playlistOrder === 'arabic_first' ? '#fff' : (isDark ? '#a5d6a7' : '#333') }}>
+                                                {translate('settings.arabFirst', appLanguage) || 'Ayat Dulu'}
+                                            </Text>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity
+                                            style={{ paddingHorizontal: 12, paddingVertical: 6, borderRadius: 15, backgroundColor: playlistOrder === 'translation_first' ? (isDark ? '#1b5e20' : '#2e7d32') : (isDark ? '#222f22' : '#f1f3f5') }}
+                                            onPress={() => setPlaylistOrder('translation_first')}
+                                        >
+                                            <Text style={{ fontSize: 14, color: playlistOrder === 'translation_first' ? '#fff' : (isDark ? '#a5d6a7' : '#333') }}>
+                                                {translate('settings.transFirst', appLanguage) || 'Terj. Dulu'}
+                                            </Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                </View>
+                            )}
+
+                            <View style={styles.modalButtons}>
+                                <TouchableOpacity style={[styles.btn, styles.btnCancel, isDark && { backgroundColor: '#2d3b2d' }]} onPress={() => setPlaylistAutoModalVisible(false)}>
+                                    <Text style={[styles.btnCancelText, isDark && { color: '#a5d6a7' }]}>{translate('playlist.cancel', appLanguage) || 'Batal'}</Text>
+                                </TouchableOpacity>
+                                <TouchableOpacity style={[styles.btn, styles.btnSave, isDark && { backgroundColor: '#2e7d32' }]} onPress={startPlaylistAutoPlay}>
+                                    <Text style={styles.btnSaveText}>{translate('playlist.start', appLanguage) || 'Mulai'}</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </Modal>
             </View>
         </ImageBackground>
     );

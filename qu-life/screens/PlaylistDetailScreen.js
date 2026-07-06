@@ -6,6 +6,7 @@ import { useSettings } from '../utils/SettingsContext';
 import { translate } from '../utils/i18n';
 import { loadData, saveData, generateId } from '../utils/PlaylistManager';
 import { Ionicons } from '@expo/vector-icons';
+import DraggableFlatList, { ScaleDecorator } from 'react-native-draggable-flatlist';
 import WizardSelectionModal from '../components/WizardSelectionModal';
 import QuickEditModal from '../components/QuickEditModal';
 
@@ -42,7 +43,7 @@ export default function PlaylistDetailScreen({ route, navigation }) {
         }
     };
 
-    const handlePressItem = (item) => {
+    const handlePressItem = (item, index) => {
         const surahData = getSurahByCode(item.surahCode);
         if (surahData) {
             navigation.navigate('VerseView', {
@@ -52,7 +53,10 @@ export default function PlaylistDetailScreen({ route, navigation }) {
                 endVerse: item.end,
                 contextType: 'playlist',
                 contextId: currentPlaylist?.id,
-                delayConfig: currentPlaylist?.delayConfig
+                delayConfig: currentPlaylist?.delayConfig,
+                playlistQueue: items,
+                currentQueueIndex: index,
+                autoStartPlaying: false
             });
         } else {
             Alert.alert(translate('playlist.error', appLanguage), translate('playlist.surahNotFound', appLanguage));
@@ -143,7 +147,8 @@ export default function PlaylistDetailScreen({ route, navigation }) {
         await saveData(newData);
     };
 
-    const renderItem = ({ item }) => {
+    const renderItem = ({ item, getIndex, drag, isActive }) => {
+        const index = getIndex !== undefined ? getIndex() : 0;
         const surahData = item.surahCode ? getSurahByCode(item.surahCode) : null;
         const surahName = surahData ? surahData.nama + ", " : "";
 
@@ -152,28 +157,42 @@ export default function PlaylistDetailScreen({ route, navigation }) {
             : `${surahName}${translate('home.verse', appLanguage)} ${item.start}-${item.end}`;
             
         return (
-            <View style={[styles.card, isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1, shadowColor: '#0c120c' }]}>
-                <TouchableOpacity 
-                    style={styles.cardContent} 
-                    onPress={() => handlePressItem(item)}
-                >
-                    <View style={[styles.numberContainer, isDark && { backgroundColor: '#222f22' }]}>
-                        <Text style={[styles.number, isDark && { color: '#a5d6a7' }]}>{item.number}</Text>
-                    </View>
-                    <View style={styles.textContainer}>
-                        <Text style={[styles.name, isDark ? { color: '#ffffff' } : { color: '#2e7d32' }]}>{item.title}</Text>
-                        <Text style={[styles.translation, isDark && { color: '#a5d6a7' }]}>{subtitle}</Text>
-                    </View>
-                </TouchableOpacity>
-                <View style={styles.actionsContainer}>
-                    <TouchableOpacity style={styles.actionBtn} onPress={() => openEditModal(item)}>
-                        <Ionicons name="pencil" size={20} color={isDark ? '#81c784' : '#2e7d32'} />
+            <ScaleDecorator>
+                <View style={[
+                    styles.card, 
+                    isDark && { backgroundColor: '#162016', borderColor: '#2d3b2d', borderWidth: 1, shadowColor: '#0c120c' },
+                    isActive && { backgroundColor: isDark ? '#223322' : '#e8f5e9', elevation: 8, shadowOpacity: 0.2, borderColor: '#2e7d32', borderWidth: 1.5 }
+                ]}>
+                    <TouchableOpacity 
+                        style={styles.cardContent} 
+                        onPress={() => handlePressItem(item, index)}
+                        disabled={isActive}
+                    >
+                        <View style={[styles.numberContainer, isDark && { backgroundColor: '#222f22' }]}>
+                            <Text style={[styles.number, isDark && { color: '#a5d6a7' }]}>{item.number}</Text>
+                        </View>
+                        <View style={styles.textContainer}>
+                            <Text style={[styles.name, isDark ? { color: '#ffffff' } : { color: '#2e7d32' }]}>{item.title}</Text>
+                            <Text style={[styles.translation, isDark && { color: '#a5d6a7' }]}>{subtitle}</Text>
+                        </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.actionBtn} onPress={() => handleDeleteItem(item.id)}>
-                        <Ionicons name="trash" size={20} color="#e53935" />
-                    </TouchableOpacity>
+                    <View style={styles.actionsContainer}>
+                        <TouchableOpacity 
+                            style={[styles.actionBtn, { paddingHorizontal: 6 }]} 
+                            onPressIn={drag} 
+                            disabled={isActive}
+                        >
+                            <Ionicons name="reorder-two" size={24} color={isDark ? '#81c784' : '#2e7d32'} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.actionBtn} onPress={() => openEditModal(item)} disabled={isActive}>
+                            <Ionicons name="pencil" size={18} color={isDark ? '#81c784' : '#2e7d32'} />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.actionBtn} onPress={() => handleDeleteItem(item.id)} disabled={isActive}>
+                            <Ionicons name="trash" size={18} color="#e53935" />
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
+            </ScaleDecorator>
         );
     };
 
@@ -184,10 +203,15 @@ export default function PlaylistDetailScreen({ route, navigation }) {
             resizeMode="cover"
         >
             <SafeAreaView style={styles.container} edges={['bottom', 'left', 'right']}>
-                <FlatList
+                <DraggableFlatList
                     data={items}
-                    renderItem={renderItem}
+                    onDragEnd={({ data }) => {
+                        const reindexed = data.map((it, idx) => ({ ...it, number: idx + 1 }));
+                        setItems(reindexed);
+                        updatePlaylistInStorage(reindexed);
+                    }}
                     keyExtractor={item => item.id}
+                    renderItem={renderItem}
                     contentContainerStyle={styles.list}
                     ListEmptyComponent={
                         <Text style={[styles.emptyText, isDark && { color: '#a5d6a7' }]}>{translate('playlist.noItems', appLanguage)}</Text>
@@ -256,10 +280,11 @@ const styles = StyleSheet.create({
     },
     actionsContainer: {
         flexDirection: 'row',
-        paddingRight: 10,
+        paddingRight: 8,
+        alignItems: 'center',
     },
     actionBtn: {
-        padding: 10,
+        padding: 6,
     },
     numberContainer: {
         width: 40,

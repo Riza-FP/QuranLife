@@ -4,6 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import VersePager from '../components/VersePager';
 import PlaybackControlPanel from '../components/PlaybackControlPanel';
 import { getVersesForSurah } from '../utils/VerseData';
+import { getSurahByCode } from '../utils/DataLoader';
 import { useSettings } from '../utils/SettingsContext';
 import { Audio } from 'expo-av';
 import { Ionicons } from '@expo/vector-icons';
@@ -132,6 +133,7 @@ export default function VerseViewScreen({ route, navigation }) {
     const pagerRef = useRef(null);
     const isMounted = useRef(true);
     const delayTimeout = useRef(null);
+    const versesRef = useRef([]);
     const showTranslationRef = useRef(showTranslation);
 
     useEffect(() => {
@@ -206,14 +208,53 @@ export default function VerseViewScreen({ route, navigation }) {
                 loadedVerses = loadedVerses.filter(v => v.number >= startVerse && v.number <= endVerse);
             }
 
+            versesRef.current = loadedVerses;
             setVerses(loadedVerses);
+
+            if (route.params.autoStartPlaying && loadedVerses.length > 0) {
+                const config = {
+                    startVerse: loadedVerses[0].number,
+                    endVerse: loadedVerses[loadedVerses.length - 1].number,
+                    sequenceRepeat: route.params.playlistSequenceRepeat || 1,
+                    verseRepeat: repeatMode || 1,
+                    playTranslation: route.params.playlistPlayTranslation !== undefined ? route.params.playlistPlayTranslation : localEnabledTranslation,
+                    delayPreArabic: localDelayPreArabic,
+                    delayPostArabic: localDelayPostArabic,
+                    delayPreTranslation: localDelayPreTranslation,
+                    delayPostTranslation: localDelayPostTranslation,
+                    delaySequenceLoop: localDelaySequenceLoop,
+                    order: route.params.playlistOrder || localAutoPlayOrder
+                };
+                
+                autoEndVerseRef.current = config.endVerse;
+                autoStartVerseRef.current = config.startVerse;
+                autoSequenceRef.current = config.sequenceRepeat;
+                delayPostArabicRef.current = config.delayPostArabic;
+                delaySequenceLoopRef.current = config.delaySequenceLoop;
+                autoPlayEnabledTranslationRef.current = config.playTranslation;
+                autoPlayOrderRef.current = config.order;
+
+                setAutoPlay(true);
+                autoPlayRef.current = true;
+
+                setTimeout(() => {
+                    if (autoPlayRef.current) {
+                        playBasmalah(() => {
+                            if (autoPlayRef.current) {
+                                playVerseSequence(0, config);
+                            }
+                        });
+                    }
+                }, 600);
+            }
         }
-        return () => { isMounted.current = false; };
     }, [surah, startVerse, endVerse]);
 
     // Cleanup sound on unmount
     useEffect(() => {
+        isMounted.current = true;
         return () => {
+            isMounted.current = false;
             if (soundRef.current) soundRef.current.unloadAsync();
             if (delayTimeout.current) clearTimeout(delayTimeout.current);
         };
@@ -269,8 +310,7 @@ export default function VerseViewScreen({ route, navigation }) {
             setIsPreRolling(true);
             if (soundRef.current) await soundRef.current.unloadAsync();
 
-            // TEST: Use Basmalah URL to verify logic (Archive.org might be blocked/slow)
-            const testUrl = 'https://cdn.islamic.network/quran/audio/128/ar.alafasy/1.mp3';
+            const testUrl = 'https://everyayah.com/data/Alafasy_128kbps/001001.mp3';
             // const realUrl = 'https://archive.org/download/Taawudz/Mishary%20Rashid%20Al%20Afasy%20-%20Ta%27awwudz.mp3';
 
             const { sound: newSound, status } = await Audio.Sound.createAsync(
@@ -331,7 +371,7 @@ export default function VerseViewScreen({ route, navigation }) {
     // Main Sequence Runner (Entry Point for Auto-Play)
     const playVerseSequence = async (index, sessionConfig = null) => {
         try {
-            if (!isMounted.current || !autoPlayRef.current) return;
+            if (!autoPlayRef.current) return;
 
             // Resolve Config
             const config = sessionConfig || {
@@ -453,22 +493,87 @@ export default function VerseViewScreen({ route, navigation }) {
             playVerseSequence(index, config);
         } else {
             // Next Verse
-            const currentNumber = verses[index].number;
-            const endNumber = config.endVerse || verses[verses.length - 1].number;
+            const currentVerses = versesRef.current.length > 0 ? versesRef.current : verses;
+            const currentVerseObj = currentVerses[index];
+            if (!currentVerseObj) return;
+            const currentNumber = currentVerseObj.number;
+            const endNumber = config.endVerse || currentVerses[currentVerses.length - 1].number;
 
-            if (currentNumber >= endNumber || index >= verses.length - 1) {
+            if (currentNumber >= endNumber || index >= currentVerses.length - 1) {
                 // End of Range -> Sequence Repeat Logic
                 let seqRepeat = config.sequenceRepeat;
-                // ... (Existing Sequence Repeat Logic) ... 
-                // Simplify for readability in replacement
                 if (seqRepeat === undefined) seqRepeat = autoSequenceRef.current;
+
+                // Check if we are in a Playlist Queue
+                const queue = route.params.playlistQueue;
+                const qIdx = route.params.currentQueueIndex !== undefined ? route.params.currentQueueIndex : -1;
+
+                if (queue && queue.length > 0 && qIdx !== -1) {
+                    if (qIdx + 1 < queue.length) {
+                        // Advance to next item in playlist!
+                        const nextItem = queue[qIdx + 1];
+                        const nextSurahData = getSurahByCode(nextItem.surahCode);
+                        if (nextSurahData) {
+                            await waitDelay(config.delaySequenceLoop || 0);
+                            if (!autoPlayRef.current) return;
+                            
+                            navigation.replace('VerseView', {
+                                surah: nextSurahData,
+                                initialVerseIndex: 0,
+                                startVerse: nextItem.start,
+                                endVerse: nextItem.end,
+                                contextType: 'playlist',
+                                contextId: route.params.contextId,
+                                delayConfig: route.params.delayConfig,
+                                playlistQueue: queue,
+                                currentQueueIndex: qIdx + 1,
+                                autoStartPlaying: true,
+                                playlistSequenceRepeat: route.params.playlistSequenceRepeat || seqRepeat,
+                                playlistPlayTranslation: route.params.playlistPlayTranslation,
+                                playlistOrder: route.params.playlistOrder
+                            });
+                            return;
+                        }
+                    } else {
+                        // We reached the END of the entire playlist queue!
+                        const plRepeat = route.params.playlistSequenceRepeat || seqRepeat;
+                        if (plRepeat > 1 || plRepeat === 'loop') {
+                            if (plRepeat !== 'loop' && route.params.playlistSequenceRepeat) {
+                                route.params.playlistSequenceRepeat -= 1;
+                            }
+                            const firstItem = queue[0];
+                            const firstSurahData = getSurahByCode(firstItem.surahCode);
+                            if (firstSurahData) {
+                                await waitDelay(config.delaySequenceLoop || 0);
+                                if (!autoPlayRef.current) return;
+                                
+                                navigation.replace('VerseView', {
+                                    surah: firstSurahData,
+                                    initialVerseIndex: 0,
+                                    startVerse: firstItem.start,
+                                    endVerse: firstItem.end,
+                                    contextType: 'playlist',
+                                    contextId: route.params.contextId,
+                                    delayConfig: route.params.delayConfig,
+                                    playlistQueue: queue,
+                                    currentQueueIndex: 0,
+                                    autoStartPlaying: true,
+                                    playlistSequenceRepeat: plRepeat === 'loop' ? 'loop' : (typeof plRepeat === 'number' ? plRepeat - 1 : 1),
+                                    playlistPlayTranslation: route.params.playlistPlayTranslation,
+                                    playlistOrder: route.params.playlistOrder
+                                });
+                                return;
+                            }
+                        }
+                    }
+                }
 
                 if (seqRepeat > 1 || seqRepeat === 'loop') {
                     if (seqRepeat !== 'loop') {
                         autoSequenceRef.current -= 1; // Decrement global ref
                     }
-                    const startNumber = autoStartVerseRef.current || verses[0].number;
-                    const startIndex = verses.findIndex(v => v.number === startNumber);
+                    const startNumber = autoStartVerseRef.current || currentVerses[0].number;
+                    const startIndex = currentVerses.findIndex(v => v.number === startNumber);
 
                     if (startIndex !== -1) {
                         await waitDelay(config.delaySequenceLoop);
@@ -493,7 +598,12 @@ export default function VerseViewScreen({ route, navigation }) {
 
     const speakWait = (index) => {
         return new Promise((resolve) => {
-            const verse = verses[index];
+            const currentVerses = versesRef.current.length > 0 ? versesRef.current : verses;
+            const verse = currentVerses[index];
+            if (!verse) {
+                resolve(true);
+                return;
+            }
             const text = verse.translations?.[translationCode] || verse.translation || 'Tidak ada terjemahan';
 
             const options = {
@@ -532,7 +642,8 @@ export default function VerseViewScreen({ route, navigation }) {
     };
 
     const goToVerse = (index) => {
-        if (index >= 0 && index < verses.length) {
+        const currentVerses = versesRef.current.length > 0 ? versesRef.current : verses;
+        if (index >= 0 && index < currentVerses.length) {
             setCurrentVerseIndex(index);
             pagerRef.current?.setPage(index);
 
@@ -543,7 +654,11 @@ export default function VerseViewScreen({ route, navigation }) {
     };
 
     async function playVerse(index) {
-        if (soundRef.current) await soundRef.current.unloadAsync();
+        try {
+            if (soundRef.current) {
+                await soundRef.current.unloadAsync().catch(() => {});
+            }
+        } catch (e) {}
         setSound(null);
         loadedVerseIndexRef.current = -1;
 
@@ -555,21 +670,19 @@ export default function VerseViewScreen({ route, navigation }) {
         try {
             setLoadingAudio(true);
             setIsPlaying(true);
-            const verse = verses[index];
-            const metaUrl = `https://api.alquran.cloud/v1/ayah/${surah.nomor}:${verse.number}/ar.alafasy`;
-            console.log("Fetching Audio Meta:", metaUrl);
-            Logger.logInfo(`Fetching Audio: ${metaUrl}`);
+            const currentVerses = versesRef.current.length > 0 ? versesRef.current : verses;
+            const verse = currentVerses[index];
+            if (!verse) return;
+            const surahStr = String(surah.nomor).padStart(3, '0');
+            const verseStr = String(verse.number).padStart(3, '0');
+            const audioUrl = `https://everyayah.com/data/Alafasy_128kbps/${surahStr}${verseStr}.mp3`;
+            console.log("Loading Audio Stream directly from EveryAyah:", audioUrl);
+            Logger.logInfo(`Loading Audio: ${audioUrl}`);
 
-            const response = await fetch(metaUrl);
-            const data = await response.json();
-
-            if (data.code === 200 && isMounted.current) {
-                const audioUrl = data.data.audio;
-                console.log("Loading Audio Stream:", audioUrl);
-
+            if (audioUrl) {
                 const { sound: newSound } = await Audio.Sound.createAsync(
                     { uri: audioUrl },
-                    { shouldPlay: false }
+                    { shouldPlay: true }
                 );
 
                 soundRef.current = newSound;
@@ -582,7 +695,6 @@ export default function VerseViewScreen({ route, navigation }) {
                         handlePlaybackFinish();
                     }
                 });
-                await newSound.playAsync();
             } else {
                 console.error("Audio Meta Fetch Failed:", data);
                 Logger.logError("Audio Fetch API Error", data);
@@ -664,7 +776,8 @@ export default function VerseViewScreen({ route, navigation }) {
             autoPlayRef.current = true;
 
             // Find Start Index
-            const startIndex = verses.findIndex(v => v.number === autoConfig.startVerse);
+            const currentVerses = versesRef.current.length > 0 ? versesRef.current : verses;
+            const startIndex = currentVerses.findIndex(v => v.number === autoConfig.startVerse);
 
             if (startIndex !== -1) {
                 // Trigger Basmalah then Play

@@ -123,6 +123,11 @@ const translations = {
         "playlist.items": "Item",
         "playlist.selectSurah": "Pilih Surah",
         "playlist.chooseType": "Pilih Jenis",
+        "playlist.playPlaylist": "Putar Playlist",
+        "playlist.emptyPlaylist": "Playlist ini masih kosong. Tambahkan item terlebih dahulu!",
+        "playlist.moveUp": "Pindahkan ke atas",
+        "playlist.moveDown": "Pindahkan ke bawah",
+        "playlist.autoPlayTitle": "Konfigurasi Auto Play",
 
         // Wizard
         "wizard.step1": "Pilih Surah",
@@ -268,6 +273,11 @@ const translations = {
         "playlist.items": "Items",
         "playlist.selectSurah": "Select Surah",
         "playlist.chooseType": "Choose Type",
+        "playlist.playPlaylist": "Play Playlist",
+        "playlist.emptyPlaylist": "This playlist is empty. Add items first!",
+        "playlist.moveUp": "Move Up",
+        "playlist.moveDown": "Move Down",
+        "playlist.autoPlayTitle": "Auto Play Configuration",
 
         // Wizard
         "wizard.step1": "Choose Surah",
